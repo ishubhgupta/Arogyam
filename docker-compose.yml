@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: group-arogyam-db-image # Replace with your image name if different
+    container_name: group-arogyam-db
+    environment:
+      POSTGRES_USER: Arogyam
+      POSTGRES_PASSWORD: DokChik@04
+      POSTGRES_DB: DokChik
+    ports:
+      - "5433:5432"  # Map host port 5433 to container port 5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data  # This ensures data persistence
+
+volumes:
+  postgres-data:  # Docker volume for persistent storage
