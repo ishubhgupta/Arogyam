@@ -2,13 +2,15 @@ import pkg from 'pg';
 const { Pool } = pkg;
 import 'dotenv/config';
 
-
 const pool = new Pool({
-  user: process.env.POSTGRES_USER,
-  host: process.env.POSTGRES_HOST,
-  database: process.env.POSTGRES_DB,
-  password: process.env.POSTGRES_PASSWORD, 
-  port: process.env.POSTGRES_PORT,
+  host: process.env.PG_HOST,  
+  port: process.env.PG_PORT,  
+  user: process.env.PG_USER,  
+  password: process.env.PG_PASSWORD,  
+  database: process.env.PG_DB, 
+  ssl: {
+    rejectUnauthorized: false, 
+  },
 });
 
 pool.connect()

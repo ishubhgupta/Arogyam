@@ -18,14 +18,14 @@ export const signup = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Patient already exists' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(String(password), 10);
     const verificationToken = generateVerificationToken();
 
     // Insert patient record into database
     const result = await pool.query(
       `INSERT INTO patients (first_name, last_name, email, password, address, city, state, pincode, phone_number, verification_token, verification_token_expires_at)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
-      [firstName, lastName, email, hashedPassword, address, city, state, pincode, phoneNumber, verificationToken, Date.now() + 24 * 60 * 60 * 1000]
+      [firstName, lastName, email, hashedPassword, address, city, state, pincode, phoneNumber, verificationToken, new Date(Date.now() + 24 * 60 * 60 * 1000)]
     );
 
     const patient = result.rows[0];
@@ -83,7 +83,7 @@ export const verifyEmail = async (req, res) => {
   const { otp } = req.body;
   try {
     // Find patient by verification token
-    const result = await pool.query('SELECT * FROM patients WHERE verification_token = $1 AND verification_token_expires_at > $2', [otp, Date.now()]);
+    const result = await pool.query('SELECT * FROM patients WHERE verification_token = $1 AND verification_token_expires_at > $2', [otp, new Date(Math.floor(Date.now() / 1000) + 24 * 60 * 60)]);
     const patient = result.rows[0];
 
     if (!patient) {
@@ -101,7 +101,6 @@ export const verifyEmail = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
 export const forgetPassword = async (req, res) => {
   const { email } = req.body;
   try {
@@ -115,11 +114,17 @@ export const forgetPassword = async (req, res) => {
 
     // Generate a new reset password token using uuid
     const resetPasswordToken = uuidv4();  
-    const resetPasswordExpiresAt = Date.now() + 1 * 60 * 60 * 1000;
 
-    // Update reset password token and expiration time
-    await pool.query('UPDATE patients SET reset_password_token = $1, reset_password_expires_at = $2 WHERE id = $3', [resetPasswordToken, resetPasswordExpiresAt, patient.id]);
+    // Set reset password expiry to 1 hour from current time
+    const resetPasswordExpiresAt = new Date(Date.now() + 60 * 60 * 1000);  // 1 hour in the future
 
+    // Update reset password token and expiration time in the database
+    await pool.query(
+      'UPDATE patients SET reset_password_token = $1, reset_password_expires_at = $2 WHERE id = $3',
+      [resetPasswordToken, resetPasswordExpiresAt, patient.id]
+    );
+
+    // Send reset password email with the reset link
     await sendResetPasswordEmail(patient.email, `${process.env.CLIENT_URL}/reset-password/${resetPasswordToken}`);
 
     return res.status(200).json({ success: true, message: 'Reset password link sent to your email' });
@@ -128,23 +133,37 @@ export const forgetPassword = async (req, res) => {
   }
 };
 
+// Handler for resetting the password
 export const resetPassword = async (req, res) => {
   const token = req.params.token;
   const { newPassword } = req.body;
   try {
-    // Find patient by reset password token
-    const result = await pool.query('SELECT * FROM patients WHERE reset_password_token = $1 AND reset_password_expires_at > $2', [token, Date.now()]);
+    // Create Date object for current time
+    const currentDate = new Date(); // Current Date object
+    const currentTimeInSeconds = Math.floor(currentDate.getTime() / 1000);  // Convert milliseconds to seconds
+
+    // Query to get the patient based on the token and valid expiration time
+    const result = await pool.query(
+      'SELECT * FROM patients WHERE reset_password_token = $1 AND reset_password_expires_at > to_timestamp($2)',
+      [token, currentTimeInSeconds]  // Compare against seconds stored in DB
+    );
+
     const patient = result.rows[0];
 
     if (!patient) {
       return res.status(400).json({ success: false, message: 'Invalid or expired reset password link' });
     }
 
+    // Hash the new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Update password and clear reset token
-    await pool.query('UPDATE patients SET password = $1, reset_password_token = NULL, reset_password_expires_at = NULL WHERE id = $2', [hashedPassword, patient.id]);
+    // Update password and clear reset token and expiration time
+    await pool.query(
+      'UPDATE patients SET password = $1, reset_password_token = NULL, reset_password_expires_at = NULL WHERE id = $2',
+      [hashedPassword, patient.id]
+    );
 
+    // Send success email after password reset
     await sendResetPasswordSuccessEmail(patient.email);
 
     return res.status(200).json({ success: true, message: 'Password reset successful' });
@@ -152,7 +171,6 @@ export const resetPassword = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
 export const resendVerificationToken = async (req, res) => {
   const { email } = req.body;
@@ -174,8 +192,17 @@ export const resendVerificationToken = async (req, res) => {
 
     const newVerificationToken = generateVerificationToken();
 
-    await pool.query('UPDATE patients SET verification_token = $1, verification_token_expires_at = $2 WHERE id = $3', [newVerificationToken, Date.now() + 24 * 60 * 60 * 1000, patient.id]);
+    // Get current time in seconds and add 24 hours for expiration
+    const currentTimeInSeconds = Math.floor(Date.now() / 1000);  // Convert milliseconds to seconds
+    const expirationTimeInSeconds = currentTimeInSeconds + 24 * 60 * 60; // Add 24 hours (in seconds)
 
+    // Update the verification token and expiration time in the database
+    await pool.query(
+      'UPDATE patients SET verification_token = $1, verification_token_expires_at = to_timestamp($2) WHERE id = $3', 
+      [newVerificationToken, expirationTimeInSeconds, patient.id]
+    );
+
+    // Send the verification email
     await sendVerificationEmail(patient.email, newVerificationToken);
 
     return res.status(200).json({ success: true, message: 'New verification token sent to your email' });

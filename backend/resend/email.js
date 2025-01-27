@@ -11,12 +11,15 @@ export const sendVerificationEmail = async (email, verificationToken) => {
     });
 
     if (error) {
+      console.error('Resend error:', error); // Log error details
       throw new Error("Failed to send verification email");
     }
   } catch (error) {
+    console.error('Send verification email error:', error.message); // Log error message
     throw error;
   }
 };
+
 
 export const sendConfirmationEmail = async (email, firstName) => {
   try {
