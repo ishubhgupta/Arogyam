@@ -5,9 +5,7 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import 'dotenv/config';
 import authRoutes from './routes/authRoutes.js';
-import userRoutes from './routes/userRoutes.js';
-import transactionRoutes from './routes/transactionRoutes.js';
-import requestRoutes from './routes/requestRoutes.js';
+import userRoutes from './routes/patientRoutes.js';
 
 const app = express();
 
@@ -22,7 +20,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Test Database Connection
 pool.connect((err) => {
   if (err) {
     console.error("Database connection failed:", err.stack);
@@ -33,9 +30,7 @@ pool.connect((err) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/transactions', transactionRoutes);
-app.use('/api/requests', requestRoutes);
+app.use('/api/patients', userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

@@ -1,4 +1,7 @@
-import { Pool } from 'pg';
+import pkg from 'pg';
+const { Pool } = pkg;
+import 'dotenv/config';
+
 
 const pool = new Pool({
   user: process.env.POSTGRES_USER,
