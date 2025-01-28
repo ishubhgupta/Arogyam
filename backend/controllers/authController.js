@@ -1,9 +1,19 @@
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import pool from '../config/db.js';
+import { OAuth2Client } from 'google-auth-library';
+import 'dotenv/config';
 import { generateVerificationToken } from '../utils/generateVerificationToken.js';
 import { generateJWTToken } from '../utils/generateJWTToken.js';
 import { sendConfirmationEmail, sendResetPasswordEmail, sendResetPasswordSuccessEmail, sendVerificationEmail } from '../resend/email.js';
+
+// Google OAuth2 Client
+const oAuth2Client = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  `${process.env.CLIENT_URL}/api/auth/google/callback`
+);
+
 
 export const signup = async (req, res) => {
   const { firstName, lastName, email, password, address, city, state, pincode, phoneNumber } = req.body;
@@ -72,6 +82,54 @@ export const login = async (req, res) => {
     return res.status(200).json({ success: true, message: 'Login successful!' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const googleAuth = async (req, res) => {
+  const url = oAuth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
+  });
+  console.log(url);
+  res.redirect(url);
+};
+
+export const googleAuthCallback = async (req, res) => {
+  const { code } = req.query;
+
+  try {
+    const { tokens } = await oAuth2Client.getToken(code);
+    oAuth2Client.setCredentials(tokens);
+
+    const ticket = await oAuth2Client.verifyIdToken({
+      idToken: tokens.id_token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, name, picture } = payload;
+
+    // Check if user already exists
+    const result = await pool.query('SELECT * FROM patients WHERE email = $1', [email]);
+    let patient = result.rows[0];
+
+    if (!patient) {
+      // Create new patient
+      const newPatient = await pool.query(
+        `INSERT INTO patients (first_name, last_name, email, is_verified)
+        VALUES ($1, $2, $3, $4) RETURNING *`,
+        [name.split(' ')[0], name.split(' ')[1] || '', email, true]
+      );
+      patient = newPatient.rows[0];
+    }
+
+    // Generate JWT token
+    generateJWTToken(res, patient.id, patient.email);
+
+    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+  } catch (error) {
+    console.error('Error during Google OAuth callback:', error);
+    res.status(500).json({ success: false, message: 'Authentication failed' });
   }
 };
 
