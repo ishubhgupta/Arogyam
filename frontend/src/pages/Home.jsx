@@ -85,27 +85,17 @@ const Home = () => {
       <div className={styles.featuresWrapper}>
         <h2 className={styles.featureTitle}>Our Features</h2>
         <div className={styles.featureUnderline}></div>
-        <div className={styles.featureCards}>
-          <div className={`${styles.featureCard} ${styles.cardRed}`}>
-            <h3>Empathy Driven Interactions</h3>
-          </div>
-          <div className={`${styles.featureCard} ${styles.cardBlue}`}>
-            <h3>Integration with Natural Therapies</h3>
-          </div>
-          <div className={`${styles.featureCard} ${styles.cardGreen}`}>
-            <h3>Home Remedies (Gharelu Nushke)</h3>
-          </div>
-          <div className={`${styles.featureCard} ${styles.cardPurple}`}>
-            <h3>Proactive Health Maintenance</h3>
-          </div>
-          <div className={`${styles.featureCard} ${styles.cardOrange}`}>
-            <h3>Personalized Emergency First Aid Solution</h3>
-          </div>
-          <div className={`${styles.featureCard} ${styles.cardYellow}`}>
-            <h3>Google Fit Integration</h3>
-          </div>
+        <div className={styles.honeycomb}>
+          <div className={`${styles.hexagon} ${styles.center}`}>Arogyam</div>
+          <div className={`${styles.hexagon} ${styles.top}`}>Empathy Driven Interactions</div>
+          <div className={`${styles.hexagon} ${styles.topRight}`}>Integration with Natural Therapies</div>
+          <div className={`${styles.hexagon} ${styles.bottomRight}`}>Home Remedies (Gharelu Nushke)</div>
+          <div className={`${styles.hexagon} ${styles.bottom}`}>Proactive Health Maintenance</div>
+          <div className={`${styles.hexagon} ${styles.bottomLeft}`}>Personalized Emergency First Aid Solution</div>
+          <div className={`${styles.hexagon} ${styles.topLeft}`}>Google Fit Integration</div>
         </div>
       </div>
+
       <div className={styles.aboutUsSection}>
         <h2 className={styles.aboutTitle}>About Us</h2>
         <div className={styles.aboutUnderline}></div>

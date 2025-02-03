@@ -904,3 +904,107 @@ body {
     font-size: 1rem;
   }
 }
+
+/* Honeycomb Structure for Features */
+.honeycomb {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  margin: 4rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hexagon {
+  position: absolute;
+  width: 150px;
+  height: 130px;
+  background-color: #ffcc00;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  color: white;
+  font-weight: 600;
+  transition: transform 0.3s ease;
+  border: solid 1px white;
+}
+
+/* Central Hexagon */
+.center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+}
+
+/* Surrounding Hexagons */
+.top {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(0, -144px);
+  background: linear-gradient(135deg, #f88888, #ff1a1a);
+}
+
+.topRight {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(126.08px, -78.13px);
+  background: linear-gradient(135deg, #83c7ff, #1976d2);
+}
+
+.bottomRight {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(126.08px, 78.13px);
+  background: linear-gradient(135deg, #85ff89, #388e3c);
+}
+
+.bottom {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(0, 144px);
+  background: linear-gradient(135deg, #ec82ff, #7b1fa2);
+}
+
+.bottomLeft {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(-126.08px, 78.13px);
+  background: linear-gradient(135deg, #ffcd82, #f57c00);
+}
+
+.topLeft {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(-126.08px, -78.13px);
+  background: linear-gradient(135deg, #ffea82, #ffc400);
+}
+
+/* Hover Effects */
+.top:hover {
+  transform: translate(-50%, -50%) translate(0, -144px) scale(1.0333);
+}
+
+.topRight:hover {
+  transform: translate(-50%, -50%) translate(126.08px, -78.13px) scale(1.0333);
+}
+
+.bottomRight:hover {
+  transform: translate(-50%, -50%) translate(126.08px, 78.13px) scale(1.0333);
+}
+
+.bottom:hover {
+  transform: translate(-50%, -50%) translate(0, 144px) scale(1.0333);
+}
+
+.bottomLeft:hover {
+  transform: translate(-50%, -50%) translate(-126.08px, 78.13px) scale(1.0333);
+}
+
+.topLeft:hover {
+  transform: translate(-50%, -50%) translate(-126.08px, -78.13px) scale(1.0333);
+}
