@@ -1,0 +1,906 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Container Styling */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 5rem 5% 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 15rem;
+  margin-top: 170rem;
+  margin-bottom: 10rem;
+}
+
+/* Left Side (Text Content) */
+.content {
+  flex: 1;
+  max-width: 50%;
+  animation: fadeInLeft 1s ease-in-out;
+}
+
+.heading {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.subheading {
+  font-size: 1.5rem;
+  color: #555;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+}
+
+.buttons {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.buttonPrimary {
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-align: center;
+  width: 150px;
+}
+
+.buttonPrimary:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 123, 255, 0.4);
+}
+
+.buttonSecondary {
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  /* border: 2px solid #007bff; */
+  color: #4f6b89;
+  box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-align: center;
+  width: 150px;
+}
+
+.buttonSecondary:hover {
+  background-color: #007bff;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Right Side (Lottie Animation) */
+.lottieAnimation {
+  flex: 1;
+  max-width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeInRight 1s ease-in-out;
+  position: relative;
+}
+
+/* Keyframes for Animations */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 5% 0;
+    height: auto;
+    margin-top: 240rem;
+    padding-top: 35rem;
+  }
+
+  .content,
+  .lottieAnimation {
+    max-width: 100%;
+  }
+
+  .heading {
+    font-size: 2.5rem;
+  }
+
+  .subheading {
+    font-size: 1.1rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .buttonPrimary,
+  .buttonSecondary {
+    width: 100%;
+  }
+
+  .lottieAnimation {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heading {
+    font-size: 2rem;
+    margin-top: 55rem;
+  }
+
+  .subheading {
+    font-size: 1rem;
+  }
+
+  .buttonPrimary,
+  .buttonSecondary {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+  /* Add this to your existing CSS */
+
+.floatingBrain {
+    width: 15px; /* Size of the point */
+    height: 15px;
+    background-color: red; /* Change color if needed */
+    border-radius: 50%; /* Makes it a circle */
+    position: absolute; /* Allows you to position it relative to lottie-animation */
+    top: 22.5%; /* Adjust as needed */
+    left: 49%; /* Adjust as needed */
+    transform: translate(-50%, -50%); /* Center the point */
+    z-index: 1000; /* Ensures it stays on top */
+    cursor: pointer; /* Indicates it's clickable/hoverable */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+  }
+  
+  /* Tooltip box that appears on hover */
+  .floatingBrain::after {
+    content: "Brain is the powerhouse of the human body"; /* Text to display */
+    position: absolute;
+    top: 50%;
+    left: 350%; /* Position to the right of the point */
+    transform: translateY(-50%);
+    width: 200px; /* Width of the tooltip */
+    padding: 10px;
+    background-color: #2c3e50; /* Dark background for contrast */
+    color: white; /* Text color */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: center;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1001; /* Ensure it's above other elements */
+  }
+  
+  /* Show the tooltip on hover */
+  .floatingBrain:hover::after {
+    opacity: 1; /* Make it visible */
+    visibility: visible;
+  }
+  
+
+/* .floating-point-brain::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 10%; 
+    transform: translateY(-50%);
+    border-width: 1rem; 
+    border-style: solid;
+    border-color: transparent transparent transparent #2c3e50; 
+    opacity: 0; 
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1001; 
+}
+
+
+.floating-point-brain:hover::before {
+    opacity: 1;
+    visibility: visible;
+} */
+
+.floatingHeart {
+    width: 15px; /* Size of the point */
+    height: 15px;
+    background-color: red; /* Change color if needed */
+    border-radius: 50%; /* Makes it a circle */
+    position: absolute; /* Allows you to position it relative to lottie-animation */
+    top: 52%; /* Adjust as needed */
+    left: 48%; /* Adjust as needed */
+    transform: translate(-50%, -50%); /* Center the point */
+    z-index: 1000; /* Ensures it stays on top */
+    cursor: pointer; /* Indicates it's clickable/hoverable */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+  }
+  
+  /* Tooltip box that appears on hover */
+  .floatingHeart::after {
+    content: "Brain is the powerhouse of the human body"; /* Text to display */
+    position: absolute;
+    top: 50%;
+    left: 350%; /* Position to the right of the point */
+    transform: translateY(-50%);
+    width: 200px; /* Width of the tooltip */
+    padding: 10px;
+    background-color: #2c3e50; /* Dark background for contrast */
+    color: white; /* Text color */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: center;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1001; /* Ensure it's above other elements */
+  }
+  
+  /* Show the tooltip on hover */
+  .floatingHeart:hover::after {
+    opacity: 1; /* Make it visible */
+    visibility: visible;
+  }
+
+  .floatingLungs1 {
+    width: 25px; /* Size of the point */
+    height: 35px;
+    background-color: red; /* Change color if needed */
+    border-radius: 50%; /* Makes it a circle */
+    position: absolute; /* Allows you to position it relative to lottie-animation */
+    top: 48%; /* Adjust as needed */
+    left: 53%; /* Adjust as needed */
+    transform: translate(-50%, -50%); /* Center the point */
+    z-index: 1000; /* Ensures it stays on top */
+    cursor: pointer; /* Indicates it's clickable/hoverable */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+  }
+  
+  /* Tooltip box that appears on hover */
+  .floatingLungs1::after {
+    content: "Brain is the powerhouse of the human body"; /* Text to display */
+    position: absolute;
+    top: 50%;
+    left: 350%; /* Position to the right of the point */
+    transform: translateY(-50%);
+    width: 200px; /* Width of the tooltip */
+    padding: 10px;
+    background-color: #2c3e50; /* Dark background for contrast */
+    color: white; /* Text color */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: center;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1001; /* Ensure it's above other elements */
+  }
+  
+  /* Show the tooltip on hover */
+  .floatingLungs1:hover::after {
+    opacity: 1; /* Make it visible */
+    visibility: visible;
+  }
+
+  .floatingLungs2 {
+    width: 25px; /* Size of the point */
+    height: 35px;
+    background-color: red; /* Change color if needed */
+    border-radius: 50%; /* Makes it a circle */
+    position: absolute; /* Allows you to position it relative to lottie-animation */
+    top: 48%; /* Adjust as needed */
+    left: 43%; /* Adjust as needed */
+    transform: translate(-50%, -50%); /* Center the point */
+    z-index: 1000; /* Ensures it stays on top */
+    cursor: pointer; /* Indicates it's clickable/hoverable */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+  }
+  
+  /* Tooltip box that appears on hover */
+  .floatingLungs2::after {
+    content: "Brain is the powerhouse of the human body"; /* Text to display */
+    position: absolute;
+    top: 50%;
+    left: 350%; /* Position to the right of the point */
+    transform: translateY(-50%);
+    width: 200px; /* Width of the tooltip */
+    padding: 10px;
+    background-color: #2c3e50; /* Dark background for contrast */
+    color: white; /* Text color */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: center;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1001; /* Ensure it's above other elements */
+  }
+  
+  /* Show the tooltip on hover */
+  .floatingLungs2:hover::after {
+    opacity: 1; /* Make it visible */
+    visibility: visible;
+  }
+
+  .floatingKidney {
+    width: 45px; /* Size of the point */
+    height: 28px;
+    background-color: red; /* Change color if needed */
+    border-radius: 50%; /* Makes it a circle */
+    position: absolute; /* Allows you to position it relative to lottie-animation */
+    top: 59%; /* Adjust as needed */
+    left: 45%; /* Adjust as needed */
+    transform: translate(-50%, -50%); /* Center the point */
+    z-index: 1000; /* Ensures it stays on top */
+    cursor: pointer; /* Indicates it's clickable/hoverable */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+  }
+  
+  /* Tooltip box that appears on hover */
+  .floatingKidney::after {
+    content: "Brain is the powerhouse of the human body"; /* Text to display */
+    position: absolute;
+    top: 50%;
+    left: 350%; /* Position to the right of the point */
+    transform: translateY(-50%);
+    width: 200px; /* Width of the tooltip */
+    padding: 10px;
+    background-color: #2c3e50; /* Dark background for contrast */
+    color: white; /* Text color */
+    border-radius: 8px; /* Rounded corners */
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: center;
+    opacity: 0; /* Initially hidden */
+    visibility: hidden; /* Initially hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1001; /* Ensure it's above other elements */
+  }
+  
+  /* Show the tooltip on hover */
+  .floatingKidney:hover::after {
+    opacity: 1; /* Make it visible */
+    visibility: visible;
+  }
+
+  /* ...existing code... */
+
+.featuresWrapper {
+  padding: 4rem 0;
+  text-align: center;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  margin-top: 2rem;
+}
+
+.featureTitle {
+  font-size: 3rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.featureUnderline {
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #007bff, #00ff88);
+  margin: 0 auto;
+  border-radius: 2px;
+  opacity: 0;
+  animation: slideIn 1s ease-out 0.5s forwards;
+}
+
+/* ...existing code... */
+
+.featureCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5rem;
+  padding: 4rem 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.featureCard {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.featureCard h3 {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.cardRed { background: linear-gradient(135deg, #f88888, #ff1a1a); }
+.cardBlue { background: linear-gradient(135deg, #83c7ff, #1976d2); }
+.cardGreen { background: linear-gradient(135deg, #85ff89, #388e3c); }
+.cardPurple { background: linear-gradient(135deg, #ec82ff, #7b1fa2); }
+.cardOrange { background: linear-gradient(135deg, #ffcd82, #f57c00); }
+.cardYellow { background: linear-gradient(135deg, #ffea82, #ffc400); }
+
+.featureCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 1024px) {
+  .featureCards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .featureCards {
+    grid-template-columns: 1fr;
+    padding: 2rem 5%;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100px;
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .featureTitle {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .featureTitle {
+    font-size: 2rem;
+  }
+  
+  .featureUnderline {
+    width: 80px;
+  }
+}
+
+/* ...existing code... */
+
+.aboutUsSection {
+  padding: 4rem 5%;
+  margin-top: 6rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 50px rgba(0,0,0,0.05);
+}
+
+.aboutTitle {
+  font-size: 3.8rem;
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+  letter-spacing: -1px;
+}
+
+.aboutUnderline {
+  width: 150px;
+  height: 6px;
+  background: linear-gradient(90deg, #2193b0, #6dd5ed);
+  margin: 0 auto 6rem;
+  border-radius: 3px;
+  opacity: 0;
+  animation: slideIn 1s ease-out 0.5s forwards;
+  box-shadow: 0 2px 10px rgba(33, 147, 176, 0.3);
+}
+
+.aboutContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  gap: 8rem;
+  padding: 2rem;
+  perspective: 1000px;
+}
+
+.aboutLeft {
+  flex: 1;
+  text-align: left;
+  transform: translateZ(20px);
+  transition: transform 0.3s ease;
+}
+
+.aboutLeft:hover {
+  transform: translateZ(30px);
+}
+
+.aboutLeft h3 {
+  font-size: 2.2rem;
+  background: linear-gradient(45deg, #2c3e50, #3498db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+  letter-spacing: -0.5px;
+}
+
+.aboutLeft p {
+  font-size: 1rem;
+  line-height: 1.9;
+  color: #445566;
+  text-shadow: 1px 1px 1px rgba(255,255,255,0.5);
+}
+
+.aboutRight {
+  flex: 1;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.aboutCard {
+  background: white;
+  padding: 3.5rem;
+  border-radius: 20px;
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.1),
+    0 1px 1px rgba(0,0,0,0.05),
+    0 2px 2px rgba(0,0,0,0.05),
+    0 4px 4px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  transform: translateZ(0);
+}
+
+.aboutCard:hover {
+  transform: translateZ(20px);
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.12),
+    0 1px 1px rgba(0,0,0,0.08),
+    0 2px 2px rgba(0,0,0,0.08),
+    0 4px 4px rgba(0,0,0,0.08);
+}
+
+.aboutCard h4 {
+  font-size: 1.8rem;
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.5px;
+}
+
+.aboutCard ul {
+  list-style: none;
+  padding: 0;
+}
+
+.aboutCard li {
+  font-size: 1.2rem;
+  color: #445566;
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.aboutCard li:hover {
+  transform: translateX(10px);
+}
+
+.aboutCard li::before {
+  content: "→";
+  color: #2193b0;
+  font-size: 1.4rem;
+  position: absolute;
+  left: 0;
+  transition: transform 0.2s ease;
+}
+
+.aboutCard li:hover::before {
+  transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+  .aboutContent {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .aboutLeft, .aboutRight {
+    text-align: center;
+  }
+
+  .aboutCard li {
+    text-align: left;
+  }
+
+  .aboutTitle {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .aboutTitle {
+    font-size: 2rem;
+  }
+
+  .aboutLeft h3 {
+    font-size: 1.5rem;
+  }
+
+  .aboutLeft p {
+    font-size: 1rem;
+  }
+
+  .aboutCard {
+    padding: 2rem;
+  }
+}
+
+.typingPoint {
+  font-size: 1.2rem;
+  color: #445566;
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+  position: relative;
+  min-height: 2em;
+  display: flex;
+  align-items: center;
+}
+
+.typingPoint::after {
+  content: '|';
+  margin-left: 5px;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.contactSection {
+  padding: 8rem 5%;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  margin-top: 6rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.contactTitle {
+  font-size: 3.8rem;
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.contactUnderline {
+  width: 150px;
+  height: 6px;
+  background: linear-gradient(90deg, #2193b0, #6dd5ed);
+  margin: 0 auto 4rem;
+  border-radius: 3px;
+  opacity: 0;
+  animation: slideIn 1s ease-out 0.5s forwards;
+}
+
+.contactContent {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 4rem;
+}
+
+.contactLeft {
+  flex: 1;
+  text-align: left;
+}
+
+.contactLeft h3 {
+  font-size: 2.2rem;
+  background: linear-gradient(45deg, #2c3e50, #3498db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+}
+
+.contactLeft p {
+  font-size: 1.1rem;
+  color: #445566;
+  margin-bottom: 2rem;
+}
+
+.contactInfo {
+  margin-top: 3rem;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  color: #445566;
+}
+
+.contactItem span {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.contactRight {
+  flex: 1;
+}
+
+.contactForm {
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #445566;
+  transition: all 0.3s ease;
+}
+
+.formGroup textarea {
+  height: 150px;
+  resize: none;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #2193b0;
+  box-shadow: 0 0 0 4px rgba(33, 147, 176, 0.1);
+}
+
+.submitButton {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(33, 147, 176, 0.3);
+}
+
+@media (max-width: 768px) {
+  .contactContent {
+    flex-direction: column;
+  }
+
+  .contactTitle {
+    font-size: 2.5rem;
+  }
+
+  .contactLeft h3 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .contactLeft p {
+    text-align: center;
+  }
+
+  .contactInfo {
+    max-width: 400px;
+    margin: 2rem auto;
+  }
+
+  .contactForm {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contactSection {
+    padding: 4rem 5%;
+  }
+
+  .contactTitle {
+    font-size: 2rem;
+  }
+
+  .formGroup input,
+  .formGroup textarea {
+    font-size: 0.9rem;
+  }
+
+  .submitButton {
+    font-size: 1rem;
+  }
+}
