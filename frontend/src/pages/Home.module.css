@@ -543,6 +543,7 @@ body {
 .aboutTitle {
   font-size: 3.8rem;
   background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 1.5rem;
