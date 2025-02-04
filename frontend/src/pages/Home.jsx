@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import bodyPart from '../public/images/Human.json';
 import Lottie from 'lottie-react';
 import styles from './Home.module.css'; // Import CSS module
@@ -55,6 +55,33 @@ const TypeWriter = () => {
   return <li className={styles.typingPoint}>{currentText || ' '}</li>;
 };
 const Home = () => {
+  const [overlayData, setOverlayData] = useState(null);
+  const overlayTimeoutRef = useRef(null);
+  const navigate = useNavigate();
+
+  // Dismiss overlay when clicking outside overlay
+  useEffect(() => {
+    const handleClickOutside = () => setOverlayData(null);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
+  const handleOverlay = (data, e) => {
+    e.stopPropagation();
+    if (overlayTimeoutRef.current) {
+      clearTimeout(overlayTimeoutRef.current);
+      overlayTimeoutRef.current = null;
+    }
+    // Only update if overlayData differs
+    if (!overlayData || overlayData.heading !== data.heading) {
+      setOverlayData(data);
+    }
+  };
+
+  const hideOverlay = () => {
+    overlayTimeoutRef.current = setTimeout(() => setOverlayData(null), 300);
+  };
+
   return (
     <>
       <Navbar />
@@ -85,14 +112,127 @@ const Home = () => {
       <div className={styles.featuresWrapper}>
         <h2 className={styles.featureTitle}>Our Features</h2>
         <div className={styles.featureUnderline}></div>
-        <div className={styles.honeycomb}>
-          <div className={`${styles.hexagon} ${styles.center}`}>Arogyam</div>
-          <div className={`${styles.hexagon} ${styles.top}`}>Empathy Driven Interactions</div>
-          <div className={`${styles.hexagon} ${styles.topRight}`}>Integration with Natural Therapies</div>
-          <div className={`${styles.hexagon} ${styles.bottomRight}`}>Home Remedies (Gharelu Nushke)</div>
-          <div className={`${styles.hexagon} ${styles.bottom}`}>Proactive Health Maintenance</div>
-          <div className={`${styles.hexagon} ${styles.bottomLeft}`}>Personalized Emergency First Aid Solution</div>
-          <div className={`${styles.hexagon} ${styles.topLeft}`}>Google Fit Integration</div>
+        <div className={styles.honeycomb} onClick={e => e.stopPropagation()}>
+          <div
+            className={`${styles.hexagon} ${styles.center}`}
+          >
+            Arogyam
+          </div>
+          <div
+            className={`${styles.hexagon} ${styles.top}`}
+            onMouseEnter={e =>
+              handleOverlay(
+                { 
+                  heading: 'Empathy Driven Interactions', 
+                  description: 'Experience compassionate service.',
+                  color: 'linear-gradient(135deg,rgba(248, 136, 136, 0.84),rgba(255, 26, 26, 0.83))'
+                },
+                e
+              )
+            }
+          >
+            Empathy Driven Interactions
+          </div>
+          <div
+            className={`${styles.hexagon} ${styles.topRight}`}
+            onMouseEnter={e =>
+              handleOverlay(
+                { 
+                  heading: 'Integration with Natural Therapies', 
+                  description: 'Seamless integration of natural remedies.', 
+                  color: 'linear-gradient(135deg,rgba(131, 199, 255, 0.84),rgba(25, 118, 210, 0.84))'
+                },
+                e
+              )
+            }
+          >
+            Integration with Natural Therapies
+          </div>
+          <div
+            className={`${styles.hexagon} ${styles.bottomRight}`}
+            onMouseEnter={e =>
+              handleOverlay(
+                { 
+                  heading: 'Home Remedies (Gharelu Nushke)', 
+                  description: 'Traditional and simple solutions.',
+                  color: 'linear-gradient(135deg,rgba(133, 255, 137, 0.82),rgba(56, 142, 60, 0.82))'
+                },
+                e
+              )
+            }
+          >
+            Home Remedies (Gharelu Nushke)
+          </div>
+          <div
+            className={`${styles.hexagon} ${styles.bottom}`}
+            onMouseEnter={e =>
+              handleOverlay(
+                { 
+                  heading: 'Proactive Health Maintenance', 
+                  description: 'Stay ahead with proactive care.', 
+                  color: 'linear-gradient(135deg,rgba(236, 130, 255, 0.81),rgba(123, 31, 162, 0.84))'
+                },
+                e
+              )
+            }
+          >
+            Proactive Health Maintenance
+          </div>
+          <div
+            className={`${styles.hexagon} ${styles.bottomLeft}`}
+            onMouseEnter={e =>
+              handleOverlay(
+                { 
+                  heading: 'Personalized Emergency First Aid Solution', 
+                  description: 'Immediate help when needed.',
+                  color: 'linear-gradient(135deg,rgba(255, 205, 130, 0.83),rgba(245, 123, 0, 0.78))'
+                },
+                e
+              )
+            }
+          >
+            Personalized Emergency First Aid Solution
+          </div>
+          <div
+            className={`${styles.hexagon} ${styles.topLeft}`}
+            onMouseEnter={e =>
+              handleOverlay(
+                { 
+                  heading: 'Google Fit Integration', 
+                  description: 'Sync your health data effortlessly.',
+                  color: 'linear-gradient(135deg,rgba(255, 234, 130, 0.84),rgba(255, 196, 0, 0.84))'
+                },
+                e
+              )
+            }
+          >
+            Google Fit Integration
+          </div>
+          {overlayData && (
+            <div 
+              className={styles.featureOverlay} 
+              onClick={e => e.stopPropagation()}
+              onMouseEnter={() => {
+                if (overlayTimeoutRef.current) {
+                  clearTimeout(overlayTimeoutRef.current);
+                  overlayTimeoutRef.current = null;
+                }
+              }}
+              onMouseLeave={hideOverlay}
+              style={{ background: overlayData.color, backdropFilter: 'blur(4px)', filter: 'brightness(1.2)' }}
+            >
+              <div className={styles.overlayContent}>
+                <h3>{overlayData.heading}</h3>
+                <p>{overlayData.description}</p>
+                <button
+                  className={styles.overlayButton}
+                  onClick={() => navigate('/login')}
+                >
+                  Login
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

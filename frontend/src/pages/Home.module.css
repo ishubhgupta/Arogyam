@@ -1011,3 +1011,80 @@ body {
 .topLeft:hover {
   transform: translate(-50%, -50%) translate(-126.08px, -78.13px) scale(1.1666);
 }
+
+/* Overlay for feature hexagons */
+.featureOverlay {
+  position: absolute;
+
+  width: 125%;
+  height: 105%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  transition: transform 0.6s ease, opacity 1s ease;
+  animation: zoomInOverlay 0.6s ease forwards;
+}
+
+@keyframes zoomInOverlay {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.fadeOut {
+  animation: zoomOutOverlay 0.3s ease forwards;
+}
+
+@keyframes zoomOutOverlay {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+.overlayContent {
+  /* background: white; */
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  width: 100%;
+  max-width: 250px;
+}
+
+.overlayContent h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  color: #2c3e50;
+}
+
+.overlayContent p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+.overlayButton {
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.overlayButton:hover {
+  transform: translateY(-2px);
+}
