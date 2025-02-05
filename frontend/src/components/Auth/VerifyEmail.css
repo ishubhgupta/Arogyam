@@ -1,0 +1,99 @@
+/* Main container to center everything */
+.verify-email-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60rem;
+    height: 100vh;
+    background-color: #f4f7fb;
+  }
+  
+  /* Container for the two halves - increased width */
+  .verify-email-inner-container {
+    display: flex;
+    width: 90%; /* Increased width */
+    max-width: 100rem; /* Optionally increase max-width for larger screens */
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  /* Left side for image */
+  .verify-email-image {
+    flex: 1;
+    background: url('/path-to-your-image.jpg') no-repeat center center/cover;
+    height: 100%;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  }
+  
+  /* Right side for text and form */
+  .verify-email-form-container {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /* Heading style */
+  .verify-email-form-container h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  /* Description text style */
+  .verify-email-form-container p {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 30px;
+  }
+  
+  /* Form input field styles */
+  .verify-email-form-container input {
+    width: 100%;
+    max-width: 350px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  /* Button style */
+  .verify-email-form-container button {
+    width: 100%;
+    max-width: 350px;
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .verify-email-form-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive styles for mobile devices */
+  @media (max-width: 768px) {
+    .verify-email-inner-container {
+      flex-direction: column;
+    }
+  
+    .verify-email-image {
+      height: 250px;
+    }
+  
+    .verify-email-form-container {
+      padding: 20px;
+    }
+  }
+  
