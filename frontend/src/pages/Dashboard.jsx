@@ -1,55 +1,33 @@
 import React from 'react';
-import './Dashboard.css'; // Import the CSS file
+import { FaLeaf, FaUserMd, FaCalendarAlt, FaLink, FaNewspaper, FaSpa, FaHome } from 'react-icons/fa';
+import './Dashboard.css';
 
 const Dashboard = () => {
+  const cards = [
+    { icon: <FaLeaf />, title: "Seasonal Tips", desc: "Stay healthy this season with our expert tips." },
+    { icon: <FaUserMd />, title: "Patient Summary", desc: "View your health summary and progress." },
+    { icon: <FaCalendarAlt />, title: "Appointments", desc: "Manage your upcoming appointments." },
+    { icon: <FaLink />, title: "Integration", desc: "Connect with other health services." },
+    { icon: <FaNewspaper />, title: "Headlines", desc: "Latest health news and updates." },
+    { icon: <FaSpa />, title: "Natural Therapy", desc: "Explore natural remedies and therapies." },
+    { icon: <FaHome />, title: "Home Remedies", desc: "Simple home remedies for common ailments." }
+  ];
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <h1>Dashboard</h1>
+        <h1>Welcome to Arogyam</h1>
+        <p className="header-subtitle">Your personal health dashboard</p>
       </header>
 
       <div className="dashboard-grid">
-        {/* Seasonal Tips */}
-        <div className="dashboard-card">
-          <h2>Seasonal Tips</h2>
-          <p>Stay healthy this season with our expert tips.</p>
-        </div>
-
-        {/* Patient Summary */}
-        <div className="dashboard-card">
-          <h2>Patient Summary</h2>
-          <p>View your health summary and progress.</p>
-        </div>
-
-        {/* Appointments */}
-        <div className="dashboard-card">
-          <h2>Appointments</h2>
-          <p>Manage your upcoming appointments.</p>
-        </div>
-
-        {/* Integration */}
-        <div className="dashboard-card">
-          <h2>Integration</h2>
-          <p>Connect with other health services.</p>
-        </div>
-
-        {/* Headlines */}
-        <div className="dashboard-card">
-          <h2>Headlines</h2>
-          <p>Latest health news and updates.</p>
-        </div>
-
-        {/* Natural Therapy */}
-        <div className="dashboard-card">
-          <h2>Natural Therapy</h2>
-          <p>Explore natural remedies and therapies.</p>
-        </div>
-
-        {/* Home Remedies */}
-        <div className="dashboard-card">
-          <h2>Home Remedies</h2>
-          <p>Simple home remedies for common ailments.</p>
-        </div>
+        {cards.map((card, index) => (
+          <div className="dashboard-card" key={index}>
+            <div className="card-icon">{card.icon}</div>
+            <h2>{card.title}</h2>
+            <p>{card.desc}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
