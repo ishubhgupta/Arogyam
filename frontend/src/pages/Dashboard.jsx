@@ -1,5 +1,19 @@
 import React from 'react';
 import './Dashboard.css';
+import chatbotIcon from '../public/images/dashboard/chatbot.png'
+import crossBandIcon from '../public/images/dashboard/cross-on-cross band-aid.png'
+import alert1Icon from '../public/images/dashboard/alert.png'
+import alert2Icon from '../public/images/dashboard/alert2.png'
+import fitnessWatchIcon from '../public/images/dashboard/fitness watch.png'
+import naturalIcon from '../public/images/dashboard/Protecting your health with natural remedies.png'
+// import helpIcon from '../public/images/dashboard/help.png'
+// import menuIcon from '../public/images/dashboard/Menu.png'
+// import userIcon from '../public/images/dashboard/user.png'
+// import appointmentIcon from '../public/images/dashboard/Home Solutions and Home Improvement.png'
+// import homeRemediesIcon from '../public/images/dashboard/Online doctor appointment in health app.png'
+// import cloudIcon from '../public/images/dashboard/Mental health support with cloud characters.png'
+// import naturalIcon from '../public/images/dashboard/Protecting your health with natural remedies.png'
+
 
 const Dashboard = () => {
   return (
@@ -26,10 +40,18 @@ const Dashboard = () => {
         <div className="card actions action">
           <h3>Actions</h3>
           <div className="button-grid">
-            <button>Btn 1</button>
-            <button>Btn 2</button>
-            <button>Btn 3</button>
-            <button>Btn 4</button>
+            <button>
+              <img src={chatbotIcon} alt="Chatbot" />
+            </button>
+            <button>
+              <img src={alert1Icon} alt="Alert" />
+            </button>
+            <button>
+              <img src= {alert2Icon} alt="Alert 2" />
+            </button>
+            <button>
+              <img src={crossBandIcon} alt="Close" />
+            </button>
           </div>
         </div>
 
@@ -41,6 +63,7 @@ const Dashboard = () => {
 
         {/* Google Fit Integration: occupies cells 10,11,12 */}
         <div className="card white google">
+          <img className="fitness-watch" src={fitnessWatchIcon} alt="Fitness Watch" />
           <h3>Google Fit Integration</h3>
           <p>Connect your Google Fit data.</p>
         </div>
@@ -49,6 +72,7 @@ const Dashboard = () => {
         <div className="card green natural">
           <h3>Natural Therapy</h3>
           <p>Explore natural healing methods.</p>
+          <img className="natural-icon" src={naturalIcon} alt="Natural Icon" />
         </div>
 
         {/* Home Remedies: occupies cells 15,16,17,18 */}

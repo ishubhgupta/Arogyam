@@ -1,9 +1,11 @@
 /* General Styles */
 .dashboard {
   padding: 2rem;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: #f8f9fa;
   min-height: 100vh;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .dashboard-header {
@@ -76,11 +78,11 @@
   .dashboard {
     padding: 1rem;
   }
-  
+
   .dashboard-header h1 {
     font-size: 2rem;
   }
-  
+
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
@@ -120,6 +122,9 @@ body {
   grid-template-rows: repeat(3, auto);
   grid-gap: 15px;
   padding: 20px;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 /* Utility: Span two columns */
@@ -157,20 +162,41 @@ body {
 
 /* Appointment Deadlines: cell 9 */
 .appointment {
-  grid-column: 3;
+  grid-column: 3 / span 2 ;
   grid-row: 2;
 }
 
 /* Google Fit Integration: cells 10,11,12 */
 .google {
-  grid-column: 4 / span 3;
+  position: relative;
+  grid-column: 5 / span 3;
   grid-row: 2;
+}
+
+/* Overlay fitness watch icon in the Google Fit card */
+.google .fitness-watch {
+  position: absolute;
+  top: 0px;
+  right: -30px;
+  width: 110px;
+  height: 100%;
 }
 
 /* Natural Therapy: cells 13,14 */
 .natural {
+  position: relative;
   grid-column: 1 / span 2;
   grid-row: 3;
+}
+
+/* Overlay natural icon in the Natural Therapy card */
+.natural .natural-icon {
+  position: absolute;
+  bottom: 0px;
+  left: -10px;
+  width: 150px;
+  height: 50%;
+  object-fit: contain;
 }
 
 /* Home Remedies: cells 15,16,17,18 */
@@ -210,6 +236,13 @@ body {
 }
 .actions .button-grid button:hover {
   background-color: #777;
+}
+
+/* Actions Card: scale images to fixed size inside buttons */
+.actions .button-grid button img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
 }
 
 /* Utility: Span two columns with higher specificity */
@@ -252,13 +285,28 @@ body {
 } */
 
 /* Color Variations */
-.yellow { background-color: #FFD700; }
-.blue   { background-color: #4682B4; }
-.red    { background-color: #FF6347; }
-.white  { background-color: #FFFFFF; color: black; }
-.green  { background-color: #32CD32; }
-.teal   { background-color: #20B2AA; }
-.pink   { background-color: #FF69B4; }
+.yellow {
+  background-color: #ffd700;
+}
+.blue {
+  background-color: #4682b4;
+}
+.red {
+  background-color: #ff6347;
+}
+.white {
+  background-color: #ffffff;
+  color: black;
+}
+.green {
+  background-color: #32cd32;
+}
+.teal {
+  background-color: #20b2aa;
+}
+.pink {
+  background-color: #ff69b4;
+}
 
 /* Fullspan for Home Remedies Card */
 .fullspan {
@@ -285,7 +333,7 @@ body {
 
 /* Icons */
 .icon {
-  font-size: 30px;
+  font-size: 40px;
   margin-top: 10px;
 }
 
@@ -309,4 +357,16 @@ body {
   .grid-container {
     grid-template-columns: 1fr;
   }
+}
+
+/* Increase height for row 2 cards */
+.appointment,
+.google {
+  min-height: 150px;
+}
+
+/* Increase height for row 3 cards */
+.natural,
+.home {
+  min-height: 150px;
 }
