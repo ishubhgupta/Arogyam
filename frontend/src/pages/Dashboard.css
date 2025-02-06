@@ -193,7 +193,7 @@ body {
 .natural .natural-icon {
   position: absolute;
   bottom: 0px;
-  left: -10px;
+  left: 25%;
   width: 150px;
   height: 50%;
   object-fit: contain;
@@ -203,6 +203,17 @@ body {
 .home {
   grid-column: 3 / span 4;
   grid-row: 3;
+  position: relative;
+}
+
+/* Overlay home remedies icon in the Home Remedies card */
+.home .home-remedies-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25%;
+  height: auto;
+  object-fit: contain;
 }
 
 /* New rule: Patient Summary spanning two rows */
