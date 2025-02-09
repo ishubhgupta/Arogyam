@@ -16,11 +16,11 @@ app = Flask(__name__)
 CORS(app)
 
 def process_query(query):
-    chunked = pickle.load(open('data\chunks\json_chunked_data.pkl', 'rb'))
+    chunked = pickle.load(open('data/chunks/json_chunked_data.pkl', 'rb'))
     query_embed_result = genai.embed_content(model="models/text-embedding-004", content=query)
     query_embedding = torch.tensor(query_embed_result['embedding'], dtype=torch.float32)
     query_embedding_array = np.expand_dims(np.array(query_embedding, dtype='float32'), axis=0)
-    index = faiss.read_index(r"data\vectors\therapy.faiss")
+    index = faiss.read_index('data/vectors/therapy.faiss')
     distances, indices = index.search(query_embedding_array, 3)
     index = [chunked[i] for i in indices[0]]
     context = "\n".join(index)
@@ -50,5 +50,5 @@ def chat():
 
 
 if __name__ == "__main__":
-    app.run(port=8000)
-    app.run(debug=True)
+    app.run(port=8000, debug=True)
+
