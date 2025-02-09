@@ -7,6 +7,8 @@ import ResetPassword from './components/Auth/ResetPassword';
 import VerifyEmail from './components/Auth/VerifyEmail'; // Import VerifyEmail
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import Chatbot from './components/Chatbot';
+import NaturalTherapy from './pages/NaturalTherapy'
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/verify-email" element={<VerifyEmail />} /> {/* Add this route */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/chatbot" element={<Chatbot />} /> {/* Add Chatbot route */}
+        <Route path="/natural-therapy" element={<NaturalTherapy />} />
       </Routes>
     </Router>
   );

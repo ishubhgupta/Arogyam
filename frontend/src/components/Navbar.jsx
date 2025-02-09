@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'; // Assuming you're using React Router for navigation
 import './Navbar.css'; // Optional: for styling
+import logo from '../public/images/dashboard/Logo5.png'; // Path to your logo image
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -12,8 +13,8 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <Link to="/" className="navbar-brand">
-          Arogyam
+      <Link to="/" className="navbar-brand">
+          <img src={logo} alt="Arogyam Logo" className="navbar-logo" />
         </Link>
       </div>
       <div className="navbar-right">
