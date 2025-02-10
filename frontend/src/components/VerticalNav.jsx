@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom"; // new import
 import "./VerticalNav.css";
 import AccountOverlay from "./AccountOverlay.jsx"; // new import
 
 const navItems = [
-  { id: "profile", label: "Profile", icon: "icon-chat", url: "/profile" },
+  { id: "profile", label: "Profile", icon: "icon-chat", url: "/user-profile" },
   {
     id: "dashboard",
     label: "Dashboard",
@@ -11,7 +12,7 @@ const navItems = [
     url: "/dashboard",
   },
   { id: "rantbot", label: "RantBot", icon: "icon-chat", url: "/chatbot" },
-  { id: "update", label: "User Info", icon: "icon-update", url: "/update" }, // renamed from Update Profile
+  { id: "update", label: "User Info", icon: "icon-update", url: "/user-info" }, // updated URL
   {
     id: "notification",
     label: "Notification",
@@ -26,16 +27,15 @@ const navItems = [
 ];
 
 const VerticalNav = () => {
+  const location = useLocation(); // new
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState("profile");
   const [overlayOpen, setOverlayOpen] = useState(false);
 
   const handleItemClick = (item) => {
-    setActiveItem(item.id);
+    // For overlay item, don't redirect
     if (item.id === "account") {
       setOverlayOpen(true);
     } else {
-      // Redirect to the specified URL for non-overlay items
       window.location.href = item.url;
     }
   };
@@ -51,7 +51,7 @@ const VerticalNav = () => {
           {navItems.map((item) => (
             <li
               key={item.id}
-              className={activeItem === item.id ? "active" : ""}
+              className={item.url === location.pathname ? "active" : ""} // updated
               onClick={() => handleItemClick(item)}
             >
               <i className={item.icon} /> {item.label}
