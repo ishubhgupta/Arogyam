@@ -1,7 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Html } from "@react-three/drei"; // added Html
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
+// New component for interactive body markers
+const BodyMarker = ({ position, label, data }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <mesh
+      position={position}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+    >
+      <sphereGeometry args={[0.05, 16, 16]} />
+      <meshStandardMaterial color={hovered ? "hotpink" : "#23d8df"} />
+      {hovered && (
+        <Html position={[0, 0.1, 0]} style={{ pointerEvents: "none" }}>
+          <div
+            style={{
+              background: "white",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              fontSize: "12px",
+            }}
+          >
+            <strong>{label}</strong>: {data}
+          </div>
+        </Html>
+      )}
+    </mesh>
+  );
+};
 
 const Model = () => {
   const gltf = useLoader(
@@ -13,7 +42,7 @@ const Model = () => {
     // Traverse and update material to a very light tone
     gltf.scene.traverse((child) => {
       if (child.isMesh && child.material) {
-        child.material.color.set("#ffefd5"); // updated to a very light skin tone
+        child.material.color.set("#fff"); // updated to a very light skin tone
         child.material.transparent = false;
         child.material.opacity = 1;
       }
@@ -29,27 +58,60 @@ const Model = () => {
 };
 
 const HumanBodyViewer = () => {
+  // new state to control auto rotation
+  const [autoRotate, setAutoRotate] = useState(true);
+
   return (
-    <Canvas
-      style={{ width: "100%", height: "90%" }} // fixed height for proper display in body card
-      camera={{ position: [0, 4, 0] }} // updated camera position to zoom out a little
+    <div
+      // when mouse enters, disable auto rotation; when leaves, enable it
+      onMouseEnter={() => setAutoRotate(false)}
+      onMouseLeave={() => setAutoRotate(true)}
+      style={{ width: "100%", height: "90%" }}
     >
-      <ambientLight intensity={2} /> {/* increased ambient light intensity */}
-      <directionalLight position={[10, 10, 5]} intensity={2} />{" "}
-      {/* increased directional light intensity */}
-      {/* Optionally, add additional directional lights for more balanced lighting */}
-      <directionalLight position={[-10, 10, -5]} intensity={2} />
-      <React.Suspense fallback={null}>
-        <Model />
-        <OrbitControls
-          enableZoom={false} // disable zoom control
-          enablePan={false} // disable panning
-          target={[0, 1.5, 0]} // set target lower than camera to mimic a 6ft eye-level looking at a 5ft person
-          minPolarAngle={1.3} // lock vertical rotation at a slightly downward angle
-          maxPolarAngle={1.3} // lock vertical rotation at a slightly downward angle
-        />
-      </React.Suspense>
-    </Canvas>
+      <Canvas camera={{ position: [0, 4, 0] }}>
+        <ambientLight intensity={2} />
+        <directionalLight position={[10, 10, 5]} intensity={2} />
+        <directionalLight position={[-10, 10, -5]} intensity={2} />
+        <React.Suspense fallback={null}>
+          <Model />
+          {/* Updated marker positions so they appear on the body */}
+          <BodyMarker
+            position={[0, 2.15, 0.18]} // heart marker placed on the body surface
+            label="Heart"
+            data="Heart Beat: 72 bpm"
+          />
+          <BodyMarker
+            position={[-0.15, 2, 0.19]} // lungs marker placed on the body surface
+            label="Lungs"
+            data="Respiration: 16 rpm"
+          />
+          <BodyMarker
+            position={[-0.5, 2, -0.02]} // left hand marker placed on the body surface
+            label="Left Hand"
+            data="BP: 120/80"
+          />
+          <BodyMarker
+            position={[0.5, 2, -0.02]} // right hand marker placed on the body surface
+            label="Right Hand"
+            data="BP: 118/76"
+          />
+          <BodyMarker
+            position={[0, 1.6, 0.24]} // stomach marker placed on the body surface
+            label="Stomach"
+            data="BP: 118/76"
+          />
+          <OrbitControls
+            enableZoom={false}
+            enablePan={false}
+            target={[0, 1.5, 0]}
+            minPolarAngle={1.3}
+            maxPolarAngle={1.3}
+            autoRotate={autoRotate} // auto rotate based on hover state
+            autoRotateSpeed={0} // slow rotation speed
+          />
+        </React.Suspense>
+      </Canvas>
+    </div>
   );
 };
 
