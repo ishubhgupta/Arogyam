@@ -107,7 +107,7 @@ const HumanBodyViewer = () => {
             minPolarAngle={1.3}
             maxPolarAngle={1.3}
             autoRotate={autoRotate} // auto rotate based on hover state
-            autoRotateSpeed={0} // slow rotation speed
+            autoRotateSpeed={4} // slow rotation speed
           />
         </React.Suspense>
       </Canvas>
