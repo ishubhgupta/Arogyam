@@ -10,7 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import UserProfile from "./pages/user-profile";
 import Chatbot from "./components/Chatbot";
 import NaturalTherapy from "./pages/NaturalTherapy";
-import UserInfo from "./pages/user-info.jsx"; // Import UserInfo
+// import UserInfo from "./pages/user-info.jsx"; // Import UserInfo
 
 const App = () => {
   return (
@@ -28,7 +28,7 @@ const App = () => {
         <Route path="/chatbot" element={<Chatbot />} />{" "}
         {/* Add Chatbot route */}
         <Route path="/natural-therapy" element={<NaturalTherapy />} />
-        <Route path="/user-info" element={<UserInfo />} />{" "}
+        {/* <Route path="/user-info" element={<UserInfo />} />{" "} */}
         {/* Add UserInfo route */}
       </Routes>
     </Router>
