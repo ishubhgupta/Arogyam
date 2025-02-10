@@ -10,7 +10,7 @@ const navItems = [
     icon: "icon-dashboard",
     url: "/dashboard",
   },
-  { id: "rantbot", label: "RantBot", icon: "icon-chat", url: "/rantbot" },
+  { id: "rantbot", label: "RantBot", icon: "icon-chat", url: "/chatbot" },
   { id: "update", label: "User Info", icon: "icon-update", url: "/update" }, // renamed from Update Profile
   {
     id: "notification",

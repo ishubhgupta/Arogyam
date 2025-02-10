@@ -17,6 +17,10 @@ import homeRemediesIcon from "../public/images/dashboard/Home Solutions and Home
 // import cloudIcon from '../public/images/dashboard/Mental health support with cloud characters.png'
 // import naturalIcon from '../public/images/dashboard/Protecting your health with natural remedies.png'
 import Navbar from "../components/Navbar.jsx";
+import UserProfile from '../public/images/UserProfile.json';
+import GoogleFit from '../public/images/GoogleFit.json'
+import Appointment from '../public/images/Appointment.json'
+import Lottie from 'lottie-react';
 
 const Dashboard = () => {
   const navigate = useNavigate(); // Initialize navigate
@@ -29,7 +33,9 @@ const Dashboard = () => {
           {/* Patient Summary: spans cells 1,2,7,8 */}
           <div className="card yellow patient">
             <h3>Patient Summary</h3>
-            <button className="edit-btn">View Profile</button>
+            <div className="Dashboard-Profile-lottieAnimation">
+              <Lottie animationData={UserProfile} />
+            </div>
 
           </div>
 
@@ -61,18 +67,27 @@ const Dashboard = () => {
 
           {/* Appointment Deadlines: occupies cell 9 */}
           <div className="card teal appointment">
-            <h3>Appointment Deadlines</h3>
-          </div>
+  <div className="appointment-content">
+    <div className="appointment-text">
+      <h3>Appointment Deadlines</h3>
+    </div>
+    <div className="Dashboard-Appointment-lottieAnimation">
+      <Lottie animationData={Appointment} />
+    </div>
+  </div>
+</div>
 
           {/* Google Fit Integration: occupies cells 10,11,12 */}
-          <div className="card white google">
-            <img
-              className="fitness-watch"
-              src={fitnessWatchIcon}
-              alt="Fitness Watch"
-            />
-            <h3>Google Fit</h3>
-          </div>
+          <div class="google">
+  <div class="google-content">
+    <div class="google-text">
+      <h3>Google Fit Integration</h3>
+    </div>
+    <div className="Dashboard-Google-lottieAnimation">
+              <Lottie animationData={GoogleFit} />
+            </div>
+  </div>
+</div>
 
           {/* Natural Therapy: occupies cells 13,14 */}
 
@@ -106,3 +121,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+

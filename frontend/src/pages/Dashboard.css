@@ -263,3 +263,139 @@
     padding: 1rem;
   }
 }
+
+/* Patient Summary */
+.patient {
+  background: linear-gradient(to right, #a3d0fc, #d9eaff); /* Soft blue gradient */
+}
+
+/* Seasonal Tips */
+.seasonal {
+  background: linear-gradient(to right, #bed6ff, #e1f0ff); /* Light sky blue gradient */
+}
+
+/* Actions */
+.action {
+  background: linear-gradient(to right, #85b5fd, #c2d9ff); /* Soft blue variation */
+}
+
+/* Appointment Deadlines */
+.appointment {
+  background: linear-gradient(to right, #f9c2bd, #ffdad4); /* Warm pastel red gradient */
+}
+
+/* Google Fit Integration */
+.google {
+  background: linear-gradient(to right, #faeded, #fff5f5); /* Very light pink gradient */
+}
+
+/* Natural Therapy */
+.natural {
+  background: linear-gradient(to right, #c0f6cf, #e3ffe8); /* Soft mint green gradient */
+}
+
+/* Home Remedies */
+.home {
+  background: linear-gradient(to right, #ddbbfd, #f3e6ff); /* Light lavender gradient */
+}
+
+/* Action Buttons */
+.actions .button-grid button {
+  background: linear-gradient(to right, #1a73e8, #5293ff); /* Vibrant Google blue */
+}
+
+.actions .button-grid button:hover {
+  background: linear-gradient(to right, #1557b0, #417de0); /* Darker blue on hover */
+}
+
+.Dashboard-Profile-lottieAnimation {
+  width: 85%;
+  height: 85%;
+  padding-left: 3rem;
+}
+
+/* Google Fit Integration Container */
+.google {
+  background: linear-gradient(to right, #faeded, #fff5f5); /* Very light pink gradient */
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden; /* Ensure nothing overflows */
+  height: 10rem;
+}
+
+.google-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.google-text {
+  flex: 1;
+  margin-right: 1.5rem; /* Add some space between text and animation */
+}
+
+.google-text h3 {
+  font-size: 1.7rem;
+  color: #202124;
+  /* margin-bottom: 0.75rem; */
+  font-weight: 600;
+}
+
+.Dashboard-Google-lottieAnimation {
+  width: 100%;
+  padding-left: 3rem;
+}
+
+/* Appointment Deadlines Container */
+.appointment {
+  grid-column: 3 / span 2;
+  grid-row: 2;
+  background: linear-gradient(to right, #f9c2bd, #ffdad4); /* Warm pastel red gradient */
+  border-radius: 16px;
+  padding: 0rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden; /* Ensure nothing overflows */
+  height: 18vh; /* Adjust height as needed */
+}
+
+.appointment-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.appointment-text {
+  flex: 1;
+  margin-right: 1.5rem; /* Add some space between text and animation */
+}
+
+.appointment-text h3 {
+  font-size: 1.7rem;
+  color: #202124;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.Dashboard-Appointment-lottieAnimation {
+  flex-shrink: 0; /* Prevent the animation from shrinking */
+  width: 40%; /* Adjust the width as needed */
+  height: 100%; /* Ensure the height fits within the container */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.Dashboard-Appointment-lottieAnimation .lottie-animation {
+  width: 100%;
+  height: 100%;
+  max-width: 100%; /* Ensure the animation does not overflow */
+  max-height: 100%; /* Ensure the animation does not overflow */
+}
+

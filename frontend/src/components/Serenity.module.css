@@ -51,6 +51,7 @@ body, html, #root {
   }
   
   .chat-container {
+    position: relative; /* Ensure the welcome message is positioned correctly */
     flex: 1;
     padding: 20px;
     overflow-y: auto;
@@ -61,7 +62,7 @@ body, html, #root {
     display: flex;
     flex-direction: column;
     animation: fadeIn 0.5s ease-in-out;
-  }
+}
   
   .message {
     margin: 10px 0;
@@ -309,3 +310,49 @@ body, html, #root {
     background-color: #f6f8fa;
   }
 
+  .welcome-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2em; /* Larger font size */
+    font-weight: bold;
+    color: #2C3E50;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.9); /* Optional: Add a background */
+    z-index: 2; /* Ensure it's above other content */
+}
+
+.default-messages {
+  display: flex;
+  flex-direction: row; /* Change to row for horizontal alignment */
+  justify-content: center; /* Center the messages horizontally */
+  align-items: center; /* Align messages vertically */
+  margin-top: 20px;
+  width: 100%; /* Ensure it takes full width */
+  gap: 10px; /* Add space between messages */
+}
+
+.default-message {
+  background: rgb(242, 255, 254);
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  font-size: 0.6em;
+  color: #2C3E50;
+  width: auto; /* Adjust width to fit content */
+  max-width: 250px; /* Optional: Limit max width */
+  text-align: center; /* Center text inside messages */
+}
+
+.default-message:hover {
+  background: rgba(240, 248, 255, 0.9);
+  transform: scale(1.05);
+}

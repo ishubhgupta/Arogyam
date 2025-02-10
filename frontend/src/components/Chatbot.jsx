@@ -1,23 +1,34 @@
 import { useState, useEffect } from "react";
 import ReactMarkdown from 'react-markdown';
 import styles from './Serenity.module.css';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouseUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 const SerenityChat = () => {
-  const [messages, setMessages] = useState([
-    { text: "Welcome to RantBot, I am here for your assistance. 🌸", type: "bot" }
-  ]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isBotTyping, setIsBotTyping] = useState(false);
+  const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
+
+  const defaultMessages = [
+    "What can you do?",
+    "Tell me a joke.",
+    "How do I get started?",
+    "What is your purpose?"
+  ];
 
   useEffect(() => {
     createParticles();
   }, []);
 
-  const sendMessage = async () => {
-    if (input.trim() === "") return;
+  const sendMessage = async (message) => {
+    if (message.trim() === "") return;
 
-    setMessages((prev) => [...prev, { text: input, type: "user" }]);
+    // Hide the welcome message when the user sends a message
+    setShowWelcomeMessage(false);
+
+    setMessages((prev) => [...prev, { text: message, type: "user" }]);
     setInput("");
 
     setIsBotTyping(true);
@@ -29,7 +40,7 @@ const SerenityChat = () => {
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ message: input })
+          body: JSON.stringify({ message: message })
         });
 
         if (!response.ok) throw new Error("Network response was not ok");
@@ -91,14 +102,34 @@ const SerenityChat = () => {
   return (
     <div className={styles['serenity-chat']}>
       <div className={styles.sidebar}>
-        <a href="#">🌿</a>
-        <a href="#">💧</a>
+        <a href="/dashboard">
+          <FontAwesomeIcon icon={faHouseUser} />
+        </a>
+        <a href="/user-profile">
+          <FontAwesomeIcon icon={faUser} />
+        </a>
         <a href="#">🕊️</a>
         <a href="#">🎵</a>
         <a href="#">🛋️</a>
       </div>
       <div className={styles['main-content']}>
         <div className={styles['chat-container']} id="chat-container">
+          {showWelcomeMessage && (
+            <div className={styles['welcome-message']}>
+              Welcome to RantBot, I am here for your assistance. 🌸
+              <div className={styles['default-messages']}>
+                {defaultMessages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={styles['default-message']}
+                    onClick={() => sendMessage(msg)}
+                  >
+                    {msg}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           {messages.map((msg, index) => (
             <div key={index} className={`${styles.message} ${styles[`${msg.type}-message`]}`}>
               {msg.type === "bot" ? (
@@ -125,7 +156,7 @@ const SerenityChat = () => {
             onChange={(e) => setInput(e.target.value)}
             placeholder="Express yourself freely..."
           />
-          <button onClick={sendMessage}>Send</button>
+          <button onClick={() => sendMessage(input)}>Send</button>
         </div>
       </div>
       <div id="particles"></div>
