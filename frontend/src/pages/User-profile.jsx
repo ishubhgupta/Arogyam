@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./User-profile.css";
 import VerticalNav from "../components/VerticalNav.jsx"; /* new import */
+import HumanBodyViewer from "../components/HumanBodyViewer.jsx"; // new import
+import ErrorBoundary from "../components/ErrorBoundary.jsx"; // new import for error boundary
 
 const UserProfile = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -65,7 +67,11 @@ const UserProfile = () => {
         </div>
       </div>
 
-      <div className="body-card">{/* Fixed body card on right side */}</div>
+      <div className="body-card">
+        <ErrorBoundary>
+          <HumanBodyViewer />
+        </ErrorBoundary>
+      </div>
     </div>
   );
 };

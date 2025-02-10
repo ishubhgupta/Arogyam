@@ -1,0 +1,8 @@
+Model Information:
+* title:	Simple Male Humanoid Body - By Ezren
+* source:	https://sketchfab.com/3d-models/simple-male-humanoid-body-by-ezren-a27da0ca3540415cb7b5c64c14e516cb
+* author:	Ezren (https://sketchfab.com/ezrenj)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
