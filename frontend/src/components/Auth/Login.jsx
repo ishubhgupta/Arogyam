@@ -24,8 +24,8 @@ const Login = () => {
 
   const fetchDetails = async () => {
     try {
-      window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/auth/google`;
-      ;
+      window.location.href = `http://localhost:5001/api/auth/google`;
+      console.log("Backend URL:", process.env.REACT_APP_BACKEND_URL);
     } catch (error) {
       console.log(error);
     }
