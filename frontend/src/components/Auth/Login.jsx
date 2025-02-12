@@ -6,7 +6,6 @@ import LoginL from '../../public/images/Login.json';
 import Lottie from 'lottie-react';
 import Navbar from '../Navbar';
 import {googleAuth} from '../../api/auth'
-// import { Axios } from 'axios';
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -23,13 +22,13 @@ const Login = () => {
     }
   };
 
-  const fetchDetails = async() =>{
+  const fetchDetails = async () => {
     try {
-      const response = await googleAuth()
+      window.location.href = 'http://localhost:5001/api/auth/google';
     } catch (error) {
       console.log(error);
-    }
-  }
+    }
+  };
 
   return (
     <>
@@ -59,7 +58,7 @@ const Login = () => {
 
           <button
   className="google-button"
-  onClick={() => fetcDetails}
+  onClick={fetchDetails}
   style={{
     display: 'flex',
     alignItems: 'center',
