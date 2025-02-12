@@ -37,6 +37,9 @@ body {
   font-family: var(--body-font);
   background-color: var(--body-color);
   color: var(--text-color);
+  margin: 0 !important; /* Force override any other margin settings */
+  padding: 0 !important;
+  min-height: 100vh;
 }
 
 img {
@@ -46,21 +49,65 @@ img {
 }
 
 /*=============== CARD ===============*/
+
+.heading-container {
+  width: 100%;
+  background: linear-gradient(135deg, #374920 0%, #f9fcf7 100%);
+  padding: 1rem 0;
+  margin: 0;  /* Remove any margin */
+  text-align: left;
+  position: relative;
+  top: 0;
+  padding-left: 1rem;
+}
+
+.main-heading {
+  font-size: 2.5rem;
+  color: white;
+  font-weight: 600;
+  font-family: var(--body-font);
+  margin: 0;
+  padding: 0;
+}
+
+/* Add responsive font size for smaller screens */
+@media screen and (max-width: 768px) {
+  .main-heading {
+    font-size: 2rem;
+  }
+}
+.page-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  position: absolute; /* Add this to ensure container starts from true top */
+  top: 0;
+  left: 0;
+}
+
+/* Container for the cards */
 .container {
+  flex: 1;
   display: grid;
   place-items: center;
-  margin-inline: 1.5rem;
-  padding-block: 5rem;
+  padding: 0;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  margin-top: 0;  /* Change from -1rem to 0 */
 }
 
 .card__container {
   display: grid;
-  row-gap: 3.5rem;
+  row-gap: 0rem;  /* Reduced from 3.5rem to 2rem */
 }
 
 .card__article {
   position: relative;
   overflow: hidden;
+  margin-bottom: 2rem;
 }
 
 .card__img {
@@ -126,6 +173,21 @@ img {
   animation: remove-data 1s forwards;
 }
 
+/* Add this to your NaturalTherapy.css file */
+.chatbot-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.chatbot-icon:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+}
+
+
 /* Card animation */
 @keyframes show-data {
   50% {
@@ -163,6 +225,8 @@ img {
     overflow: hidden;
   }
 }
+
+
 
 /*=============== BREAKPOINTS ===============*/
 /* For small devices */
