@@ -90,7 +90,6 @@ export const googleAuth = async (req, res) => {
     access_type: 'offline',
     scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
   });
-  console.log(url);
   res.redirect(url);
 };
 

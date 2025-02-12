@@ -24,11 +24,12 @@ const Login = () => {
 
   const fetchDetails = async () => {
     try {
-      window.location.href = 'http://localhost:5001/api/auth/google';
+      window.location.href = `${process.env.REACT_APP_BACKEND_URL}/api/auth/google`;
+      ;
     } catch (error) {
       console.log(error);
-    }
-  };
+    }
+  };
 
   return (
     <>
