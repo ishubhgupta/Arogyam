@@ -1,102 +1,82 @@
 import React from "react";
-
 import { useNavigate } from "react-router-dom";
-
 import "./Dashboard.css";
-import chatbotIcon from "../public/images/dashboard/chatbot.png";
-import crossBandIcon from "../public/images/dashboard/cross-on-cross band-aid.png";
-import alert1Icon from "../public/images/dashboard/alert.png";
-import alert2Icon from "../public/images/dashboard/alert2.png";
-import fitnessWatchIcon from "../public/images/dashboard/fitness watch.png";
+
+// Image Imports
 import naturalIcon from "../public/images/dashboard/Protecting your health with natural remedies.png";
-// import helpIcon from '../public/images/dashboard/help.png'
-// import menuIcon from '../public/images/dashboard/Menu.png'
-// import userIcon from '../public/images/dashboard/user.png'
 import homeRemediesIcon from "../public/images/dashboard/Home Solutions and Home Improvement.png";
-// import appointmentIcon from '../public/images/dashboard/Online doctor appointment in health app.png'
-// import cloudIcon from '../public/images/dashboard/Mental health support with cloud characters.png'
-// import naturalIcon from '../public/images/dashboard/Protecting your health with natural remedies.png'
+
+// Component Imports
 import Navbar from "../components/Navbar.jsx";
-import UserProfile from '../public/images/UserProfile.json';
-import GoogleFit from '../public/images/GoogleFit.json'
-import Appointment from '../public/images/Appointment.json'
+
+// Lottie Animation Imports
 import Lottie from 'lottie-react';
+import UserProfile from '../public/images/UserProfile.json';
+import GoogleFit from '../public/images/GoogleFit.json';
+import seasonal from '../public/images/Appointment.json';
+import Disease from '../public/images/Disease.json';
+import Chatbot from '../public/images/Chatbot.json';
 
 const Dashboard = () => {
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
+
   return (
     <>
       <Navbar />
-
       <div className="dashboard">
         <div className="grid-container">
-          {/* Patient Summary: spans cells 1,2,7,8 */}
+          {/* Row 1 */}
           <div className="card yellow patient">
             <h3>Patient Summary</h3>
             <div className="Dashboard-Profile-lottieAnimation">
               <Lottie animationData={UserProfile} />
             </div>
-
           </div>
 
-          {/* Seasonal Tips: occupies cells 3,4,5 */}
-          <div className="card blue seasonal">
-            <h3>Seasonal Tips</h3>
+          <div className="card blue notifications">
+            <h3>Notifications</h3>
           </div>
 
-          {/* Actions: occupies cell 6 */}
-          <div className="card actions action">
-            <h3>Actions</h3>
-            <div className="button-grid">
-
-            <button onClick={() => navigate('/chatbot')}>
-              <img src={chatbotIcon} alt="Chatbot" />
-            </button>
-
-              <button>
-                <img src={alert1Icon} alt="Alert" />
-              </button>
-              <button>
-                <img src={alert2Icon} alt="Alert 2" />
-              </button>
-              <button>
-                <img src={crossBandIcon} alt="Close" />
-              </button>
+          <div 
+            className="card chatbot action"
+            onClick={() => navigate("/chatbot")}
+            style={{ cursor: "pointer" }}
+          >
+            <h3>Rantbot</h3>
+            <div className="Dashboard-Chatbot-lottieAnimation">
+              <Lottie animationData={Chatbot} />
             </div>
           </div>
 
-          {/* Appointment Deadlines: occupies cell 9 */}
-          <div className="card teal appointment">
-  <div className="appointment-content">
-    <div className="appointment-text">
-      <h3>Appointment Deadlines</h3>
-    </div>
-    <div className="Dashboard-Appointment-lottieAnimation">
-      <Lottie animationData={Appointment} />
-    </div>
-  </div>
-</div>
-
-          {/* Google Fit Integration: occupies cells 10,11,12 */}
-          <div class="google">
-  <div class="google-content">
-    <div class="google-text">
-      <h3>Google Fit Integration</h3>
-    </div>
-    <div className="Dashboard-Google-lottieAnimation">
-              <Lottie animationData={GoogleFit} />
+          {/* Row 2 */}
+          <div className="card teal seasonal">
+            <div className="seasonal-content">
+              <div className="seasonal-text">
+                <h3>Seasonal Tips</h3>
+              </div>
+              <div className="Dashboard-seasonal-lottieAnimation">
+                <Lottie animationData={seasonal} />
+              </div>
             </div>
-  </div>
-</div>
+          </div>
 
-          {/* Natural Therapy: occupies cells 13,14 */}
+          <div className="google">
+            <div className="google-content">
+              <div className="google-text">
+                <h3>Disease Prediction</h3>
+              </div>
+              <div className="Dashboard-Google-lottieAnimation">
+                <Lottie animationData={GoogleFit} />
+              </div>
+            </div>
+          </div>
 
+          {/* Row 3 */}
           <div
             className="card green natural"
-            onClick={() => navigate("/natural-therapy")} // Add onClick handler
-            style={{ cursor: "pointer" }} // Change cursor to pointer
+            onClick={() => navigate("/natural-therapy")}
+            style={{ cursor: "pointer" }}
           >
-
             <h3>Natural Therapy</h3>
             <img
               className="natural-icon"
@@ -105,15 +85,24 @@ const Dashboard = () => {
             />
           </div>
 
-          {/* Home Remedies: occupies cells 15,16,17,18 */}
           <div className="card pink home">
             <img
               className="home-remedies-icon"
               src={homeRemediesIcon}
               alt="Home Remedies Icon"
             />
-            <h3>Home Remedies</h3>
+            <h3>Google Fit Connect</h3>
           </div>
+
+          <div className="card red disease">
+            <div className="disease-text">
+              <h3>Disease Prediction</h3>
+            </div>
+            <div className="Dashboard-Disease-lottieAnimation">
+              <Lottie animationData={Disease} />
+            </div>
+          </div>
+
         </div>
       </div>
     </>
@@ -121,5 +110,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-

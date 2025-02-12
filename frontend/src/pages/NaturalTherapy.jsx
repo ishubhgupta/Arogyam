@@ -1,73 +1,65 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./NaturalTherapy.css";
-import Navbar from '../components/Navbar.jsx';
+import React from 'react';
+import './index.css'; // Import the CSS file
 
-const NaturalTherapy = () => {
-  const navigate = useNavigate();
-  const [activeTherapy, setActiveTherapy] = useState(null);
+// Import images
+import ArogyamImage from '../public/images/dashboard/Arogyam.png'; // Adjust the path as needed
+import Yoga from '../public/images/dashboard/yoga.jpg'
+import Aroma from '../public/images/dashboard/Aroma.jpg'
+import Hydro from '../public/images/dashboard/Hydro.jpg'
 
-  const therapies = [
-    {
-      title: "Nutritional Therapy",
-      description:
-        "Nutritional therapy allows patients to eat according to certain recipes or supplement certain nutrients, making diet a means of treatment. It is the basis of natural therapy and is widely used to treat conditions like acne, arthritis, and diabetes.",
-    },
-    {
-      title: "Phototherapy",
-      description:
-        "Phototherapy uses plants as medicines to prevent and cure diseases. Modern naturopathic doctors rely on both traditional medicinal properties and modern pharmacological effects of plants.",
-    },
-    {
-      title: "Acupuncture Therapy",
-      description:
-        "Acupuncture therapy, derived from Chinese medicine, stimulates the body’s acupoints through acupuncture, massage, laser, or electrical stimulation.",
-    },
-    {
-      title: "Hydrotherapy",
-      description:
-        "Hydrotherapy uses water in various forms, such as hot water, cold water, and steam, to protect health or prevent diseases. Methods include baths, saunas, and hot compresses.",
-    },
-  ];
+const cardsData = [
+  {
+    id: 1,
+    image: Yoga, // Use the imported image
+    description: "Vancouver Mountains, Canada",
+    title: "The Great Path",
+    link: "#"
+  },
+  {
+    id: 2,
+    image: Aroma, // Use the imported image
+    description: "Poon Hill, Nepal",
+    title: "Starry Night",
+    link: "#"
+  },
+  {
+    id: 3,
+    image: Hydro, // Use the imported image
+    description: "Bojcin Forest, Serbia",
+    title: "Path Of Peace",
+    link: "#"
+  }
+];
 
-  const handleTherapyClick = (index) => {
-    setActiveTherapy(activeTherapy === index ? null : index);
-  };
-
+const Card = ({ image, description, title, link }) => {
   return (
-    <>
-      <Navbar />
-    <div className="natural-therapy-page">
-      <h1>Natural Therapy</h1>
-      <p>
-        Natural therapy focuses on using natural remedies and holistic approaches
-        to improve health and well-being. It includes practices like herbal
-        medicine, acupuncture, yoga, and meditation.
-      </p>
-      <p>
-        Explore the benefits of natural therapy and learn how to incorporate it
-        into your daily life for a healthier, more balanced lifestyle.
-      </p>
-
-      <div className="therapy-container">
-        {therapies.map((therapy, index) => (
-          <div
-            key={index}
-            className={`therapy-box ${activeTherapy === index ? "active" : ""}`}
-            onClick={() => handleTherapyClick(index)}
-          >
-            <h3>{therapy.title}</h3>
-            <div className="therapy-description">{therapy.description}</div>
-          </div>
-        ))}
+    <article className="card__article">
+      <img src={image} alt={title} className="card__img" />
+      <div className="card__data">
+        <span className="card__description">{description}</span>
+        <h2 className="card__title">{title}</h2>
+        <a href={link} className="card__button">Read More</a>
       </div>
-
-      <button onClick={() => navigate("/dashboard")} className="back-btn">
-        Back to Dashboard
-      </button>
-    </div>
-    </>
+    </article>
   );
 };
 
-export default NaturalTherapy;
+const App = () => {
+  return (
+    <div className="container">
+      <div className="card__container">
+        {cardsData.map(card => (
+          <Card
+            key={card.id}
+            image={card.image}
+            description={card.description}
+            title={card.title}
+            link={card.link}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default App;
