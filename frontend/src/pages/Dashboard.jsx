@@ -101,10 +101,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <section>
-          <h2>Yoga & Meditation</h2>
-          <Link to="/yoga-search">Read More</Link>
-        </section>
+
       </div>
     </>
   );
