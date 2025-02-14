@@ -1,27 +1,156 @@
-import pool from '../config/db.js'; // PostgreSQL connection pool
+import { google } from "googleapis";
+import pool from '../config/db.js';
 
-export const getpatientDetails = async (req, res) => {
+const getGoogleFitData = async (googleFitToken, googleRefreshToken) => {
   try {
-    // Fetch patient details by patient ID
-    const result = await pool.query('SELECT * FROM patients WHERE id = $1', [req.patientId]);
-    const patient = result.rows[0];
+    const oauth2Client = new google.auth.OAuth2();
+    oauth2Client.setCredentials({
+      access_token: googleFitToken,
+      refresh_token: googleRefreshToken,
+    });
 
-    if (!patient) {
-      return res.status(404).json({ success: false, message: 'Patient not found' });
+    // Refresh access token if expired
+    if (!googleFitToken && googleRefreshToken) {
+      try {
+        const { credentials } = await oauth2Client.refreshAccessToken();
+        oauth2Client.setCredentials(credentials);
+        googleFitToken = credentials.access_token;
+      } catch (refreshError) {
+        console.error("❌ Error refreshing access token:", refreshError.message);
+        return null;
+      }
     }
 
-    const { password, ...patientDetails } = patient;
+    const fitness = google.fitness({ version: "v1", auth: oauth2Client });
 
-    return res.status(200).json({ success: true, patient: patientDetails });
+    // Define Time Range (Start of Today to Now)
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const startTimeNs = startOfDay.getTime() * 1e6; // Nanoseconds
+    const endTimeNs = now.getTime() * 1e6;
+
+    // Function to fetch data from Google Fit
+    const fetchDataset = async (dataSourceId) => {
+      try {
+        const response = await fitness.users.dataSources.datasets.get({
+          userId: "me",
+          dataSourceId,
+          datasetId: `${startTimeNs}-${endTimeNs}`,
+        });
+
+        return response.data.point || [];
+      } catch (error) {
+        console.error(`❌ Error fetching ${dataSourceId}:`, error.message);
+        return [];
+      }
+    };
+
+    // Fetch Steps
+    const stepsData = await fetchDataset("derived:com.google.step_count.delta:com.google.android.gms:estimated_steps");
+    const stepsWalked = stepsData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
+
+    // Fetch Calories Burned
+    const caloriesData = await fetchDataset("derived:com.google.calories.expended:com.google.android.gms:merge_calories_expended");
+    const caloriesBurned = caloriesData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
+
+    // Fetch Recent Heart Rate
+    const heartRateData = await fetchDataset("derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm");
+    const recentHeartRate = heartRateData.length ? heartRateData[heartRateData.length - 1].value?.[0]?.fpVal || 0 : null;
+
+    // Fetch Pulse Rate (Pulse rate data is usually merged with heart rate)
+    const pulseRate = recentHeartRate; 
+
+    // Fetch SpO2 (Oxygen Saturation)
+    const spO2Data = await fetchDataset("derived:com.google.oxygen_saturation:com.google.android.gms:merge_oxygen_saturation");
+    const recentSpO2 = spO2Data.length ? spO2Data[spO2Data.length - 1].value?.[0]?.fpVal || 0 : null;
+
+    return {
+      stepsWalked,
+      caloriesBurned,
+      recentHeartRate,
+      pulseRate,
+      recentSpO2,
+    };
   } catch (error) {
+    console.error("❌ Error fetching Google Fit data:", error);
+    return null;
+  }
+};
+
+export const getPatientDetails = async (req, res) => {
+  try {
+    console.log("🔹 Fetching Patient Details for ID:", req.patientId);
+
+    // Fetch patient details
+    const { rows } = await pool.query("SELECT * FROM patients WHERE id = $1", [req.patientId]);
+    if (!rows.length) {
+      console.log("❌ Patient not found.");
+      return res.status(404).json({ success: false, message: "Patient not found" });
+    }
+
+    const patient = rows[0];
+    const { google_fit_token, google_refresh_token, ...patientDetails } = patient;
+
+    console.log("✅ Retrieved Patient Details:", patientDetails);
+
+    // Fetch health info
+    const healthInfo = (
+      await pool.query("SELECT * FROM patient_info WHERE patient_id = $1", [req.patientId])
+    ).rows[0] || {};
+
+    console.log("✅ Retrieved Health Info:", healthInfo);
+
+    // Initialize Google Fit Data with default values
+    let googleFitData = {
+      stepsWalked: 0,
+      caloriesBurned: 0,
+      recentHeartRate: "N/A",
+      pulseRate: "N/A",
+      recentSpO2: "N/A",
+      bloodPressure: "N/A",
+    };
+
+    try {
+      // Fetch Google Fit data if token is available
+      if (google_fit_token) {
+        googleFitData = await getGoogleFitData(google_fit_token, google_refresh_token);
+      } else {
+        console.warn("⚠️ No Google Fit Token found for this patient.");
+      }
+    } catch (error) {
+      console.error('❌ Error fetching Google Fit Data:', error.message);
+    }
+
+    console.log("✅ Google Fit Data:", googleFitData);
+
+    // Return final response
+    return res.status(200).json({
+      success: true,
+      patient: {
+        ...patientDetails,
+        healthInfo,
+        googleFitData: {
+          stepsWalked: googleFitData.stepsWalked || 0,
+          caloriesBurned: googleFitData.caloriesBurned || 0,
+          heartRate: googleFitData.recentHeartRate,
+          pulseRate: googleFitData.pulseRate,
+          spo2: googleFitData.recentSpO2,
+          bloodPressure: googleFitData.bloodPressure,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("❌ Error in getPatientDetails:", error);
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
-export const updatepatientDetails = async (req, res) => {
-  const { firstName, lastName, address, city, state, pincode, phoneNumber } = req.body;
+
+// Update patient details including health info
+export const updatePatientDetails = async (req, res) => {
+  const { firstName, lastName, address, city, state, pincode, phoneNumber, ...healthInfo } = req.body;
+
   try {
-    // Check if the patient exists
     const result = await pool.query('SELECT * FROM patients WHERE id = $1', [req.patientId]);
     const patient = result.rows[0];
 
@@ -29,7 +158,7 @@ export const updatepatientDetails = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Patient not found' });
     }
 
-    // Update patient details
+    // Update patients table
     await pool.query(
       `UPDATE patients
        SET first_name = $1, last_name = $2, address = $3, city = $4, state = $5, pincode = $6, phone_number = $7, updated_at = NOW()
@@ -46,8 +175,111 @@ export const updatepatientDetails = async (req, res) => {
       ]
     );
 
-    return res.json({ success: true, message: 'Profile updated successfully' });
+    // Check if patient_info exists
+    const healthResult = await pool.query('SELECT * FROM patient_info WHERE patient_id = $1', [req.patientId]);
+    if (healthResult.rows.length > 0) {
+      // Update existing health record
+      await pool.query(
+        `UPDATE patient_info
+        SET date_of_birth = $1, gender_identity = $2, height = $3, weight = $4, blood_type = $5,
+            smokes = $6, cigarettes_per_day = $7, alcohol = $8, drinks_per_week = $9, recreational_drugs = $10,
+            drug_details = $11, exercise_frequency = $12, diet_description = $13, sleep_hours = $14, stress_level = $15,
+            chronic_conditions = $16, medications = $17, allergies = $18, surgeries = $19, family_history = $20,
+            mental_health_conditions = $21, last_checkup = $22, vaccinations_up_to_date = $23, dental_checkups = $24,
+            sexual_performance_issues = $25, libido_concerns = $26, testicular_pain_lumps = $27, urination_issues = $28,
+            prostate_exam = $29, weight_changes = $30, hair_loss_concerns = $31, menstrual_start_age = $32,
+            menstrual_regular = $33, severe_cramps = $34, heavy_bleeding = $35, pregnancy_status = $36,
+            pregnancy_count = $37, pregnancy_complications = $38, menopause_symptoms = $39, menopause_start_age = $40,
+            breast_self_exam = $41, last_mammogram = $42, breast_changes = $43, last_pap_smear = $44,
+            gynecological_conditions = $45
+        WHERE patient_id = $46`,
+        [
+          healthInfo.date_of_birth || healthResult.rows[0].date_of_birth,
+          healthInfo.gender_identity || healthResult.rows[0].gender_identity,
+          healthInfo.height || healthResult.rows[0].height,
+          healthInfo.weight || healthResult.rows[0].weight,
+          healthInfo.blood_type || healthResult.rows[0].blood_type,
+          healthInfo.smokes ?? healthResult.rows[0].smokes,
+          healthInfo.cigarettes_per_day ?? healthResult.rows[0].cigarettes_per_day,
+          healthInfo.alcohol ?? healthResult.rows[0].alcohol,
+          healthInfo.drinks_per_week ?? healthResult.rows[0].drinks_per_week,
+          healthInfo.recreational_drugs ?? healthResult.rows[0].recreational_drugs,
+          healthInfo.drug_details ?? healthResult.rows[0].drug_details,
+          healthInfo.exercise_frequency ?? healthResult.rows[0].exercise_frequency,
+          healthInfo.diet_description ?? healthResult.rows[0].diet_description,
+          healthInfo.sleep_hours ?? healthResult.rows[0].sleep_hours,
+          healthInfo.stress_level ?? healthResult.rows[0].stress_level,
+          healthInfo.chronic_conditions ?? healthResult.rows[0].chronic_conditions,
+          healthInfo.medications ?? healthResult.rows[0].medications,
+          healthInfo.allergies ?? healthResult.rows[0].allergies,
+          healthInfo.surgeries ?? healthResult.rows[0].surgeries,
+          healthInfo.family_history ?? healthResult.rows[0].family_history,
+          healthInfo.mental_health_conditions ?? healthResult.rows[0].mental_health_conditions,
+          healthInfo.last_checkup ?? healthResult.rows[0].last_checkup,
+          healthInfo.vaccinations_up_to_date ?? healthResult.rows[0].vaccinations_up_to_date,
+          healthInfo.dental_checkups ?? healthResult.rows[0].dental_checkups,
+          healthInfo.sexual_performance_issues ?? healthResult.rows[0].sexual_performance_issues,
+          healthInfo.libido_concerns ?? healthResult.rows[0].libido_concerns,
+          healthInfo.testicular_pain_lumps ?? healthResult.rows[0].testicular_pain_lumps,
+          healthInfo.urination_issues ?? healthResult.rows[0].urination_issues,
+          healthInfo.prostate_exam ?? healthResult.rows[0].prostate_exam,
+          healthInfo.weight_changes ?? healthResult.rows[0].weight_changes,
+          healthInfo.hair_loss_concerns ?? healthResult.rows[0].hair_loss_concerns,
+          healthInfo.menstrual_start_age ?? healthResult.rows[0].menstrual_start_age,
+          healthInfo.menstrual_regular ?? healthResult.rows[0].menstrual_regular,
+          healthInfo.severe_cramps ?? healthResult.rows[0].severe_cramps,
+          healthInfo.heavy_bleeding ?? healthResult.rows[0].heavy_bleeding,
+          healthInfo.pregnancy_status ?? healthResult.rows[0].pregnancy_status,
+          healthInfo.pregnancy_count ?? healthResult.rows[0].pregnancy_count,
+          healthInfo.pregnancy_complications ?? healthResult.rows[0].pregnancy_complications,
+          healthInfo.menopause_symptoms ?? healthResult.rows[0].menopause_symptoms,
+          healthInfo.menopause_start_age ?? healthResult.rows[0].menopause_start_age,
+          healthInfo.breast_self_exam ?? healthResult.rows[0].breast_self_exam,
+          healthInfo.last_mammogram ?? healthResult.rows[0].last_mammogram,
+          healthInfo.breast_changes ?? healthResult.rows[0].breast_changes,
+          healthInfo.last_pap_smear ?? healthResult.rows[0].last_pap_smear,
+          healthInfo.gynecological_conditions ?? healthResult.rows[0].gynecological_conditions,
+          req.patientId,
+        ]
+      );
+    } else {
+      await pool.query(
+        `INSERT INTO patient_info (
+          patient_id, date_of_birth, gender_identity, height, weight, blood_type,
+          smokes, cigarettes_per_day, alcohol, drinks_per_week, recreational_drugs, drug_details, exercise_frequency,
+          diet_description, sleep_hours, stress_level, chronic_conditions, medications, allergies, surgeries,
+          family_history, mental_health_conditions, last_checkup, vaccinations_up_to_date, dental_checkups,
+          sexual_performance_issues, libido_concerns, testicular_pain_lumps, urination_issues, prostate_exam,
+          weight_changes, hair_loss_concerns, menstrual_start_age, menstrual_regular, severe_cramps, heavy_bleeding,
+          pregnancy_status, pregnancy_count, pregnancy_complications, menopause_symptoms, menopause_start_age,
+          breast_self_exam, last_mammogram, breast_changes, last_pap_smear, gynecological_conditions
+        ) VALUES (
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21,
+          $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $40,
+          $41, $42, $43, $44, $45, $46
+        )`,
+        [
+          req.patientId, healthInfo.date_of_birth, healthInfo.gender_identity, healthInfo.height,
+          healthInfo.weight, healthInfo.blood_type, healthInfo.smokes, healthInfo.cigarettes_per_day,
+          healthInfo.alcohol, healthInfo.drinks_per_week, healthInfo.recreational_drugs,
+          healthInfo.drug_details, healthInfo.exercise_frequency, healthInfo.diet_description,
+          healthInfo.sleep_hours, healthInfo.stress_level, healthInfo.chronic_conditions,
+          healthInfo.medications, healthInfo.allergies, healthInfo.surgeries, healthInfo.family_history,
+          healthInfo.mental_health_conditions, healthInfo.last_checkup, healthInfo.vaccinations_up_to_date,
+          healthInfo.dental_checkups, healthInfo.sexual_performance_issues, healthInfo.libido_concerns,
+          healthInfo.testicular_pain_lumps, healthInfo.urination_issues, healthInfo.prostate_exam,
+          healthInfo.weight_changes, healthInfo.hair_loss_concerns, healthInfo.menstrual_start_age,
+          healthInfo.menstrual_regular, healthInfo.severe_cramps, healthInfo.heavy_bleeding,
+          healthInfo.pregnancy_status, healthInfo.pregnancy_count, healthInfo.pregnancy_complications,
+          healthInfo.menopause_symptoms, healthInfo.menopause_start_age, healthInfo.breast_self_exam,
+          healthInfo.last_mammogram, healthInfo.breast_changes, healthInfo.last_pap_smear,
+          healthInfo.gynecological_conditions
+        ]
+      );
+    }
+
+    return res.status(200).json({ success: true, message: 'Profile updated successfully' });
   } catch (error) {
-    return res.status(500).send({ success: false, message: error.message });
+    return res.status(500).json({ success: false, message: error.message });
   }
 };

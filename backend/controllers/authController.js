@@ -88,10 +88,26 @@ export const login = async (req, res) => {
 export const googleAuth = async (req, res) => {
   const url = oAuth2Client.generateAuthUrl({
     access_type: 'offline',
-    scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
+    scope: [
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email',
+
+      // Google Fit Scopes
+      'https://www.googleapis.com/auth/fitness.activity.read',  // Steps, distance, workouts
+      'https://www.googleapis.com/auth/fitness.body.read',      // Weight, BMI, body fat %
+      'https://www.googleapis.com/auth/fitness.location.read',  // GPS-based activities (Running, Cycling)
+      'https://www.googleapis.com/auth/fitness.sleep.read',     // Sleep data
+      'https://www.googleapis.com/auth/fitness.heart_rate.read',  // Heart Rate (BPM)
+      'https://www.googleapis.com/auth/fitness.oxygen_saturation.read',  // SpO2 (Blood Oxygen)
+      'https://www.googleapis.com/auth/fitness.body_temperature.read',  // Body Temperature
+      'https://www.googleapis.com/auth/fitness.blood_pressure.read',  // Blood Pressure (Systolic/Diastolic)
+      'https://www.googleapis.com/auth/fitness.nutrition.read',  // Calories burned, hydration
+    ],
+    prompt: 'consent',
   });
   res.redirect(url);
 };
+
 
 export const googleAuthCallback = async (req, res) => {
   const { code } = req.query;
@@ -99,6 +115,8 @@ export const googleAuthCallback = async (req, res) => {
   try {
     const { tokens } = await oAuth2Client.getToken(code);
     oAuth2Client.setCredentials(tokens);
+
+    
 
     const ticket = await oAuth2Client.verifyIdToken({
       idToken: tokens.id_token,
