@@ -1,0 +1,80 @@
+{
+  "conditions": [
+    {
+      "condition": "thunderstorm",
+      "tip": "Thunderstorms expected! Avoid strenuous outdoor activity and stay indoors to keep safe."
+    },
+    {
+      "condition": "rain_heavy",
+      "tip": "Heavy rain outside; protect yourself with waterproof gear and stay dry to avoid colds."
+    },
+    {
+      "condition": "rain_light",
+      "tip": "Light rain today; consider carrying a light jacket and maintain your health with warm beverages."
+    },
+    {
+      "condition": "snow",
+      "tip": "Snowy weather ahead! Keep warm with layered clothing and opt for safe indoor exercises."
+    },
+    {
+      "condition": "clear_hot",
+      "tip": "Clear and hot conditions; stay hydrated, apply sunscreen, and avoid prolonged sun exposure."
+    },
+    {
+      "condition": "clear_cold",
+      "tip": "Clear but cold; dress warmly and enjoy indoor activities to keep your body healthy."
+    },
+    {
+      "condition": "clear",
+      "tip": "Clear skies! Enjoy outdoor activities moderately and maintain a balanced diet."
+    },
+    {
+      "condition": "clouds_chilly",
+      "tip": "Cloudy and chilly; keep your immune system strong by enjoying warm, nutritious foods."
+    },
+    {
+      "condition": "clouds",
+      "tip": "Cloudy day; a perfect time for indoor fitness and preparing a healthy meal plan."
+    },
+    {
+      "condition": "fog",
+      "tip": "Foggy conditions; exercise caution outdoors and consider indoor stretching routines."
+    },
+    {
+      "condition": "freezing",
+      "tip": "Freezing conditions! Keep warm indoors and boost your immunity with healthy soups."
+    },
+    {
+      "condition": "cold",
+      "tip": "Cold weather; dress in layers and enjoy warm, vitamin-rich foods to support your health."
+    },
+    {
+      "condition": "extreme_heat",
+      "tip": "Extreme heat! Stay indoors in a cool environment, drink plenty of fluids, and rest."
+    },
+    {
+      "condition": "extreme_hot",
+      "tip": "Scorching heat! Minimize outdoor exposure, keep hydrated, and cool down frequently."
+    },
+    {
+      "condition": "extreme_cold",
+      "tip": "Bitter cold! Limit time outside, dress in protective layers, and consume warm, healthy meals."
+    },
+    {
+      "condition": "humid",
+      "tip": "High humidity today; keep yourself hydrated and choose light, nutritious foods."
+    },
+    {
+      "condition": "windy",
+      "tip": "Windy conditions; secure outdoor belongings and consider indoor activities to stay safe."
+    },
+    {
+      "condition": "smog",
+      "tip": "Poor air quality detected; limit outdoor activities and consider indoor air purification methods."
+    },
+    {
+      "condition": "default",
+      "tip": "Take care of your health and enjoy a balanced day with proper rest and nutrition."
+    }
+  ]
+}

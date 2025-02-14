@@ -8,14 +8,14 @@ import homeRemediesIcon from "../public/images/dashboard/Home Solutions and Home
 
 // Component Imports
 import Navbar from "../components/Navbar.jsx";
+import WeatherTip from "../components/WeatherTip.jsx"; // new import
 
 // Lottie Animation Imports
-import Lottie from 'lottie-react';
-import UserProfile from '../public/images/UserProfile.json';
-import GoogleFit from '../public/images/GoogleFit.json';
-import seasonal from '../public/images/Appointment.json';
-import Disease from '../public/images/Disease.json';
-import Chatbot from '../public/images/Chatbot.json';
+import Lottie from "lottie-react";
+import UserProfile from "../public/images/UserProfile.json";
+import GoogleFit from "../public/images/GoogleFit.json";
+import Disease from "../public/images/Disease.json";
+import Chatbot from "../public/images/Chatbot.json";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const Dashboard = () => {
             <h3>Notifications</h3>
           </div>
 
-          <div 
+          <div
             className="card chatbot action"
             onClick={() => navigate("/chatbot")}
             style={{ cursor: "pointer" }}
@@ -53,9 +53,7 @@ const Dashboard = () => {
             <div className="seasonal-content">
               <div className="seasonal-text">
                 <h3>Seasonal Tips</h3>
-              </div>
-              <div className="Dashboard-seasonal-lottieAnimation">
-                <Lottie animationData={seasonal} />
+                <WeatherTip /> {/* integrated dynamic weather tip */}
               </div>
             </div>
           </div>
@@ -102,7 +100,6 @@ const Dashboard = () => {
               <Lottie animationData={Disease} />
             </div>
           </div>
-
         </div>
       </div>
     </>
