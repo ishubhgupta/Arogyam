@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import UserProfile from "./pages/user-profile";
 import Chatbot from "./components/Chatbot";
 import NaturalTherapy from "./pages/NaturalTherapy";
+import YogaSearch from "./pages/YogaSearch";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/user-profile" element={<UserProfile />} />
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/natural-therapy" element={<NaturalTherapy />} />
+          <Route path="/yoga-search" element={<YogaSearch/>} />
         </Routes>
       </Router>
   );
