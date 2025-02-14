@@ -1,53 +1,53 @@
-import React from 'react';
-import './NaturalTherapy.css'; // Import the CSS file
-import TherapyNavbar from '../components/TherapyNavbar';
-import { useNavigate } from 'react-router-dom'; // For navigation
-import Lottie from 'react-lottie';
-import Chatbot from '../public/images/Chatbot.json';
+import React from "react";
+import "./NaturalTherapy.css";
+import TherapyNavbar from "../components/TherapyNavbar";
+import { useNavigate, Link } from "react-router-dom";
+import Lottie from "react-lottie";
+import Chatbot from "../public/images/Chatbot.json";
 
 // Import images
-import Yoga from '../public/images/dashboard/yoga.jpg';
-import Aroma from '../public/images/dashboard/Aroma.jpg';
-import Hydro from '../public/images/dashboard/Hydro.jpg';
-import Music from '../public/images/dashboard/Music.jpg';
-import Ayurveda from '../public/images/dashboard/Ayurveda.jpg';
+import Yoga from "../public/images/dashboard/yoga.jpg";
+import Aroma from "../public/images/dashboard/Aroma.jpg";
+import Hydro from "../public/images/dashboard/Hydro.jpg";
+import Music from "../public/images/dashboard/Music.jpg";
+import Ayurveda from "../public/images/dashboard/Ayurveda.jpg";
 
 const cardsData = [
   {
     id: 1,
-    image: Yoga, // Use the imported image
-    description: "Yoga and Medidation",
+    image: Yoga,
+    description: "Yoga and Meditation",
     title: "Path Of Peace",
-    link: "#"
+    link: "/yoga-search", // Updated to proper route
   },
   {
     id: 2,
-    image: Aroma, // Use the imported image
+    image: Aroma,
     description: "Aroma Therapy",
-    title: "Starry Night",
-    link: "#"
+    title: "Natural Healing",
+    link: "/aroma-therapy",
   },
   {
     id: 3,
-    image: Hydro, // Use the imported image
+    image: Hydro,
     description: "Hydro Therapy",
-    title: "Path Of Peace",
-    link: "#"
+    title: "Water Healing",
+    link: "/hydro-therapy",
   },
   {
     id: 4,
-    image: Music, // Use the imported image
+    image: Music,
     description: "Music Therapy",
-    title: "Path Of Peace",
-    link: "#"
+    title: "Sound Healing",
+    link: "/music-therapy",
   },
   {
     id: 5,
-    image: Ayurveda, // Use the imported image
+    image: Ayurveda,
     description: "Ayurveda",
-    title: "Path Of Peace",
-    link: "#"
-  }
+    title: "Ancient Wisdom",
+    link: "/ayurveda",
+  },
 ];
 
 const Card = ({ image, description, title, link }) => {
@@ -57,28 +57,28 @@ const Card = ({ image, description, title, link }) => {
       <div className="card__data">
         <span className="card__description">{description}</span>
         <h2 className="card__title">{title}</h2>
-        <a href={link} className="card__button">Read More</a>
+        <Link to={link} className="card__button">
+          Read More
+        </Link>
       </div>
     </article>
   );
 };
 
-const App = () => {
-  const navigate = useNavigate(); // Initialize the navigate function
+const NaturalTherapy = () => {
+  const navigate = useNavigate();
 
-  // Function to handle chatbot icon click
   const handleChatbotClick = () => {
-    navigate('/chatbot'); // Navigate to the chatbot page
+    navigate("/chatbot");
   };
 
-  // Lottie options
   const defaultOptions = {
     loop: true,
     autoplay: true,
     animationData: Chatbot,
     rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
 
   return (
@@ -86,10 +86,10 @@ const App = () => {
       <TherapyNavbar />
       <div className="container">
         <div className="heading-container">
-          <h1 className="main-heading">Home Remedies</h1>
+          <h1 className="main-heading">Natural Therapies</h1>
         </div>
         <div className="card__container">
-          {cardsData.map(card => (
+          {cardsData.map((card) => (
             <Card
               key={card.id}
               image={card.image}
@@ -107,4 +107,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default NaturalTherapy;
