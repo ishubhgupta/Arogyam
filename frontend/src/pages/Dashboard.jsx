@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Dashboard.css";
 
 // Image Imports
@@ -101,6 +101,10 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+        <section>
+          <h2>Yoga & Meditation</h2>
+          <Link to="/yoga-search">Read More</Link>
+        </section>
       </div>
     </>
   );

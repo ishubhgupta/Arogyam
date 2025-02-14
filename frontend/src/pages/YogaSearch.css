@@ -1,0 +1,216 @@
+.yoga-search-container {
+  margin: 5vh auto;
+  padding: 2vh 2vw;
+  width: 90vw;
+  height: 95vh;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.search-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2vw;
+  margin: 3vh auto;
+  width: 80vw;
+}
+
+.search-bar {
+  flex: 1;
+  margin: 0;  /* Override previous margin */
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 2vh 3vw;
+  font-size: 2.2vh;
+  border: none;
+  border-radius: 3vh;
+  box-shadow: 0 0.5vh 2vh rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+  outline: none;
+  box-shadow: 0 0.5vh 3vh rgba(0, 0, 0, 0.2);
+  transform: translateY(-0.2vh);
+}
+
+.filter-dropdown {
+  width: 15vw;
+}
+
+.filter-dropdown select {
+  width: 100%;
+  padding: 2vh 1.5vw;
+  font-size: 2vh;
+  border: none;
+  border-radius: 3vh;
+  background: white;
+  box-shadow: 0 0.5vh 2vh rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.5vw top 50%;
+  background-size: 0.8vw auto;
+}
+
+.filter-dropdown select:hover {
+  transform: translateY(-0.2vh);
+  box-shadow: 0 0.5vh 3vh rgba(0, 0, 0, 0.2);
+}
+
+.filter-dropdown select:focus {
+  outline: none;
+  box-shadow: 0 0.5vh 3vh rgba(0, 0, 0, 0.2);
+}
+
+.featured-pose {
+  display: flex;
+  align-items: center;
+  margin: 4vh auto;
+  padding: 3vh 3vw;
+  width: 85vw;
+  min-height: 45vh;
+  /* background: white; */
+  border-radius: 2vh;
+  /* box-shadow: 0 1vh 3vh rgba(0, 0, 0, 0.1); */
+  transition: transform 0.3s ease;
+}
+
+.featured-pose:hover {
+  transform: translateY(-0.5vh);
+}
+
+.featured-details {
+  flex: 1;
+  padding: 2vh 3vw;
+  text-align: left;
+}
+
+.featured-details h2 {
+  font-size: 4vh;
+  color: #2c3e50;
+  margin-bottom: 2vh;
+}
+
+.featured-details p {
+  font-size: 2.2vh;
+  line-height: 1.6;
+  color: #5a6c7d;
+  margin-bottom: 1.5vh;
+}
+
+.featured-image {
+  flex: 1;
+  padding: 2vh;
+}
+
+.featured-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 1vh;
+  /* box-shadow: 0 0.5vh 2vh rgba(0, 0, 0, 0.1); */
+}
+
+.other-poses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(22vw, 1fr));
+  gap: 3vh;
+  padding: 2vh 0;
+}
+
+.pose-card {
+  background: white;
+  border-radius: 1.5vh;
+  overflow: hidden;
+  box-shadow: 0 0.5vh 2vh rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.pose-card:hover {
+  transform: translateY(-0.8vh);
+  box-shadow: 0 1vh 3vh rgba(0, 0, 0, 0.15);
+}
+
+.pose-image {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.pose-card:hover .pose-image {
+  transform: scale(1.05);
+}
+
+.pose-info {
+  padding: 2vh;
+}
+
+.pose-info h3 {
+  font-size: 2.4vh;
+  color: #2c3e50;
+  margin-bottom: 1vh;
+}
+
+.expertise {
+  display: inline-block;
+  padding: 0.8vh 1.5vw;
+  background: #e9ecef;
+  border-radius: 3vh;
+  font-size: 1.8vh;
+  color: #495057;
+  margin-top: 1vh;
+}
+
+.load-more {
+  margin: 4vh 0;
+  text-align: center;
+}
+
+.load-more button {
+  padding: 1.5vh 4vw;
+  font-size: 2vh;
+  color: white;
+  background: #4a90e2;
+  border: none;
+  border-radius: 5vh;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0.5vh 2vh rgba(74, 144, 226, 0.3);
+}
+
+.load-more button:hover {
+  background: #357abd;
+  transform: translateY(-0.3vh);
+  box-shadow: 0 0.8vh 2.5vh rgba(74, 144, 226, 0.4);
+}
+
+@media (max-width: 768px) {
+  .featured-pose {
+    flex-direction: column;
+    padding: 2vh;
+  }
+
+  .featured-details,
+  .featured-image {
+    width: 100%;
+  }
+
+  .other-poses-grid {
+    grid-template-columns: repeat(auto-fill, minmax(40vw, 1fr));
+  }
+
+  .search-controls {
+    flex-direction: column;
+    gap: 2vh;
+  }
+
+  .filter-dropdown {
+    width: 100%;
+  }
+}
