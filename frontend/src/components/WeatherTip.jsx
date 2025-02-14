@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import weatherTips from "../data/weatherTips.json";
 
 const WeatherTip = () => {
   const [tip, setTip] = useState("Loading weather tips...");
+  // To ensure we only refresh once per scheduled minute.
+  const lastRefreshRef = useRef("");
 
   // Helper to get tip text from the JSON data based on a key
   const getTipFromKey = (key) => {
@@ -12,7 +14,7 @@ const WeatherTip = () => {
       : weatherTips.conditions.find((item) => item.condition === "default").tip;
   };
 
-  useEffect(() => {
+  const fetchWeather = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -65,20 +67,13 @@ const WeatherTip = () => {
                 key = temp < 10 ? "clouds_chilly" : "clouds";
               } else if (["mist", "fog", "haze"].includes(weatherCondition)) {
                 key = "fog";
-              } else if (
-                weatherCondition === "smoke" ||
-                weatherCondition === "dust" ||
-                weatherCondition === "sand"
-              ) {
+              } else if (["smoke", "dust", "sand"].includes(weatherCondition)) {
                 key = "smog";
               }
-
-              // Extended conditions based on other parameters
+              // Extended condition: if wind is high, override with windy tip.
               if (windSpeed > 10) {
-                // threshold for windy (m/s)
                 key = "windy";
               }
-
               setTip(getTipFromKey(key));
             })
             .catch((error) => {
@@ -94,6 +89,38 @@ const WeatherTip = () => {
     } else {
       setTip("Geolocation is not supported by your browser.");
     }
+  };
+
+  useEffect(() => {
+    // Initial fetch on mount
+    fetchWeather();
+
+    // Check every minute for refresh condition.
+    const intervalId = setInterval(() => {
+      const now = new Date();
+      const day = now.getDay(); // 0: Sunday, 6: Saturday
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+
+      // Format current minute to keep track (e.g., "2023-10-11-08:00")
+      const currTimeKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}-${hour}:${minute}`;
+
+      if (lastRefreshRef.current === currTimeKey) {
+        return; // already refreshed this minute
+      }
+      // Define refresh times:
+      // Working days (Mon-Fri): 8:00 and 17:00
+      // Weekends (Sat,Sun): 8:00, 12:00 and 17:00
+      const isWeekend = day === 0 || day === 6;
+      const validRefreshHours = isWeekend ? [8, 12, 17] : [8, 17];
+
+      if (minute === 0 && validRefreshHours.includes(hour)) {
+        fetchWeather();
+        lastRefreshRef.current = currTimeKey;
+      }
+    }, 60000); // check every minute
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return <p>{tip}</p>;
