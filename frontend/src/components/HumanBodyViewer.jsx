@@ -121,7 +121,7 @@ const HumanBodyViewer = ({ googleFitData }) => {
             minPolarAngle={1.3}
             maxPolarAngle={1.3}
             autoRotate={autoRotate}
-            autoRotateSpeed={0}
+            autoRotateSpeed={3}
           />
         </React.Suspense>
       </Canvas>
