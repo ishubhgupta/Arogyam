@@ -98,7 +98,7 @@ const HumanBodyViewer = ({ googleFitData }) => {
             data={`${googleFitData?.spo2 || "-"}%`}
           />
           <BodyMarker
-            position={[-0.5, 2, -0.02]}
+            position={[0.775, 1.3, 0.10]}
             label="Pulse Rate"
             data={`${googleFitData?.pulseRate || "-"} BPM`}
           />
@@ -121,7 +121,7 @@ const HumanBodyViewer = ({ googleFitData }) => {
             minPolarAngle={1.3}
             maxPolarAngle={1.3}
             autoRotate={autoRotate}
-            autoRotateSpeed={3}
+            autoRotateSpeed={0}
           />
         </React.Suspense>
       </Canvas>

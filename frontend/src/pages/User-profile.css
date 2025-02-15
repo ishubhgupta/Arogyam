@@ -192,7 +192,7 @@
   justify-content: center;
   font-size: 18px;
   color: #999;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 /* Main content taking full width on mobile */
@@ -203,15 +203,44 @@
 
 /* Header styles */
 .user-header .greeting-info h2 {
-  font-size: clamp(0.875rem, 1.5vw, 1rem); /* reduced greeting size */
+  font-size: clamp(0.85rem, 1.5vw, 1rem); /* reduced greeting size */
   color: #686868;
-  margin-bottom: 0.5em;
+  /* margin-bottom: 0.5em; */
 }
 .user-header .greeting-info strong {
   font-size: clamp(1.25rem, 2.5vw, 1.75rem); /* increased user name size */
   color: #222;
-  margin-top: 0.25em;
+  /* margin-top: 0.2em; */
   display: block;
+}
+
+
+.greeting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.greeting-info h2 {
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: #64748b;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+}
+
+.greeting-info strong {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  color: #1e293b;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-family: "Inter", sans-serif;
+  line-height: 1.2;
+  margin: 0;
+  background: linear-gradient(90deg, #1e293b, #334155);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* User details row */
