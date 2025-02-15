@@ -57,10 +57,17 @@ const UserProfile = () => {
         <div className="health-metrics-row">
           <div className="metric-card"><p>Steps Walked</p><h2>{userData.googleFitData?.stepsWalked || "N/A"}</h2></div>
           <div className="metric-card"><p>Calories Burned</p><h2>{userData.googleFitData?.caloriesBurned || "N/A"} kcal</h2></div>
+          <div className="metric-card"><p>Distance Walked</p><h2>{userData.googleFitData?.distanceWalked || "N/A"} meters</h2></div>
           <div className="metric-card"><p>Heart Rate</p><h2>{userData.googleFitData?.heartRate || "N/A"} BPM</h2></div>
           <div className="metric-card"><p>Pulse Rate</p><h2>{userData.googleFitData?.pulseRate || "N/A"} BPM</h2></div>
           <div className="metric-card"><p>Blood Oxygen (SpO2)</p><h2>{userData.googleFitData?.spo2 || "N/A"} %</h2></div>
-          <div className="metric-card"><p>Blood Pressure</p><h2>{userData.googleFitData?.bloodPressure || "N/A"}</h2></div>
+          <div className="metric-card">
+            <p>Blood Pressure</p>
+            <h2>
+              {userData.googleFitData?.bloodPressure?.systolic || "N/A"}/
+              {userData.googleFitData?.bloodPressure?.diastolic || "N/A"} mmHg
+            </h2>
+          </div>
         </div>
 
         <div className="heart-rate">

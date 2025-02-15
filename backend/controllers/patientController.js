@@ -49,27 +49,46 @@ const getGoogleFitData = async (googleFitToken, googleRefreshToken) => {
     const stepsData = await fetchDataset("derived:com.google.step_count.delta:com.google.android.gms:estimated_steps");
     const stepsWalked = stepsData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
 
-    // Fetch Calories Burned
+    // Fetch Calories Burned (Remove decimal points)
     const caloriesData = await fetchDataset("derived:com.google.calories.expended:com.google.android.gms:merge_calories_expended");
-    const caloriesBurned = caloriesData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
+    let caloriesBurned = caloriesData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
+    caloriesBurned = Math.floor(caloriesBurned); // Remove decimal points
+
+    // Fetch Distance Walked
+    const distanceData = await fetchDataset("derived:com.google.distance.delta:com.google.android.gms:merge_distance_delta");
+    const distanceWalked = distanceData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
 
     // Fetch Recent Heart Rate
     const heartRateData = await fetchDataset("derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm");
     const recentHeartRate = heartRateData.length ? heartRateData[heartRateData.length - 1].value?.[0]?.fpVal || 0 : null;
 
     // Fetch Pulse Rate (Pulse rate data is usually merged with heart rate)
-    const pulseRate = recentHeartRate; 
+    const pulseRate = recentHeartRate;
 
     // Fetch SpO2 (Oxygen Saturation)
     const spO2Data = await fetchDataset("derived:com.google.oxygen_saturation:com.google.android.gms:merge_oxygen_saturation");
     const recentSpO2 = spO2Data.length ? spO2Data[spO2Data.length - 1].value?.[0]?.fpVal || 0 : null;
 
+    // Fetch Blood Pressure
+    const bloodPressureData = await fetchDataset("derived:com.google.blood_pressure:com.google.android.gms:merge_blood_pressure");
+    let systolic = null;
+    let diastolic = null;
+
+    if (bloodPressureData.length) {
+      const latestBP = bloodPressureData[bloodPressureData.length - 1];
+      systolic = latestBP.value?.[0]?.fpVal || null;   // Systolic Pressure
+      diastolic = latestBP.value?.[1]?.fpVal || null;  // Diastolic Pressure
+    }
+
     return {
       stepsWalked,
       caloriesBurned,
+      distanceWalked,
       recentHeartRate,
       pulseRate,
       recentSpO2,
+      systolic,
+      diastolic,
     };
   } catch (error) {
     console.error("❌ Error fetching Google Fit data:", error);
@@ -104,10 +123,12 @@ export const getPatientDetails = async (req, res) => {
     let googleFitData = {
       stepsWalked: 0,
       caloriesBurned: 0,
+      distanceWalked: 0,
       recentHeartRate: "N/A",
       pulseRate: "N/A",
       recentSpO2: "N/A",
-      bloodPressure: "N/A",
+      systolic: "N/A",
+      diastolic: "N/A",
     };
 
     try {
@@ -132,10 +153,14 @@ export const getPatientDetails = async (req, res) => {
         googleFitData: {
           stepsWalked: googleFitData.stepsWalked || 0,
           caloriesBurned: googleFitData.caloriesBurned || 0,
+          distanceWalked: googleFitData.distanceWalked || 0,
           heartRate: googleFitData.recentHeartRate,
           pulseRate: googleFitData.pulseRate,
           spo2: googleFitData.recentSpO2,
-          bloodPressure: googleFitData.bloodPressure,
+          bloodPressure: {
+            systolic: googleFitData.systolic,
+            diastolic: googleFitData.diastolic,
+          },
         },
       },
     });
