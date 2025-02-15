@@ -145,7 +145,7 @@ export const googleAuthCallback = async (req, res) => {
       // Update the patient's Google tokens
       await pool.query(
         `UPDATE patients 
-         SET google_token = $1, 
+         SET google_fit_token = $1, 
              google_refresh_token = $2 
          WHERE email = $3`,
         [
