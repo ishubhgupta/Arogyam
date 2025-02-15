@@ -95,7 +95,6 @@ export const googleAuth = async (req, res) => {
       // Google Fit Scopes
       'https://www.googleapis.com/auth/fitness.activity.read',  // Steps, distance, workouts
       'https://www.googleapis.com/auth/fitness.body.read',      // Weight, BMI, body fat %
-      'https://www.googleapis.com/auth/fitness.location.read',  // GPS-based activities (Running, Cycling)
       'https://www.googleapis.com/auth/fitness.sleep.read',     // Sleep data
       'https://www.googleapis.com/auth/fitness.heart_rate.read',  // Heart Rate (BPM)
       'https://www.googleapis.com/auth/fitness.oxygen_saturation.read',  // SpO2 (Blood Oxygen)
@@ -108,7 +107,6 @@ export const googleAuth = async (req, res) => {
   res.redirect(url);
 };
 
-
 export const googleAuthCallback = async (req, res) => {
   const { code } = req.query;
 
@@ -116,15 +114,13 @@ export const googleAuthCallback = async (req, res) => {
     const { tokens } = await oAuth2Client.getToken(code);
     oAuth2Client.setCredentials(tokens);
 
-    
-
     const ticket = await oAuth2Client.verifyIdToken({
       idToken: tokens.id_token,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
-    const { email, name, picture } = payload;
+    const { email, name } = payload;
 
     // Check if user already exists
     const result = await pool.query('SELECT * FROM patients WHERE email = $1', [email]);
@@ -133,14 +129,34 @@ export const googleAuthCallback = async (req, res) => {
     if (!patient) {
       // Create new patient
       const newPatient = await pool.query(
-        `INSERT INTO patients (first_name, last_name, email, is_verified)
-        VALUES ($1, $2, $3, $4) RETURNING *`,
-        [name.split(' ')[0], name.split(' ')[1] || '', email, true]
+        `INSERT INTO patients (first_name, last_name, email, is_verified, google_fit_token, google_refresh_token)
+        VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+        [
+          name.split(' ')[0], 
+          name.split(' ')[1] || '', 
+          email, 
+          true, 
+          tokens.access_token || null, 
+          tokens.refresh_token || null
+        ]
       );
       patient = newPatient.rows[0];
+    } else {
+      // Update the patient's Google tokens
+      await pool.query(
+        `UPDATE patients 
+         SET google_token = $1, 
+             google_refresh_token = $2 
+         WHERE email = $3`,
+        [
+          tokens.access_token || patient.google_fit_token, 
+          tokens.refresh_token || patient.google_refresh_token, 
+          email
+        ]
+      );
     }
 
-    // Generate JWT token
+    // Generate JWT token for the session
     generateJWTToken(res, patient.id, patient.email);
 
     res.redirect(`${process.env.CLIENT_URL}/dashboard`);
