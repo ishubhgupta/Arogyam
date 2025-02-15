@@ -13,7 +13,10 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get("http://localhost:5001/api/patients/profile", { withCredentials: true });
+        const response = await axios.get(
+          "http://localhost:5001/api/patients/profile",
+          { withCredentials: true }
+        );
         setUserData(response.data.patient);
       } catch (err) {
         console.error("Error fetching user data:", err);
@@ -42,45 +45,89 @@ const UserProfile = () => {
         <header className="user-header">
           <div className="greeting-info">
             <h2>{greeting},</h2>
-            <strong>{userData.first_name} {userData.last_name}</strong>
+            <strong>
+              {userData.first_name} {userData.last_name}
+            </strong>
           </div>
         </header>
 
         <div className="user-details">
-          <div className="info-item"><span>{userData.age || "N/A"}</span><p>Years Old</p></div>
-          <div className="info-item"><span>{userData.height || "N/A"}</span><p>Height, cm</p></div>
-          <div className="info-item"><span>{userData.weight || "N/A"}</span><p>Weight, kg</p></div>
-          <div className="info-item"><span>{userData.blood_type || "N/A"}</span><p>Blood Type</p></div>
+          <div className="info-item">
+            <span>{userData.age || "-"}</span>
+            <p>Years Old</p>
+          </div>
+          <div className="info-item">
+            <span>{userData.height || "-"}</span>
+            <p>Height, cm</p>
+          </div>
+          <div className="info-item">
+            <span>{userData.weight || "-"}</span>
+            <p>Weight, kg</p>
+          </div>
+          <div className="info-item">
+            <span>{userData.blood_type || "-"}</span>
+            <p>Blood Type</p>
+          </div>
         </div>
 
         {/* Google Fit Data Section */}
-        <div className="health-metrics-row">
-          <div className="metric-card"><p>Steps Walked</p><h2>{userData.googleFitData?.stepsWalked || "N/A"}</h2></div>
-          <div className="metric-card"><p>Calories Burned</p><h2>{userData.googleFitData?.caloriesBurned || "N/A"} kcal</h2></div>
-          <div className="metric-card"><p>Distance Walked</p><h2>{userData.googleFitData?.distanceWalked || "N/A"} meters</h2></div>
-          <div className="metric-card"><p>Heart Rate</p><h2>{userData.googleFitData?.heartRate || "N/A"} BPM</h2></div>
-          <div className="metric-card"><p>Pulse Rate</p><h2>{userData.googleFitData?.pulseRate || "N/A"} BPM</h2></div>
-          <div className="metric-card"><p>Blood Oxygen (SpO2)</p><h2>{userData.googleFitData?.spo2 || "N/A"} %</h2></div>
-          <div className="metric-card">
-            <p>Blood Pressure</p>
-            <h2>
-              {userData.googleFitData?.bloodPressure?.systolic || "N/A"}/
-              {userData.googleFitData?.bloodPressure?.diastolic || "N/A"} mmHg
-            </h2>
+        <section className="google-fit-section">
+          <div className="health-metrics-grid">
+            <div className="grid-row">
+              <div className="metric-card">
+                <p>Steps Walked</p>
+                <h2>{userData.googleFitData?.stepsWalked || "-"}</h2>
+              </div>
+              <div className="metric-card">
+                <p>Calories Burned</p>
+                <h2>
+                  {userData.googleFitData?.caloriesBurned || "-"}{" "}
+                  <small>kcal</small>
+                </h2>
+              </div>
+              <div className="metric-card">
+                <p>Distance Walked</p>
+                <h2>
+                  {userData.googleFitData?.distanceWalked || "-"}{" "}
+                  <small>meters</small>
+                </h2>
+              </div>
+            </div>
+            <div className="grid-row">
+              <div className="metric-card">
+                <p>Heart Rate</p>
+                <h2>
+                  {userData.googleFitData?.heartRate || "-"} <small>BPM</small>
+                </h2>
+              </div>
+              <div className="metric-card">
+                <p>Pulse Rate</p>
+                <h2>
+                  {userData.googleFitData?.pulseRate || "-"} <small>BPM</small>
+                </h2>
+              </div>
+              <div className="metric-card">
+                <p>Blood Oxygen (SpO2)</p>
+                <h2>
+                  {userData.googleFitData?.spo2 || "-"} <small>%</small>
+                </h2>
+              </div>
+              <div className="metric-card">
+                <p>Blood Pressure</p>
+                <h2>
+                  {userData.googleFitData?.bloodPressure?.systolic || "-"} /
+                  {userData.googleFitData?.bloodPressure?.diastolic || "-"}{" "}
+                  <small>mmHg</small>
+                </h2>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div className="heart-rate">
-          <h3>Heart Rate Over Time</h3>
-          <div className="heart-rate-chart">
-            {/* Heart Rate Graph Placeholder */}
-          </div>
-        </div>
+        </section>
       </div>
 
       <div className="body-card">
         <ErrorBoundary>
-          <HumanBodyViewer />
+          <HumanBodyViewer googleFitData={userData.googleFitData} />
         </ErrorBoundary>
       </div>
     </div>
