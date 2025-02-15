@@ -26,7 +26,11 @@ const Dashboard = () => {
       <div className="dashboard">
         <div className="grid-container">
           {/* Row 1 */}
-          <div className="card yellow patient">
+          <div 
+            className="card yellow patient"
+            onClick={() => navigate("/user-profile")}
+            tyle={{ cursor: "pointer" }}
+          >
             <h3>Patient Summary</h3>
             <div className="Dashboard-Profile-lottieAnimation">
               <Lottie animationData={UserProfile} />
