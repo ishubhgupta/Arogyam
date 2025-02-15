@@ -240,6 +240,7 @@
   margin: 0;
   background: linear-gradient(90deg, #1e293b, #334155);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 

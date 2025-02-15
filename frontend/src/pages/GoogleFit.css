@@ -17,6 +17,7 @@
   font-size: clamp(2rem, 5vw, 3rem);
   background: linear-gradient(90deg, #1e293b, #334155);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 0.5rem;
 }
