@@ -13,18 +13,23 @@ const BodyMarker = ({ position, label, data }) => {
       onPointerOut={() => setHovered(false)}
     >
       <sphereGeometry args={[0.05, 16, 16]} />
-      <meshStandardMaterial color={hovered ? "hotpink" : "#23d8df"} />
+      <meshStandardMaterial color={hovered ? "#60a5fa" : "#34d399"} />
       {hovered && (
         <Html position={[0, 0.1, 0]} style={{ pointerEvents: "none" }}>
           <div
             style={{
-              background: "white",
-              padding: "4px 8px",
-              borderRadius: "4px",
-              fontSize: "12px",
+              background: "linear-gradient(145deg, #f6f8fb 0%, #ffffff 100%)",
+              padding: "8px 12px",
+              borderRadius: "8px",
+              fontSize: "14px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              minWidth: "120px",
+              textAlign: "center",
             }}
           >
-            <strong>{label}</strong>: {data}
+            <strong>{label}</strong>
+            <br />
+            {data}
           </div>
         </Html>
       )}
@@ -57,16 +62,24 @@ const Model = () => {
   return <primitive object={gltf.scene} />;
 };
 
-const HumanBodyViewer = () => {
-  // new state to control auto rotation
+const HumanBodyViewer = ({ googleFitData }) => {
   const [autoRotate, setAutoRotate] = useState(true);
+
+  // Format the data for display
+  const formatBP = () => {
+    const systolic = googleFitData?.bloodPressure?.systolic || "-";
+    const diastolic = googleFitData?.bloodPressure?.diastolic || "-";
+    return `${systolic}/${diastolic} mmHg`;
+  };
 
   return (
     <div
-      // when mouse enters, disable auto rotation; when leaves, enable it
       onMouseEnter={() => setAutoRotate(false)}
       onMouseLeave={() => setAutoRotate(true)}
-      style={{ width: "100%", height: "90%" }}
+      style={{
+        width: "80wh",
+        height: "80vh",
+      }}
     >
       <Canvas camera={{ position: [0, 4, 0] }}>
         <ambientLight intensity={2} />
@@ -74,31 +87,32 @@ const HumanBodyViewer = () => {
         <directionalLight position={[-10, 10, -5]} intensity={2} />
         <React.Suspense fallback={null}>
           <Model />
-          {/* Updated marker positions so they appear on the body */}
           <BodyMarker
-            position={[0, 2.15, 0.18]} // heart marker placed on the body surface
-            label="Heart"
-            data="Heart Beat: 72 bpm"
+            position={[0, 2.15, 0.18]}
+            label="Heart Rate"
+            data={`${googleFitData?.heartRate || "-"} BPM`}
           />
           <BodyMarker
-            position={[-0.15, 2, 0.19]} // lungs marker placed on the body surface
-            label="Lungs"
-            data="Respiration: 16 rpm"
+            position={[-0.15, 2, 0.19]}
+            label="Blood Oxygen"
+            data={`${googleFitData?.spo2 || "-"}%`}
           />
           <BodyMarker
-            position={[-0.5, 2, -0.02]} // left hand marker placed on the body surface
-            label="Left Hand"
-            data="BP: 120/80"
+            position={[-0.5, 2, -0.02]}
+            label="Pulse Rate"
+            data={`${googleFitData?.pulseRate || "-"} BPM`}
           />
           <BodyMarker
-            position={[0.5, 2, -0.02]} // right hand marker placed on the body surface
-            label="Right Hand"
-            data="BP: 118/76"
+            position={[0.5, 2, -0.02]}
+            label="Blood Pressure"
+            data={formatBP()}
           />
           <BodyMarker
-            position={[0, 1.6, 0.24]} // stomach marker placed on the body surface
-            label="Stomach"
-            data="BP: 118/76"
+            position={[0, 1.6, 0.24]}
+            label="Activity"
+            data={`Steps: ${googleFitData?.stepsWalked || "-"}
+              Calories: ${googleFitData?.caloriesBurned || "-"} kcal
+              Distance: ${googleFitData?.distanceWalked || "-"} m`}
           />
           <OrbitControls
             enableZoom={false}
@@ -106,8 +120,8 @@ const HumanBodyViewer = () => {
             target={[0, 1.5, 0]}
             minPolarAngle={1.3}
             maxPolarAngle={1.3}
-            autoRotate={autoRotate} // auto rotate based on hover state
-            autoRotateSpeed={4} // slow rotation speed
+            autoRotate={autoRotate}
+            autoRotateSpeed={3}
           />
         </React.Suspense>
       </Canvas>

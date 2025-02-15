@@ -1,3 +1,8 @@
+:root {
+  --base-font: clamp(0.875rem, 1vw, 1rem);
+  --spacing-unit: clamp(0.5rem, 1vw, 1rem);
+}
+
 .user-profile {
   width: 100vw;
   /* max-width: none; */
@@ -11,30 +16,31 @@
 }
 
 .user-profile-container {
-  width: 100vw;
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-wrap: nowrap;
 }
 
 .user-main {
   width: 55%;
-  padding: 20px;
-  background: linear-gradient(to right, #f1f1f1, white, white, white, white);
+  /* padding: clamp(1.5rem, 3vw, 2.5rem) clamp(2rem, 4vw, 3rem); */
+  background: linear-gradient(145deg, #f6f8fb 0%, #ffffff 100%);
+  /* border-radius: clamp(1rem, 2vw, 1.25rem); */
+  /* box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.05); */
+  /* margin: clamp(1rem, 2vw, 1.25rem); */
+  transition: all 0.3s ease;
 }
 
 .body-card {
-  width: 25%;
+  width: clamp(20%, 25vw, 30%);
   position: relative;
-  padding: 20px;
-  margin-top: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.header {
+  /* padding: clamp(1rem, 2vw, 1.25rem); */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  background: linear-gradient(145deg, #f6f8fb 0%, #ffffff 100%);
+  height: 100vh;
 }
 
 .greeting h3 {
@@ -62,7 +68,7 @@
 }
 
 .info-item {
-  background: #fff;
+  /* background: #fff; */
   padding: 10px 15px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -87,27 +93,63 @@
 }
 
 .metric-card {
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
+  background: linear-gradient(145deg, #ffffff, #f6f8fb);
+  border-radius: clamp(0.75rem, 1.5vw, 1rem);
+  padding: clamp(1rem, 2vw, 1.25rem) clamp(0.75rem, 1.5vw, 1rem);
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05),
+    -5px -5px 15px rgba(255, 255, 255, 0.6);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  position: relative;
+  overflow: hidden;
+  margin: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.08),
+    -8px -8px 20px rgba(255, 255, 255, 0.8);
 }
 
 .metric-card p {
-  font-size: 14px;
-  color: #555;
+  font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
 }
 
 .metric-card h2 {
-  font-size: 22px;
-  margin: 5px 0;
-  color: #111;
+  font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1.2;
 }
 
-.metric-card span {
-  font-size: 12px;
-  color: #44c4a1;
+.metric-card small {
+  font-size: clamp(0.625rem, 1vw, 0.75rem);
+  color: #94a3b8;
+  font-weight: 500;
+  margin-left: 0.25em;
+}
+
+.metric-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #60a5fa, #34d399);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.metric-card:hover::before {
+  opacity: 1;
 }
 
 .heart-rate {
@@ -161,24 +203,26 @@
 
 /* Header styles */
 .user-header .greeting-info h2 {
-  font-size: 14px; /* reduced greeting size */
+  font-size: clamp(0.875rem, 1.5vw, 1rem); /* reduced greeting size */
   color: #686868;
+  margin-bottom: 0.5em;
 }
 .user-header .greeting-info strong {
-  font-size: 24px; /* increased user name size */
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem); /* increased user name size */
   color: #222;
-  margin-top: 5px;
+  margin-top: 0.25em;
+  display: block;
 }
 
 /* User details row */
 .user-details {
   display: flex;
   justify-content: space-between;
-  margin: 20px 0;
+  margin: clamp(1rem, 2vw, 1.5rem) 0;
 }
 .user-details .info-item {
   background: transparent; /* remove white background */
-  padding: 10px 15px;
+  padding: clamp(0.5rem, 1vw, 0.75rem) clamp(0.75rem, 1.5vw, 1rem);
   border-radius: 8px;
   box-shadow: none; /* remove box shadow */
   border-right: 1px solid rgba(0, 0, 0, 0.1); /* add border between items */
@@ -191,70 +235,58 @@
   border-right: none;
 }
 .user-details .info-item span {
-  font-size: 20px;
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
   font-weight: bold;
   color: #333;
 }
 .user-details .info-item p {
-  font-size: 12px;
+  font-size: clamp(0.75rem, 1vw, 0.875rem);
   color: #777;
-}
-
-/* Health metrics row */
-.health-metrics-row {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
-}
-.health-metrics-row .metric-card {
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  flex: 1;
-  margin-right: 10px;
-}
-.health-metrics-row .metric-card:last-child {
-  margin-right: 0;
-}
-.health-metrics-row .metric-card p {
-  font-size: 14px;
-  color: #555;
-}
-.health-metrics-row .metric-card h2 {
-  font-size: 22px;
-  color: #111;
-  margin: 5px 0;
-}
-
-/* Heart rate graph section */
-.heart-rate {
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-.heart-rate h3 {
-  font-size: 16px;
-  color: #555;
-}
-.heart-rate-chart {
-  height: 200px;
-  background: #eef;
-  border-radius: 10px;
-  margin-top: 10px;
 }
 
 /* Fixed body card on right side */
 .body-card {
   position: relative;
-  width: 25%;
-  padding: 20px;
-  margin-top: 20px;
+  width: clamp(20%, 25vw, 30%);
+  padding: clamp(1rem, 2vw, 1.25rem);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* New styles for the Google Fit Data Section */
+.google-fit-section {
+  /* background: #fff; */
+  padding: 20px;
+  border-radius: 10px;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+  margin: 20px 0;
+}
+.google-fit-section h3 {
+  text-align: center;
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Grid layout for Google Fit Data */
+.health-metrics-grid {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: clamp(1rem, 2vw, 1.25rem);
+}
+.grid-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+}
+.grid-row .metric-card {
+  flex: 1;
+  margin: 0 10px;
+  min-width: clamp(7.5rem, 15vw, 9.375rem);
+}
+.grid-row .metric-card:last-child {
+  margin-right: 0;
 }
 
 /* Responsive adjustments */
@@ -264,7 +296,10 @@
   }
   /* Remove left margin for main content on small screens */
   .user-main {
+    width: 100%;
+    padding: clamp(1rem, 3vw, 1.5rem);
     margin-left: 0;
+    margin: 0;
   }
   /* Hide fixed body card on small screens */
   .body-card {
@@ -282,5 +317,12 @@
   .user-details .info-item:last-child,
   .health-metrics-row .metric-card:last-child {
     margin-bottom: 0;
+  }
+  .grid-row {
+    flex-direction: column;
+  }
+  .grid-row .metric-card {
+    width: 100%;
+    margin: clamp(0.5rem, 1vw, 0.75rem) 0;
   }
 }
