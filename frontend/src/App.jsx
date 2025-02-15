@@ -13,6 +13,7 @@ import Chatbot from "./components/Chatbot";
 import NaturalTherapy from "./pages/NaturalTherapy";
 import YogaSearch from "./pages/YogaSearch";
 import AromaTherapy from "./pages/AromaTherapy";
+import GoogleFit from "./pages/GoogleFit"; // new import
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/natural-therapy" element={<NaturalTherapy />} />
         <Route path="/yoga-search" element={<YogaSearch />} />
         <Route path="/aroma-therapy" element={<AromaTherapy />} />
+        <Route path="/google-fit" element={<GoogleFit />} /> {/* new route */}
       </Routes>
     </Router>
   );

@@ -83,7 +83,11 @@ const Dashboard = () => {
             />
           </div>
 
-          <div className="card pink home">
+          <div
+            className="card pink home"
+            onClick={() => navigate("/google-fit")}
+            style={{ cursor: "pointer" }}
+          >
             <img
               className="home-remedies-icon"
               src={homeRemediesIcon}
@@ -101,7 +105,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
       </div>
     </>
   );
