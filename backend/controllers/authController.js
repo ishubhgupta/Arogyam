@@ -93,6 +93,7 @@ export const googleAuth = async (req, res) => {
       'https://www.googleapis.com/auth/userinfo.email',
 
       // Google Fit Scopes
+      'https://www.googleapis.com/auth/fitness.location.read',
       'https://www.googleapis.com/auth/fitness.activity.read',  // Steps, distance, workouts
       'https://www.googleapis.com/auth/fitness.body.read',      // Weight, BMI, body fat %
       'https://www.googleapis.com/auth/fitness.sleep.read',     // Sleep data
@@ -161,7 +162,6 @@ export const googleAuthCallback = async (req, res) => {
 
     res.redirect(`${process.env.CLIENT_URL}/dashboard`);
   } catch (error) {
-    console.error('Error during Google OAuth callback:', error);
     res.status(500).json({ success: false, message: 'Authentication failed' });
   }
 };

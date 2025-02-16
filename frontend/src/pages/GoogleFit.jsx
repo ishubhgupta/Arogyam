@@ -1,28 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./GoogleFit.css";
 import Navbar from "../components/Navbar";
+import axios from "axios";
 
 const GoogleFit = () => {
-  // Extended static dummy data; replace with dynamic data later.
-  const data = {
-    stepsWalked: 1234,
-    caloriesBurned: 250,
-    distanceWalked: 1.2,
-    heartRate: 72,
-    pulseRate: 70,
-    spo2: 98,
-    bloodPressure: { systolic: 120, diastolic: 80 },
-    activeMinutes: 45,
-    floorsClimbed: 10,
-    sleepDuration: 7.5,
-    bodyFatPercentage: 18,
-    bodyMassIndex: 22.5,
-    waterIntake: 2.0,
-    activeEnergy: 300,
-    exerciseMinutes: 35,
-  };
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Extended metrics array with extra dummy metrics
   const metrics = [
     { key: "stepsWalked", label: "Steps Walked", unit: "" },
     { key: "caloriesBurned", label: "Calories Burned", unit: "kcal" },
@@ -40,6 +25,28 @@ const GoogleFit = () => {
     { key: "activeEnergy", label: "Active Energy Burned", unit: "kcal" },
     { key: "exerciseMinutes", label: "Exercise Minutes", unit: "min" },
   ];
+
+  useEffect(() => {
+    const fetchGoogleFitData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5001/api/patients/googlefit",
+          { withCredentials: true }
+        );
+        setData(response.data.googleFitData);
+      } catch (err) {
+        setError("Failed to load Google Fit data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGoogleFitData();
+  }, []);
+
+  if (loading) return <p>Loading Google Fit data...</p>;
+  if (error) return <p>{error}</p>;
+  if (!data) return <p>No Google Fit data available.</p>;
 
   return (
     <>
@@ -76,6 +83,7 @@ const GoogleFit = () => {
             </div>
           </div>
 
+          {/* Additional sections (Vital Signs and Body Measurements) */}
           <div className="metrics-section">
             <h2>Vital Signs</h2>
             <div className="metrics-grid">

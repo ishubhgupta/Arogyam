@@ -1,5 +1,5 @@
 import { google } from "googleapis";
-import pool from '../config/db.js';
+import pool from "../config/db.js";
 
 const getGoogleFitData = async (googleFitToken, googleRefreshToken) => {
   try {
@@ -16,7 +16,6 @@ const getGoogleFitData = async (googleFitToken, googleRefreshToken) => {
         oauth2Client.setCredentials(credentials);
         googleFitToken = credentials.access_token;
       } catch (refreshError) {
-        console.error("❌ Error refreshing access token:", refreshError.message);
         return null;
       }
     }
@@ -40,77 +39,106 @@ const getGoogleFitData = async (googleFitToken, googleRefreshToken) => {
 
         return response.data.point || [];
       } catch (error) {
-        console.error(`❌ Error fetching ${dataSourceId}:`, error.message);
         return [];
       }
     };
 
-    // Fetch Steps
+    // Fetch metrics
     const stepsData = await fetchDataset("derived:com.google.step_count.delta:com.google.android.gms:estimated_steps");
-    const stepsWalked = stepsData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
-
-    // Fetch Calories Burned (Remove decimal points)
     const caloriesData = await fetchDataset("derived:com.google.calories.expended:com.google.android.gms:merge_calories_expended");
-    let caloriesBurned = caloriesData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
-    caloriesBurned = Math.floor(caloriesBurned); // Remove decimal points
-
-    // Fetch Distance Walked
     const distanceData = await fetchDataset("derived:com.google.distance.delta:com.google.android.gms:merge_distance_delta");
-    const distanceWalked = distanceData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
-
-    // Fetch Recent Heart Rate
     const heartRateData = await fetchDataset("derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm");
-    const recentHeartRate = heartRateData.length ? heartRateData[heartRateData.length - 1].value?.[0]?.fpVal || 0 : null;
-
-    // Fetch Pulse Rate (Pulse rate data is usually merged with heart rate)
-    const pulseRate = recentHeartRate;
-
-    // Fetch SpO2 (Oxygen Saturation)
     const spO2Data = await fetchDataset("derived:com.google.oxygen_saturation:com.google.android.gms:merge_oxygen_saturation");
+    const bloodPressureData = await fetchDataset("derived:com.google.blood_pressure:com.google.android.gms:merge_blood_pressure");
+    const activeMinutesData = await fetchDataset("derived:com.google.active_minutes:com.google.android.gms:merge_active_minutes");
+    const floorsClimbedData = await fetchDataset("derived:com.google.floor_count.delta:com.google.android.gms:merge_floors_climbed");
+    const sleepDurationData = await fetchDataset("derived:com.google.sleep.duration:com.google.android.gms:merge_sleep_duration");
+    const bodyFatData = await fetchDataset("derived:com.google.body.fat.percentage:com.google.android.gms:merge_body_fat_percentage");
+    const bmiData = await fetchDataset("derived:com.google.bmi:com.google.android.gms:merge_bmi");
+    const waterIntakeData = await fetchDataset("derived:com.google.water:com.google.android.gms:merge_water");
+    const activeEnergyData = await fetchDataset("derived:com.google.active_energy_burned:com.google.android.gms:merge_active_energy");
+    const exerciseMinutesData = await fetchDataset("derived:com.google.exercise_minutes:com.google.android.gms:merge_exercise_minutes");
+
+    // Extract data
+    const stepsWalked = stepsData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
+    let caloriesBurned = caloriesData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
+    let distanceWalked = distanceData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
+    const recentHeartRate = heartRateData.length ? heartRateData[heartRateData.length - 1].value?.[0]?.fpVal || 0 : null;
     const recentSpO2 = spO2Data.length ? spO2Data[spO2Data.length - 1].value?.[0]?.fpVal || 0 : null;
 
-    // Fetch Blood Pressure
-    const bloodPressureData = await fetchDataset("derived:com.google.blood_pressure:com.google.android.gms:merge_blood_pressure");
-    let systolic = null;
-    let diastolic = null;
-
+    let systolic = null, diastolic = null;
     if (bloodPressureData.length) {
       const latestBP = bloodPressureData[bloodPressureData.length - 1];
-      systolic = latestBP.value?.[0]?.fpVal || null;   // Systolic Pressure
-      diastolic = latestBP.value?.[1]?.fpVal || null;  // Diastolic Pressure
+      systolic = latestBP.value?.[0]?.fpVal || null;
+      diastolic = latestBP.value?.[1]?.fpVal || null;
     }
+
+    const activeMinutes = activeMinutesData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
+    const floorsClimbed = floorsClimbedData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
+    const sleepDuration = sleepDurationData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
+    const bodyFatPercentage = bodyFatData.length ? bodyFatData[bodyFatData.length - 1].value?.[0]?.fpVal || 0 : null;
+    const bodyMassIndex = bmiData.length ? bmiData[bmiData.length - 1].value?.[0]?.fpVal || 0 : null;
+    const waterIntake = waterIntakeData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
+    const activeEnergy = activeEnergyData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
+    const exerciseMinutes = exerciseMinutesData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
 
     return {
       stepsWalked,
-      caloriesBurned,
-      distanceWalked,
+      caloriesBurned: Math.floor(caloriesBurned),
+      distanceWalked: Math.floor(distanceWalked * 100) / 100,
       recentHeartRate,
-      pulseRate,
-      recentSpO2,
+      pulseRate: Math.floor(recentHeartRate || 0),
+      recentSpO2: Math.floor(recentSpO2 || 0),
       systolic,
       diastolic,
+      activeMinutes,
+      floorsClimbed,
+      sleepDuration: Math.floor(sleepDuration / 3600), // Convert to hours
+      bodyFatPercentage: Math.floor(bodyFatPercentage || 0),
+      bodyMassIndex: Math.floor(bodyMassIndex || 0),
+      waterIntake: Math.floor(waterIntake * 100) / 100,
+      activeEnergy: Math.floor(activeEnergy || 0),
+      exerciseMinutes,
     };
   } catch (error) {
-    console.error("❌ Error fetching Google Fit data:", error);
     return null;
   }
 };
 
+
+export const getGoogleFit = async (req, res) => {
+  try {
+    // Fetch patient details
+    const { rows } = await pool.query("SELECT * FROM patients WHERE id = $1", [req.patientId]);
+    if (!rows.length) {
+      return res.status(404).json({ success: false, message: "Patient not found" });
+    }
+
+    const patient = rows[0];
+    const { google_fit_token, google_refresh_token } = patient;
+
+    // Fetch Google Fit data
+    const googleFitData = await getGoogleFitData(google_fit_token, google_refresh_token);
+    if (!googleFitData) {
+      return res.status(500).json({ success: false, message: "Error fetching Google Fit data" });
+    }
+    return res.status(200).json({ success: true, googleFitData });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+}
+
 export const getPatientDetails = async (req, res) => {
   try {
-    console.log("🔹 Fetching Patient Details for ID:", req.patientId);
 
     // Fetch patient details
     const { rows } = await pool.query("SELECT * FROM patients WHERE id = $1", [req.patientId]);
     if (!rows.length) {
-      console.log("❌ Patient not found.");
       return res.status(404).json({ success: false, message: "Patient not found" });
     }
 
     const patient = rows[0];
     const { google_fit_token, google_refresh_token, ...patientDetails } = patient;
-
-    console.log("✅ Retrieved Patient Details:", patientDetails);
 
     // Fetch health info
     const healthInfo = (
@@ -135,14 +163,10 @@ export const getPatientDetails = async (req, res) => {
       // Fetch Google Fit data if token is available
       if (google_fit_token) {
         googleFitData = await getGoogleFitData(google_fit_token, google_refresh_token);
-      } else {
-        console.warn("⚠️ No Google Fit Token found for this patient.");
       }
     } catch (error) {
       console.error('❌ Error fetching Google Fit Data:', error.message);
     }
-
-    console.log("✅ Google Fit Data:", googleFitData);
 
     // Return final response
     return res.status(200).json({
@@ -165,13 +189,11 @@ export const getPatientDetails = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("❌ Error in getPatientDetails:", error);
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
 
-// Update patient details including health info
 export const updatePatientDetails = async (req, res) => {
   const { firstName, lastName, address, city, state, pincode, phoneNumber, ...healthInfo } = req.body;
 

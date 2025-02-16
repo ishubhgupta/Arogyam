@@ -19,7 +19,6 @@ const UserProfile = () => {
         );
         setUserData(response.data.patient);
       } catch (err) {
-        console.error("Error fetching user data:", err);
         setError("Failed to load user data");
       } finally {
         setLoading(false);
