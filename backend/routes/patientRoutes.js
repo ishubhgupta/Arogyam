@@ -1,11 +1,11 @@
 import express from 'express';
-import { getpatientDetails, updatepatientDetails } from '../controllers/patientController.js';
+import { getPatientDetails, updatePatientDetails } from '../controllers/patientController.js';
 import { verifyToken } from "../middlewares/authentication.js";
 
 const router = express.Router();
 
-router.get('/profile', verifyToken, getpatientDetails);
+router.get('/profile', verifyToken, getPatientDetails);
 
-router.put('/profile', verifyToken, updatepatientDetails);
+router.put('/profile', verifyToken, updatePatientDetails);
 
 export default router;

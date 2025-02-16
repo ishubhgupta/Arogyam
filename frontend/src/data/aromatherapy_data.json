@@ -1,0 +1,212 @@
+[
+    {
+        "Essential Oil":"Lavender",
+        "Botanical Name":"Lavandula angustifolia",
+        "Properties":"Calming, Antiseptic",
+        "Benefits":"Reduces stress, promotes sleep, heals burns",
+        "Recommended Uses":"Diffuser, Topical (diluted), Bath"
+    },
+    {
+        "Essential Oil":"Peppermint",
+        "Botanical Name":"Mentha piperita",
+        "Properties":"Stimulating, Cooling",
+        "Benefits":"Relieves headaches, improves focus, aids digestion",
+        "Recommended Uses":"Diffuser, Topical (diluted), Inhalation"
+    },
+    {
+        "Essential Oil":"Eucalyptus",
+        "Botanical Name":"Eucalyptus globulus",
+        "Properties":"Decongestant, Antimicrobial",
+        "Benefits":"Clears sinuses, boosts immunity, relieves muscle pain",
+        "Recommended Uses":"Diffuser, Topical (diluted), Steam inhalation"
+    },
+    {
+        "Essential Oil":"Tea Tree",
+        "Botanical Name":"Melaleuca alternifolia",
+        "Properties":"Antiseptic, Antifungal",
+        "Benefits":"Treats acne, fights infections, soothes skin irritations",
+        "Recommended Uses":"Topical (diluted), Cleaning products"
+    },
+    {
+        "Essential Oil":"Chamomile",
+        "Botanical Name":"Matricaria chamomilla",
+        "Properties":"Soothing, Anti-inflammatory",
+        "Benefits":"Reduces anxiety, soothes skin, aids sleep",
+        "Recommended Uses":"Diffuser, Topical (diluted), Tea"
+    },
+    {
+        "Essential Oil":"Bergamot",
+        "Botanical Name":"Citrus bergamia",
+        "Properties":"Uplifting, Antiseptic",
+        "Benefits":"Reduces stress, improves mood, balances skin",
+        "Recommended Uses":"Diffuser, Topical (diluted), Perfume"
+    },
+    {
+        "Essential Oil":"Rosemary",
+        "Botanical Name":"Rosmarinus officinalis",
+        "Properties":"Stimulating, Antioxidant",
+        "Benefits":"Improves memory, relieves muscle pain, promotes hair growth",
+        "Recommended Uses":"Diffuser, Topical (diluted), Hair care"
+    },
+    {
+        "Essential Oil":"Lemon",
+        "Botanical Name":"Citrus limon",
+        "Properties":"Cleansing, Energizing",
+        "Benefits":"Boosts immunity, improves mood, cleans surfaces",
+        "Recommended Uses":"Diffuser, Topical (diluted), Cleaning products"
+    },
+    {
+        "Essential Oil":"Ylang-Ylang",
+        "Botanical Name":"Cananga odorata",
+        "Properties":"Relaxing, Aphrodisiac",
+        "Benefits":"Reduces stress, balances hormones, promotes relaxation",
+        "Recommended Uses":"Diffuser, Topical (diluted), Bath"
+    },
+    {
+        "Essential Oil":"Frankincense",
+        "Botanical Name":"Boswellia carterii",
+        "Properties":"Grounding, Anti-inflammatory",
+        "Benefits":"Reduces anxiety, improves skin, supports immune system",
+        "Recommended Uses":"Diffuser, Topical (diluted), Meditation"
+    },
+    {
+        "Essential Oil":"Myrrh",
+        "Botanical Name":"Commiphora myrrha",
+        "Properties":"Healing, Antiseptic",
+        "Benefits":"Soothes skin, supports respiratory health, promotes emotional balance",
+        "Recommended Uses":"Diffuser, Topical (diluted), Incense"
+    },
+    {
+        "Essential Oil":"Sandalwood",
+        "Botanical Name":"Santalum album",
+        "Properties":"Calming, Aphrodisiac",
+        "Benefits":"Reduces anxiety, improves focus, promotes relaxation",
+        "Recommended Uses":"Diffuser, Topical (diluted), Perfume"
+    },
+    {
+        "Essential Oil":"Geranium",
+        "Botanical Name":"Pelargonium graveolens",
+        "Properties":"Balancing, Antiseptic",
+        "Benefits":"Balances hormones, soothes skin, reduces stress",
+        "Recommended Uses":"Diffuser, Topical (diluted), Bath"
+    },
+    {
+        "Essential Oil":"Clary Sage",
+        "Botanical Name":"Salvia sclarea",
+        "Properties":"Relaxing, Hormonal",
+        "Benefits":"Reduces stress, balances hormones, promotes sleep",
+        "Recommended Uses":"Diffuser, Topical (diluted), Bath"
+    },
+    {
+        "Essential Oil":"Patchouli",
+        "Botanical Name":"Pogostemon cablin",
+        "Properties":"Grounding, Antifungal",
+        "Benefits":"Reduces anxiety, improves skin, promotes relaxation",
+        "Recommended Uses":"Diffuser, Topical (diluted), Perfume"
+    },
+    {
+        "Essential Oil":"Orange",
+        "Botanical Name":"Citrus sinensis",
+        "Properties":"Uplifting, Cleansing",
+        "Benefits":"Boosts mood, reduces stress, cleans surfaces",
+        "Recommended Uses":"Diffuser, Topical (diluted), Cleaning products"
+    },
+    {
+        "Essential Oil":"Ginger",
+        "Botanical Name":"Zingiber officinale",
+        "Properties":"Warming, Stimulating",
+        "Benefits":"Aids digestion, relieves nausea, reduces muscle pain",
+        "Recommended Uses":"Diffuser, Topical (diluted), Tea"
+    },
+    {
+        "Essential Oil":"Cinnamon",
+        "Botanical Name":"Cinnamomum zeylanicum",
+        "Properties":"Warming, Antimicrobial",
+        "Benefits":"Boosts immunity, improves circulation, relieves pain",
+        "Recommended Uses":"Diffuser, Topical (diluted), Cleaning products"
+    },
+    {
+        "Essential Oil":"Clove",
+        "Botanical Name":"Syzygium aromaticum",
+        "Properties":"Warming, Antiseptic",
+        "Benefits":"Relieves toothache, boosts immunity, improves digestion",
+        "Recommended Uses":"Diffuser, Topical (diluted), Dental care"
+    },
+    {
+        "Essential Oil":"Juniper Berry",
+        "Botanical Name":"Juniperus communis",
+        "Properties":"Detoxifying, Antiseptic",
+        "Benefits":"Supports kidney function, relieves muscle pain, reduces stress",
+        "Recommended Uses":"Diffuser, Topical (diluted), Bath"
+    },
+    {
+        "Essential Oil":"Cypress",
+        "Botanical Name":"Cupressus sempervirens",
+        "Properties":"Grounding, Antiseptic",
+        "Benefits":"Improves circulation, reduces stress, supports respiratory health",
+        "Recommended Uses":"Diffuser, Topical (diluted), Massage"
+    },
+    {
+        "Essential Oil":"Neroli",
+        "Botanical Name":"Citrus aurantium",
+        "Properties":"Calming, Antidepressant",
+        "Benefits":"Reduces anxiety, improves skin, promotes relaxation",
+        "Recommended Uses":"Diffuser, Topical (diluted), Perfume"
+    },
+    {
+        "Essential Oil":"Vetiver",
+        "Botanical Name":"Vetiveria zizanioides",
+        "Properties":"Grounding, Sedative",
+        "Benefits":"Reduces anxiety, promotes sleep, soothes skin",
+        "Recommended Uses":"Diffuser, Topical (diluted), Perfume"
+    },
+    {
+        "Essential Oil":"Helichrysum",
+        "Botanical Name":"Helichrysum italicum",
+        "Properties":"Regenerative, Healing",
+        "Benefits":"Supports skin regeneration, soothes irritation",
+        "Recommended Uses":"Diffuser, Topical (diluted), Skincare"
+    },
+    {
+        "Essential Oil":"Melissa",
+        "Botanical Name":"Melissa officinalis",
+        "Properties":"Calming, Nervine",
+        "Benefits":"Calms nerves, improves mood, reduces stress",
+        "Recommended Uses":"Diffuser, Topical (diluted), Tea"
+    },
+    {
+        "Essential Oil":"Jasmine",
+        "Botanical Name":"Jasminum grandiflorum",
+        "Properties":"Aphrodisiac, Soothing",
+        "Benefits":"Enhances sensuality, uplifts mood, soothes skin",
+        "Recommended Uses":"Diffuser, Topical (diluted), Perfume"
+    },
+    {
+        "Essential Oil":"Cardamom",
+        "Botanical Name":"Elettaria cardamomum",
+        "Properties":"Stimulating, Digestive",
+        "Benefits":"Improves digestion, boosts metabolism, reduces bloating",
+        "Recommended Uses":"Diffuser, Topical (diluted), Inhalation"
+    },
+    {
+        "Essential Oil":"Fennel",
+        "Botanical Name":"Foeniculum vulgare",
+        "Properties":"Soothing, Digestive",
+        "Benefits":"Aids digestion, relieves bloating, supports respiratory health",
+        "Recommended Uses":"Diffuser, Topical (diluted), Tea"
+    },
+    {
+        "Essential Oil":"Basil",
+        "Botanical Name":"Ocimum basilicum",
+        "Properties":"Energizing, Antispasmodic",
+        "Benefits":"Energizes mind, relieves headaches, supports digestion",
+        "Recommended Uses":"Diffuser, Topical (diluted), Massage"
+    },
+    {
+        "Essential Oil":"Spearmint",
+        "Botanical Name":"Mentha spicata",
+        "Properties":"Cooling, Refreshing",
+        "Benefits":"Boosts focus, freshens breath, soothes nausea",
+        "Recommended Uses":"Diffuser, Topical (diluted), Inhalation"
+    }
+]

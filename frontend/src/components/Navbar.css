@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 4rem;
+  padding: 0rem 4rem;
   background: linear-gradient(to right, #ffffff, #f8f9fa);
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -153,4 +153,15 @@
     padding: 0.6rem 1.2rem;
     font-size: 1rem;
   }
+}
+.navbar-logo {
+  height: 4.4rem;
+  width: auto;
+  object-fit: contain;
+
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
 }

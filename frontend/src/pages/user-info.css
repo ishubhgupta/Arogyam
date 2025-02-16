@@ -1,0 +1,13 @@
+.user-profile-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Updated .user-main to scroll internally if content exceeds */
+.user-main {
+  flex: 1;
+  padding: 20px;
+  background: #f8fafd;
+  overflow-y: auto;
+  max-height: 100vh;
+}

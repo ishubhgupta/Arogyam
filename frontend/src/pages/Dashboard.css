@@ -75,22 +75,22 @@
   background-color: #a3d0fc; /* Light blue-gray */
 }
 
-/* Seasonal Tips: cells 3,4,5 */
-.seasonal {
+/* notifications Tips: cells 3,4,5 */
+.notifications {
   grid-column: 3 / span 3;
   grid-row: 1;
   background-color: #bed6ff; /* Light blue */
 }
 
-/* Actions: cell 6 */
+/* chatbot: cell 6 */
 .action {
   grid-column: 6;
   grid-row: 1;
   background-color: #85b5fd; /* Soft blue */
 }
 
-/* Appointment Deadlines: cell 9 */
-.appointment {
+/* seasonal Deadlines: cell 9 */
+.seasonal {
   grid-column: 3 / span 2;
   grid-row: 2;
   background-color: #f9c2bd; /* Light red */
@@ -135,7 +135,7 @@
 
 /* Home Remedies: cells 15,16,17,18 */
 .home {
-  grid-column: 3 / span 4;
+  grid-column: 3 / span 1;
   grid-row: 3;
   background-color: #ddbbfd; /* Light purple */
   position: relative;
@@ -152,50 +152,30 @@
   max-height: 80%; /* Ensures the icon doesn't exceed the container height */
 }
 
-/* Actions Card: Button Grid in 2x2 layout with circular buttons */
-.actions .button-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+.disease {
+  grid-column: 4 / span 3;
+  grid-row: 3;
+  background-color: #FFC785; /* Light purple */
+  position: relative;
+  overflow: hidden;
 }
 
-.actions .button-grid button {
-  width: 50px;
-  height: 50px;
-  padding: 0;
-  border-radius: 50%;
-  background-color: #1a73e8; /* Google blue */
-  color: #fff;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.disease .disease-prediction-icon {
+  position: absolute;
+  top: 50%; /* Adjust this value to move the icon vertically */
+  left: 50%; /* Adjust this value to move the icon horizontally */
+  transform: translate(100%, -50%); /* Centers the icon */
+  width: 100px; /* Adjust the width as needed */
+  height: auto; /* Maintains aspect ratio */
+  max-height: 80%; /* Ensures the icon doesn't exceed the container height */
 }
 
-.actions .button-grid button:hover {
-  background-color: #1557b0; /* Darker blue */
-}
+/* chatbot Card: Button Grid in 2x2 layout with circular buttons */
 
-.actions .button-grid button img {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
+
 
 /* Edit Button */
-.edit-btn {
-  background-color: #1a73e8; /* Google blue */
-  color: white;
-  border: none;
-  padding: 20px 16px;
-  border-radius: 12px;
-  margin: 10px 1.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-size: 1.25rem;
-}
+
 
 .edit-btn:hover {
   background-color: #1557b0; /* Darker blue */
@@ -213,7 +193,7 @@
     grid-row: 1;
   }
 
-  .seasonal {
+  .notifications {
     grid-column: 1 / span 4;
     grid-row: 2;
   }
@@ -223,7 +203,7 @@
     grid-row: 3;
   }
 
-  .appointment {
+  .seasonal {
     grid-column: 1 / span 4;
     grid-row: 4;
   }
@@ -262,4 +242,190 @@
   .dashboard {
     padding: 1rem;
   }
+}
+
+/* Patient Summary */
+.patient {
+  background: linear-gradient(to right, #a3d0fc, #d9eaff); /* Soft blue gradient */
+}
+
+/* notifications Tips */
+.notifications {
+  background: linear-gradient(to right, #FFE4C2, #FFD9A6, #FFC785);/* Light sky blue gradient */
+}
+
+/* chatbot */
+.action {
+  background: linear-gradient(to right, #85b5fd, #c2d9ff); /* Soft blue variation */
+}
+
+/* seasonal Deadlines */
+.seasonal {
+  background: linear-gradient(to right, #f9c2bd, #ffdad4); /* Warm pastel red gradient */
+}
+
+/* Google Fit Integration */
+.google {
+  background: linear-gradient(to right, #faeded, #fff5f5); /* Very light pink gradient */
+}
+
+/* Natural Therapy */
+.natural {
+  background: linear-gradient(to right, #c0f6cf, #e3ffe8); /* Soft mint green gradient */
+}
+
+/* Home Remedies */
+.home {
+  background: linear-gradient(to right, #ddbbfd, #f3e6ff); /* Light lavender gradient */
+}
+.disease {
+  background: linear-gradient(to right, #bed6ff, #e1f0ff);
+}
+
+/* Action Buttons */
+.chatbot .button-grid button {
+  background: linear-gradient(to right, #1a73e8, #5293ff); /* Vibrant Google blue */
+}
+
+.chatbot .button-grid button:hover {
+  background: linear-gradient(to right, #1557b0, #417de0); /* Darker blue on hover */
+}
+
+.Dashboard-Profile-lottieAnimation {
+  width: 85%;
+  height: 85%;
+  padding-left: 3rem;
+}
+
+/* Google Fit Integration Container */
+.google {
+  background: linear-gradient(to right, #faeded, #fff5f5);
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  height: 18vh;
+  /* Add these properties to match card hover animation */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.google:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+.google-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.google-text {
+  flex: 1;
+  margin-right: 1.5rem; /* Add some space between text and animation */
+}
+
+.google-text h3 {
+  font-size: 1.7rem;
+  color: #202124;
+  /* margin-bottom: 0.75rem; */
+  font-weight: 600;
+}
+
+.Dashboard-Google-lottieAnimation {
+  width: 100%;
+  padding-left: 3rem;
+}
+
+/* seasonal Deadlines Container */
+.seasonal {
+  grid-column: 3 / span 2;
+  grid-row: 2;
+  background: linear-gradient(to right, #f9c2bd, #ffdad4); /* Warm pastel red gradient */
+  border-radius: 16px;
+  padding: 0rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden; /* Ensure nothing overflows */
+  height: 18vh; /* Adjust height as needed */
+}
+
+.seasonal-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.seasonal-text {
+  flex: 1;
+  margin-right: 1.5rem; /* Add some space between text and animation */
+}
+
+.seasonal-text h3 {
+  font-size: 1.7rem;
+  color: #202124;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.Dashboard-seasonal-lottieAnimation {
+  flex-shrink: 0; /* Prevent the animation from shrinking */
+  width: 40%; /* Adjust the width as needed */
+  height: 100%; /* Ensure the height fits within the container */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Disease Prediction Container */
+/* Disease Prediction Container */
+.disease {
+  grid-column: 4 / span 3;
+  grid-row: 3;
+  background-color: #FFC785;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  border-radius: 16px;
+  height: 25vh; /* Add fixed height to match other cards */
+}
+
+.disease-text {
+  flex: 1;
+  margin-right: 1.5rem;
+}
+
+.disease-text h3 {
+  font-size: 1.7rem;
+  color: #202124;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+
+.Dashboard-Disease-lottieAnimation {
+  flex-shrink: 0;
+  width: 35%;
+  height: 100%; /* Change from 0 to 100% */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.Dashboard-Chatbot-lottieAnimation {
+  width: 100%;
+  height: 90%;  /* Increased height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
 }

@@ -35,3 +35,4 @@ export const checkAuth = async () => {
 export const googleAuth = async () => {
   return await axiosInstance.get('/google');
 };
+
