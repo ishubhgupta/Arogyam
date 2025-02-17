@@ -26,7 +26,7 @@ const Dashboard = () => {
       <div className="dashboard">
         <div className="grid-container">
           {/* Row 1 */}
-          <div 
+          <div
             className="card yellow patient"
             onClick={() => navigate("/user-profile")}
             tyle={{ cursor: "pointer" }}
@@ -56,7 +56,7 @@ const Dashboard = () => {
           <div className="card teal seasonal">
             <div className="seasonal-content">
               <div className="seasonal-text">
-               <h3>kuch daalna he idhar</h3>
+                <h3>kuch daalna he idhar</h3>
               </div>
             </div>
           </div>
@@ -84,16 +84,17 @@ const Dashboard = () => {
           </div>
 
           <div
-        className="card pink home"
-        onClick={() => navigate("/google-fit")}
-        style={{ cursor: "pointer" }}
-      >
-        <h3>Google Fit Connect</h3>
-      </div>
+            className="card pink home"
+            onClick={() => navigate("/google-fit")}
+            style={{ cursor: "pointer" }}
+          >
+            <h3>Google Fit Connect</h3>
+          </div>
 
           <div className="card red disease">
             <div className="disease-text">
               <h3>Seasonal Tips</h3>
+              <WeatherTip /> {/* Added weather tips display */}
             </div>
           </div>
         </div>
