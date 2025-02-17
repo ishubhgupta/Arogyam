@@ -15,38 +15,38 @@ function YogaSearch() {
   }, []);
 
   // Find the default pose (Virabhadrasana C)
-  const defaultFeaturedPose = yogaPoses.find(
-    (pose) => pose.sanskrit_name === "Virabhadrasana C"
-  );
+  // const defaultFeaturedPose = yogaPoses.find(
+  //   (pose) => pose.sanskrit_name === "Virabhadrasana C"
+  // );
 
   /* Updated filtering to search in both name and description */
-  const filteredPoses = yogaPoses.filter((pose) => {
-    const lowerQuery = query.toLowerCase();
-    const matchesSearch =
-      (pose.name && pose.name.toLowerCase().includes(lowerQuery)) ||
-      (pose.description && pose.description.toLowerCase().includes(lowerQuery));
+  // const filteredPoses = yogaPoses.filter((pose) => {
+  //   const lowerQuery = query.toLowerCase();
+  //   const matchesSearch =
+  //     (pose.name && pose.name.toLowerCase().includes(lowerQuery)) ||
+  //     (pose.description && pose.description.toLowerCase().includes(lowerQuery));
 
-    // Add expertise level filtering
-    const matchesExpertise =
-      expertiseFilter === "All" || pose.expertise_level === expertiseFilter;
+  //   // Add expertise level filtering
+  //   const matchesExpertise =
+  //     expertiseFilter === "All" || pose.expertise_level === expertiseFilter;
 
-    return matchesSearch && matchesExpertise;
-  });
+  //   return matchesSearch && matchesExpertise;
+  // });
 
-  const posesToShow = filteredPoses.slice(0, visibleCount);
-  // Use default pose when no search/filter is active
-  const featuredPose =
-    query === "" && expertiseFilter === "All"
-      ? defaultFeaturedPose
-      : posesToShow[0];
-  const otherPoses =
-    query === "" && expertiseFilter === "All"
-      ? posesToShow.filter((pose) => pose !== defaultFeaturedPose)
-      : posesToShow.slice(1);
+  // const posesToShow = filteredPoses.slice(0, visibleCount);
+  // // Use default pose when no search/filter is active
+  // const featuredPose =
+  //   query === "" && expertiseFilter === "All"
+  //     ? defaultFeaturedPose
+  //     : posesToShow[0];
+  // const otherPoses =
+  //   query === "" && expertiseFilter === "All"
+  //     ? posesToShow.filter((pose) => pose !== defaultFeaturedPose)
+  //     : posesToShow.slice(1);
 
-  const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + 10);
-  };
+  // const handleLoadMore = () => {
+  //   setVisibleCount((prev) => prev + 10);
+  // };
 
   const handleSearch = async (e) => {
     if (e.key === "Enter") {

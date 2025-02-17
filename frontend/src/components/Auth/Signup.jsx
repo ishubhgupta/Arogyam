@@ -4,6 +4,7 @@ import { signup } from '../../api/auth';
 import './Signup.css';
 import SignupL from '../../public/images/Signup.json';
 import Lottie from 'lottie-react';
+import GoogleIcon from '../../public/images/dashboard/google.png';
 import Navbar from '../Navbar';
 
 const Signup = () => {
@@ -151,7 +152,7 @@ const Signup = () => {
             }}
           >
             <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+              src={GoogleIcon}
               alt="Google logo"
               style={{ width: '20px', marginRight: '10px' }}
             />

@@ -393,7 +393,7 @@
   position: relative;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: left;
   justify-content: space-between;
   padding: 1.5rem;
   border-radius: 16px;
@@ -403,6 +403,7 @@
 .disease-text {
   flex: 1;
   margin-right: 1.5rem;
+  /* text-align: left; */
 }
 
 .disease-text h3 {

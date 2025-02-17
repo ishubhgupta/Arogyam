@@ -56,8 +56,7 @@ const Dashboard = () => {
           <div className="card teal seasonal">
             <div className="seasonal-content">
               <div className="seasonal-text">
-                <h3>Seasonal Tips</h3>
-                <WeatherTip /> {/* integrated dynamic weather tip */}
+               <h3>kuch daalna he idhar</h3>
               </div>
             </div>
           </div>
@@ -66,9 +65,6 @@ const Dashboard = () => {
             <div className="google-content">
               <div className="google-text">
                 <h3>Disease Prediction</h3>
-              </div>
-              <div className="Dashboard-Google-lottieAnimation">
-                <Lottie animationData={GoogleFit} />
               </div>
             </div>
           </div>
@@ -88,24 +84,16 @@ const Dashboard = () => {
           </div>
 
           <div
-            className="card pink home"
-            onClick={() => navigate("/google-fit")}
-            style={{ cursor: "pointer" }}
-          >
-            <img
-              className="home-remedies-icon"
-              src={homeRemediesIcon}
-              alt="Home Remedies Icon"
-            />
-            <h3>Google Fit Connect</h3>
-          </div>
+        className="card pink home"
+        onClick={() => navigate("/google-fit")}
+        style={{ cursor: "pointer" }}
+      >
+        <h3>Google Fit Connect</h3>
+      </div>
 
           <div className="card red disease">
             <div className="disease-text">
-              <h3>Disease Prediction</h3>
-            </div>
-            <div className="Dashboard-Disease-lottieAnimation">
-              <Lottie animationData={Disease} />
+              <h3>Seasonal Tips</h3>
             </div>
           </div>
         </div>

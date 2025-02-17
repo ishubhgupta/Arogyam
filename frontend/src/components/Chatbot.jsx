@@ -1,21 +1,29 @@
-import { useState, useEffect } from "react";
-import ReactMarkdown from 'react-markdown';
-import styles from './Serenity.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouseUser } from '@fortawesome/free-solid-svg-icons';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { useState, useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import styles from "./Serenity.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouseUser, faUser, faStop, faLeaf, faDisease } from "@fortawesome/free-solid-svg-icons";
 
 const SerenityChat = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isBotTyping, setIsBotTyping] = useState(false);
   const [showWelcomeMessage, setShowWelcomeMessage] = useState(true);
+  const [selectedBot, setSelectedBot] = useState("RantBot");
+  const [showBotDropdown, setShowBotDropdown] = useState(false);
+  const typingIntervalRef = useRef(null);
+
+  // Ensure a unique thread_id persists across one session
+  if (!sessionStorage.getItem("thread_id")) {
+    sessionStorage.setItem("thread_id", self.crypto.randomUUID());
+  }
+  const thread_id = sessionStorage.getItem("thread_id");
 
   const defaultMessages = [
-    "What can you do?",
-    "Tell me a joke.",
-    "How do I get started?",
-    "What is your purpose?"
+    "How can I manage my stress better?",
+    "What can I do to improve my sleep?",
+    "How do I handle feeling anxious or overwhelmed?",
+    "Can you help me with techniques to stay positive?",
   ];
 
   useEffect(() => {
@@ -23,67 +31,66 @@ const SerenityChat = () => {
   }, []);
 
   const sendMessage = async (message) => {
-    if (message.trim() === "") return;
+    if (isBotTyping || message.trim() === "") return;
 
-    // Hide the welcome message when the user sends a message
     setShowWelcomeMessage(false);
-
-    setMessages((prev) => [...prev, { text: message, type: "user" }]);
+    setMessages((prev) => [
+      ...prev,
+      { text: message, type: "user" },
+      { text: "", type: "bot", loading: true },
+    ]);
     setInput("");
-
     setIsBotTyping(true);
-
-    setTimeout(async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:8000/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ message: message })
-        });
-
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data = await response.json();
-
-        setIsBotTyping(false);
-        simulateTypingEffect(data.response);
-      } catch (error) {
-        setIsBotTyping(false);
-        setMessages((prev) => [
-          ...prev,
-          { text: "Sorry, something went wrong. Please try again.", type: "bot" }
-        ]);
-      }
-    }, 100);
+//https://arogyam-chatbot.onrender.com/chat
+    try {
+      const response = await fetch("https://arogyam-chatbot-home-remedy.onrender.com/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message, model: selectedBot, thread_id: thread_id }),
+      });
+      if (!response.ok) throw new Error("Network response was not ok");
+      const data = await response.json();
+      simulateTypingEffect(data.response);
+    } catch (error) {
+      setIsBotTyping(false);
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: "Sorry, something went wrong. Please try again.",
+          type: "bot",
+        },
+      ]);
+    }
   };
 
   const simulateTypingEffect = (responseText) => {
     let currentText = "";
     let index = 0;
+    setTimeout(() => {
+      typingIntervalRef.current = setInterval(() => {
+        if (index < responseText.length) {
+          currentText += responseText[index];
+          index++;
+          setMessages((prev) => {
+            const updated = [...prev];
+            updated[updated.length - 1] = { text: currentText, type: "bot" };
+            return updated;
+          });
+        } else {
+          clearInterval(typingIntervalRef.current);
+          typingIntervalRef.current = null;
+          setIsBotTyping(false);
+        }
+      }, 25);
+    }, 0);
+  };
 
-    setMessages((prev) => [...prev, { text: "", type: "bot" }]);
-
-    const interval = setInterval(() => {
-      if (index < responseText.length) {
-        currentText += responseText[index];
-        index++;
-
-        setMessages((prev) => {
-          const updatedMessages = [...prev];
-          const lastIndex = updatedMessages.length - 1;
-
-          if (updatedMessages[lastIndex].type === "bot") {
-            updatedMessages[lastIndex] = { text: currentText, type: "bot" };
-          }
-
-          return updatedMessages;
-        });
-      } else {
-        setIsBotTyping(false);
-        clearInterval(interval);
-      }
-    }, 25);
+  const handleStop = () => {
+    if (typingIntervalRef.current) {
+      clearInterval(typingIntervalRef.current);
+      typingIntervalRef.current = null;
+    }
+    setIsBotTyping(false);
   };
 
   const createParticles = () => {
@@ -100,7 +107,7 @@ const SerenityChat = () => {
   };
 
   return (
-    <div className={styles['serenity-chat']}>
+    <div className={styles["serenity-chat"]}>
       <div className={styles.sidebar}>
         <a href="/dashboard">
           <FontAwesomeIcon icon={faHouseUser} />
@@ -108,20 +115,24 @@ const SerenityChat = () => {
         <a href="/user-profile">
           <FontAwesomeIcon icon={faUser} />
         </a>
-        <a href="#">🕊️</a>
-        <a href="#">🎵</a>
+        <a href="/user-profile">
+          <FontAwesomeIcon icon={faLeaf} />
+        </a>
+        <a href="/user-profile">
+          <FontAwesomeIcon icon={faDisease} />
+        </a>
         <a href="#">🛋️</a>
       </div>
-      <div className={styles['main-content']}>
-        <div className={styles['chat-container']} id="chat-container">
+      <div className={styles["main-content"]}>
+        <div className={styles["chat-container"]} id="chat-container">
           {showWelcomeMessage && (
-            <div className={styles['welcome-message']}>
+            <div className={styles["welcome-message"]}>
               Welcome to RantBot, I am here for your assistance. 🌸
-              <div className={styles['default-messages']}>
+              <div className={styles["default-messages"]}>
                 {defaultMessages.map((msg, index) => (
                   <div
                     key={index}
-                    className={styles['default-message']}
+                    className={styles["default-message"]}
                     onClick={() => sendMessage(msg)}
                   >
                     {msg}
@@ -131,32 +142,81 @@ const SerenityChat = () => {
             </div>
           )}
           {messages.map((msg, index) => (
-            <div key={index} className={`${styles.message} ${styles[`${msg.type}-message`]}`}>
+            <div
+              key={index}
+              className={`${styles.message} ${styles[`${msg.type}-message`]}`}
+            >
               {msg.type === "bot" ? (
-                <ReactMarkdown>{msg.text}</ReactMarkdown>
+                msg.loading ? (
+                  <span className={styles["loading-dots"]}>
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                  </span>
+                ) : (
+                  <ReactMarkdown>{msg.text}</ReactMarkdown>
+                )
               ) : (
                 msg.text
               )}
             </div>
           ))}
-          {isBotTyping && (
-            <div className={`${styles.message} ${styles['bot-message']}`}>
-              <div className={styles['typing-indicator']}>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
-          )}
         </div>
-        <div className={styles['input-container']}>
+        <div className={styles["input-container"]}>
+          <div className={styles["bot-dropdown"]}>
+            <div
+              className={styles["bot-dropdown-header"]}
+              onClick={() => setShowBotDropdown(!showBotDropdown)}
+            >
+              {selectedBot === "RantBot" && <FontAwesomeIcon icon={faUser} />}
+              {selectedBot === "RemediesChatbot" && <FontAwesomeIcon icon={faLeaf} />}
+              {selectedBot === "DiseaseChatbot" && <FontAwesomeIcon icon={faDisease} />}
+              <span className={styles.arrow}>{showBotDropdown ? "▲" : "▼"}</span>
+            </div>
+            {showBotDropdown && (
+              <div className={styles["bot-dropdown-menu"]}>
+                <div
+                  className={styles["bot-dropdown-item"]}
+                  title="RantBot Chatbot"
+                  onClick={() => { setSelectedBot("RantBot"); setShowBotDropdown(false); }}
+                >
+                  <FontAwesomeIcon icon={faUser} />
+                  <span>RantBot Chatbot</span>
+                </div>
+                <div
+                  className={styles["bot-dropdown-item"]}
+                  title="RemediesChatbot"
+                  onClick={() => { setSelectedBot("RemediesChatbot"); setShowBotDropdown(false); }}
+                >
+                  <FontAwesomeIcon icon={faLeaf} />
+                  <span>RemediesChatbot</span>
+                </div>
+                <div
+                  className={styles["bot-dropdown-item"]}
+                  title="DiseaseChatbot"
+                  onClick={() => { setSelectedBot("DiseaseChatbot"); setShowBotDropdown(false); }}
+                >
+                  <FontAwesomeIcon icon={faDisease} />
+                  <span>DiseaseChatbot</span>
+                </div>
+              </div>
+            )}
+          </div>
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Express yourself freely..."
+            disabled={isBotTyping}
           />
-          <button onClick={() => sendMessage(input)}>Send</button>
+          <button onClick={() => sendMessage(input)} disabled={isBotTyping}>
+            Send
+          </button>
+          {isBotTyping && (
+            <button className={styles["stop-button"]} onClick={handleStop}>
+              <FontAwesomeIcon icon={faStop} />
+            </button>
+          )}
         </div>
       </div>
       <div id="particles"></div>
