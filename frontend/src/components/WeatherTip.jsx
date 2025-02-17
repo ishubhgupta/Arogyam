@@ -1,27 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
-import weatherTips from "../data/weatherTips.json";
+import { generateHealthTip } from "../services/geminiService";
 
 const WeatherTip = () => {
   const [tip, setTip] = useState("Loading weather tips...");
-  // To ensure we only refresh once per scheduled minute.
   const lastRefreshRef = useRef("");
-
-  // Helper to get tip text from the JSON data based on a key
-  const getTipFromKey = (key) => {
-    const match = weatherTips.conditions.find((item) => item.condition === key);
-    return match
-      ? match.tip
-      : weatherTips.conditions.find((item) => item.condition === "default").tip;
-  };
 
   const fetchWeather = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
+          // Load weather API key from env
+          const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
           fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`
+            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${weatherApiKey}&units=metric`
           )
             .then((response) => {
               if (!response.ok) {
@@ -30,55 +22,33 @@ const WeatherTip = () => {
               return response.json();
             })
             .then((data) => {
-              // Extract various weather parameters
+              // Extract weather parameters
               const temp = data.main?.temp;
               const humidity = data.main?.humidity;
-              const weatherCondition =
+              const condition =
                 data.weather && data.weather[0]
                   ? data.weather[0].main.toLowerCase()
-                  : "";
+                  : "unknown";
               const rainVolume = data.rain ? data.rain["1h"] || 0 : 0;
               const snowVolume = data.snow ? data.snow["1h"] || 0 : 0;
-              const windSpeed = data.wind?.speed || 0; // wind speed in m/s
+              const windSpeed = data.wind?.speed || 0;
 
-              let key = "default";
-              if (weatherCondition === "thunderstorm") {
-                key = "thunderstorm";
-              } else if (
-                weatherCondition === "drizzle" ||
-                weatherCondition === "rain"
-              ) {
-                key = rainVolume > 5 ? "rain_heavy" : "rain_light";
-              } else if (weatherCondition === "snow" || snowVolume > 0) {
-                key = "snow";
-              } else if (weatherCondition === "clear") {
-                if (temp > 40) {
-                  key = "extreme_hot";
-                } else if (temp > 30) {
-                  key = "clear_hot";
-                } else if (temp < -5) {
-                  key = "extreme_cold";
-                } else if (temp < 5) {
-                  key = "clear_cold";
-                } else {
-                  key = "clear";
-                }
-              } else if (weatherCondition === "clouds") {
-                key = temp < 10 ? "clouds_chilly" : "clouds";
-              } else if (["mist", "fog", "haze"].includes(weatherCondition)) {
-                key = "fog";
-              } else if (["smoke", "dust", "sand"].includes(weatherCondition)) {
-                key = "smog";
-              }
-              // Extended condition: if wind is high, override with windy tip.
-              if (windSpeed > 10) {
-                key = "windy";
-              }
-              setTip(getTipFromKey(key));
+              // Build Gemini API prompt using the weather data
+              const prompt = `Based on the current weather: Temperature ${temp}°C, Humidity ${humidity}%, Condition ${condition}, Rain ${rainVolume}mm, Snow ${snowVolume}mm, Wind Speed ${windSpeed}m/s, provide a one-line health tip for the user.`;
+
+              // Use the geminiService to generate the health tip
+              generateHealthTip(prompt)
+                .then((generatedTip) => {
+                  setTip(generatedTip || "Stay healthy and enjoy your day!");
+                })
+                .catch((error) => {
+                  console.error("Gemini API error:", error);
+                  setTip("Unable to get health tip from Gemini API.");
+                });
             })
             .catch((error) => {
               console.error("Fetch error:", error);
-              setTip("Unable to fetch weather tips.");
+              setTip("Unable to fetch weather data.");
             });
         },
         (error) => {
