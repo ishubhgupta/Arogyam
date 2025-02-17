@@ -12,13 +12,13 @@ body {
   
   /* Container for the signup form and image */
   .signup-container {
-    margin-top: 2rem;
+    margin-top: 4.5rem;
     display: flex;
     background-color: #fff;
     border-radius: 20px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    width: 950px;
-    height: 600px;
+    width: 65vw;
+    height: 80vh;
     overflow: hidden;
     transition: transform 0.3s ease-in-out;
   }
@@ -60,6 +60,7 @@ body {
     font-weight: 700;
     color: #333;
     margin-bottom: 30px;
+    margin-top: 30px;
     text-align: center;
     letter-spacing: 1px;
   }
@@ -174,6 +175,7 @@ body {
   /* Styling for the login link */
 .login-link {
     margin-top: 20px;
+    margin-bottom: 20px;
     text-align: center;
   }
   

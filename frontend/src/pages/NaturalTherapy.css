@@ -1,268 +1,222 @@
-/*=============== GOOGLE FONTS ===============*/
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
-
-/*=============== VARIABLES CSS ===============*/
 :root {
-  /*========== Colors ==========*/
-  /*Color mode HSL(hue, saturation, lightness)*/
+  /* Enhanced color palette */
   --first-color: hsl(82, 60%, 28%);
   --title-color: hsl(0, 0%, 15%);
   --text-color: hsl(0, 0%, 35%);
-  --body-color: hsl(0, 0%, 95%);
+  --body-color: hsl(0, 0%, 98%);
   --container-color: hsl(0, 0%, 100%);
-
-  /*========== Font and typography ==========*/
-  /*.5rem = 8px | 1rem = 16px ...*/
-  --body-font: "Poppins", sans-serif;
-  --h2-font-size: 1.25rem;
-  --small-font-size: .813rem;
+  --accent-light: #f0f7f4;
+  --accent-dark: #e0eee4;
+  --primary-green: #3a5a40;
+  --secondary-green: #588157;
+  --hover-green: #344e41;
+  --shadow-color: rgba(0, 0, 0, 0.08);
 }
 
-/*========== Responsive typography ==========*/
-@media screen and (min-width: 1120px) {
-  :root {
-    --h2-font-size: 1.5rem;
-    --small-font-size: .875rem;
-  }
-}
 
-/*=============== BASE ===============*/
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-body {
-  font-family: var(--body-font);
-  background-color: var(--body-color);
-  color: var(--text-color);
-  margin: 0 !important; /* Force override any other margin settings */
-  padding: 0 !important;
+/* Enhanced Layout and Styling */
+.page-container {
+  display: flex;
+  width: 100%;
   min-height: 100vh;
+  background: linear-gradient(135deg, var(--accent-light) 0%, #ffffff 100%);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: 0; /* Remove default padding */
+  transition: 0.3s ease-in-out;
 }
 
-img {
-  display: block;
-  max-width: 100%;
-  height: auto;
+.page-container.menu-active {
+  padding-left: 300px; /* Add padding when menu is open */
 }
 
-/*=============== CARD ===============*/
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  transition: 0.3s ease-in-out;
+}
 
 .heading-container {
-  width: 100%;
-  background: linear-gradient(135deg, #374920 0%, #f9fcf7 100%);
-  padding: 1rem 0;
-  margin: 0;  /* Remove any margin */
-  text-align: left;
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+  padding: 3rem;
+  margin-bottom: 4rem;
+  border-radius: 30px;
+  box-shadow: 0 15px 35px var(--shadow-color);
   position: relative;
+  overflow: hidden;
+}
+.heading-container::before {
+  content: '';
+  position: absolute;
   top: 0;
-  padding-left: 1rem;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  opacity: 0.1;
 }
 
 .main-heading {
   font-size: 2.5rem;
   color: white;
-  font-weight: 600;
-  font-family: var(--body-font);
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   margin: 0;
-  padding: 0;
+  position: relative;
 }
 
-/* Add responsive font size for smaller screens */
-@media screen and (max-width: 768px) {
-  .main-heading {
-    font-size: 2rem;
-  }
-}
-.page-container {
-  display: flex;
-  width: 100%;
-  min-height: 100vh;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  position: absolute; /* Add this to ensure container starts from true top */
-  top: 0;
-  left: 0;
-}
-
-/* Container for the cards */
-.container {
-  flex: 1;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  margin-left: 5rem;
-  margin-right: 5rem;
-  margin-top: 0;  /* Change from -1rem to 0 */
-}
-
+/* Updated Card Grid Layout */
 .card__container {
   display: grid;
-  row-gap: 0rem;  /* Reduced from 3.5rem to 2rem */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
+  padding: 0.75rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+
+/* Enhanced Card Styling */
 .card__article {
-  position: relative;
+  background: white;
+  border-radius: 20px;
   overflow: hidden;
-  margin-bottom: 2rem;
-}
-
-.card__img {
-  width: 328px;
-  border-radius: 1.5rem;
-}
-
-.card__data {
-  width: 280px;
-  background-color: var(--container-color);
-  padding: 1.5rem 2rem;
-  box-shadow: 0 8px 24px hsla(0, 0%, 0%, .15);
-  border-radius: 1rem;
-  position: absolute;
-  bottom: -9rem;
-  left: 0;
-  right: 0;
-  margin-inline: auto;
-  opacity: 0;
-  transition: opacity 1s 1s;
-}
-
-.card__description {
-  display: block;
-  font-size: var(--small-font-size);
-  margin-bottom: .25rem;
-}
-
-.card__title {
-  font-size: var(--h2-font-size);
-  font-weight: 500;
-  color: var(--title-color);
-  margin-bottom: .75rem;
-}
-
-.card__button {
-  text-decoration: none;
-  font-size: var(--small-font-size);
-  font-weight: 500;
-  color: var(--first-color);
-}
-
-.card__button:hover {
-  text-decoration: underline;
-}
-
-/* Naming animations in hover */
-.card__article:hover .card__data {
-  animation: show-data 1s forwards;
-  opacity: 1;
-  transition: opacity .3s;
+  box-shadow: 0 10px 30px var(--shadow-color);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .card__article:hover {
-  animation: remove-overflow 2s forwards;
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-.card__article:not(:hover) {
-  animation: show-overflow 2s forwards;
+.card__image-container {
+  height: 230px;
+  position: relative;
+  overflow: hidden;
 }
 
-.card__article:not(:hover) .card__data {
-  animation: remove-data 1s forwards;
+.card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-/* Add this to your NaturalTherapy.css file */
-.chatbot-icon {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  cursor: pointer;
-  z-index: 1000;
+
+.card__article:hover .card__img {
+  transform: scale(1.15);
 }
 
-.chatbot-icon:hover {
-  transform: scale(1.1);
+.card__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+.card__data {
+  padding: 2rem;
+  position: relative;
+  background: linear-gradient(to bottom, white 0%, var(--accent-light) 100%);
+}
+
+.card__description {
+  font-size: 0.9rem;
+  color: var(--secondary-green);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.card__title {
+  font-size: 1.75rem;
+  color: var(--primary-green);
+  margin: 0.5rem 0 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.card__button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.9rem 2rem;
+  background: var(--primary-green);
+  color: white;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(58, 90, 64, 0.2);
+}
+
+.card__button:hover {
+  background: var(--hover-green);
+  transform: translateX(8px);
+  box-shadow: 0 8px 20px rgba(58, 90, 64, 0.3);
+}
+
+.card__button-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  margin-left: 8px;
   transition: transform 0.3s ease;
 }
 
-
-/* Card animation */
-@keyframes show-data {
-  50% {
-    transform: translateY(-10rem);
-  }
-  100% {
-    transform: translateY(-7rem);
-  }
+.card__button:hover .card__button-icon {
+  transform: translateX(5px);
 }
 
-@keyframes remove-overflow {
-  to {
-    overflow: initial;
-  }
-}
-
-@keyframes remove-data {
-  0% {
-    transform: translateY(-7rem);
-  }
-  50% {
-    transform: translateY(-10rem);
-  }
-  100% {
-    transform: translateY(.5rem);
-  }
-}
-
-@keyframes show-overflow {
-  0% {
-    overflow: initial;
-    pointer-events: none;
-  }
-  50% {
-    overflow: hidden;
-  }
-}
-
-
-
-/*=============== BREAKPOINTS ===============*/
-/* For small devices */
-@media screen and (max-width: 340px) {
-  .container {
-    margin-inline: 1rem;
-  }
-
-  .card__data {
-    width: 250px;
-    padding: 1rem;
-  }
-}
-
-/* For medium devices */
-@media screen and (min-width: 768px) {
+/* Responsive Design */
+@media screen and (max-width: 1200px) {
   .card__container {
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 1.5rem;
   }
 }
 
-/* For large devices */
-@media screen and (min-width: 1120px) {
-  .container {
-    height: 100vh;
-  }
-
+@media screen and (max-width: 768px) {
   .card__container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr;
   }
-  .card__img {
-    width: 348px;
+  
+  .main-heading {
+    font-size: 2rem;
   }
-  .card__data {
-    width: 316px;
-    padding-inline: 2.5rem;
+  
+  .container {
+    padding: 0 1rem;
   }
+}
+
+/* Enhanced Chatbot Icon */
+.chatbot-icon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+.chatbot-icon:hover {
+  transform: scale(1.1) translateY(-5px);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
 }

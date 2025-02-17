@@ -1,20 +1,19 @@
 import React from "react";
 import VerticalNav from "../components/VerticalNav.jsx";
 import UserDetailsForm from "../components/UserDetailsForm.jsx";
-import "../pages/user-info.css"; // new import for container styling
+import "./user-info.css";
 
 const UserInfo = () => {
   return (
     <div className="user-profile-container">
-      {/* Left-side Navigation */}
       <VerticalNav />
-      {/* Right-side User Info Content */}
       <div className="user-main">
-        <header className="user-header">
-          <h2>User Info</h2>
-        </header>
+        <div className="user-header">
+          <h2>User Information</h2>
+          <p>Manage your personal and health information</p>
+        </div>
         <div className="user-details">
-          yaha question answer dalna hai
+          <UserDetailsForm />
         </div>
       </div>
     </div>

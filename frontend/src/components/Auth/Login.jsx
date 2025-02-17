@@ -5,6 +5,7 @@ import './Login.css';
 import LoginL from '../../public/images/Login.json';
 import Lottie from 'lottie-react';
 import Navbar from '../Navbar';
+import GoogleIcon from '../../public/images/dashboard/google.png';
 import {googleAuth} from '../../api/auth'
 
 const Login = () => {
@@ -74,7 +75,7 @@ const Login = () => {
   }}
 >
   <img
-    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+    src={GoogleIcon}
     alt="Google logo"
     style={{ width: '20px', marginRight: '10px' }}
   />

@@ -43,6 +43,9 @@ const getGoogleFitData = async (googleFitToken, googleRefreshToken) => {
       }
     };
 
+    // Helper to round numbers to at most 2 decimals
+    const round2 = (val) => (typeof val === "number" ? Math.round(val * 100) / 100 : val);
+
     // Fetch metrics
     const stepsData = await fetchDataset("derived:com.google.step_count.delta:com.google.android.gms:estimated_steps");
     const caloriesData = await fetchDataset("derived:com.google.calories.expended:com.google.android.gms:merge_calories_expended");
@@ -58,15 +61,24 @@ const getGoogleFitData = async (googleFitToken, googleRefreshToken) => {
     const waterIntakeData = await fetchDataset("derived:com.google.water:com.google.android.gms:merge_water");
     const activeEnergyData = await fetchDataset("derived:com.google.active_energy_burned:com.google.android.gms:merge_active_energy");
     const exerciseMinutesData = await fetchDataset("derived:com.google.exercise_minutes:com.google.android.gms:merge_exercise_minutes");
+    
 
-    // Extract data
+    // Extract data (including respiratory rate)
     const stepsWalked = stepsData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
-    let caloriesBurned = caloriesData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
-    let distanceWalked = distanceData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
-    const recentHeartRate = heartRateData.length ? heartRateData[heartRateData.length - 1].value?.[0]?.fpVal || 0 : null;
-    const recentSpO2 = spO2Data.length ? spO2Data[spO2Data.length - 1].value?.[0]?.fpVal || 0 : null;
+    const caloriesBurned = caloriesData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
+    const distanceWalked = distanceData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
+    const recentHeartRate = heartRateData.length
+      ? heartRateData[heartRateData.length - 1].value?.[0]?.fpVal || 0
+      : null;
+    // const recentPulseRate = pulseRateData.length
+    //   ? pulseRateData[pulseRateData.length - 1].value?.[0]?.fpVal || 0
+    //   : 0;
+    const recentSpO2 = spO2Data.length
+      ? spO2Data[spO2Data.length - 1].value?.[0]?.fpVal || 0
+      : null;
 
-    let systolic = null, diastolic = null;
+    let systolic = null,
+      diastolic = null;
     if (bloodPressureData.length) {
       const latestBP = bloodPressureData[bloodPressureData.length - 1];
       systolic = latestBP.value?.[0]?.fpVal || null;
@@ -76,28 +88,32 @@ const getGoogleFitData = async (googleFitToken, googleRefreshToken) => {
     const activeMinutes = activeMinutesData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
     const floorsClimbed = floorsClimbedData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
     const sleepDuration = sleepDurationData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
-    const bodyFatPercentage = bodyFatData.length ? bodyFatData[bodyFatData.length - 1].value?.[0]?.fpVal || 0 : null;
-    const bodyMassIndex = bmiData.length ? bmiData[bmiData.length - 1].value?.[0]?.fpVal || 0 : null;
+    const bodyFatPercentage = bodyFatData.length
+      ? bodyFatData[bodyFatData.length - 1].value?.[0]?.fpVal || 0
+      : null;
+    const bodyMassIndex = bmiData.length
+      ? bmiData[bmiData.length - 1].value?.[0]?.fpVal || 0
+      : null;
     const waterIntake = waterIntakeData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
     const activeEnergy = activeEnergyData.reduce((total, point) => total + (point.value?.[0]?.fpVal || 0), 0);
     const exerciseMinutes = exerciseMinutesData.reduce((total, point) => total + (point.value?.[0]?.intVal || 0), 0);
 
     return {
       stepsWalked,
-      caloriesBurned: Math.floor(caloriesBurned),
-      distanceWalked: Math.floor(distanceWalked * 100) / 100,
-      recentHeartRate,
-      pulseRate: Math.floor(recentHeartRate || 0),
-      recentSpO2: Math.floor(recentSpO2 || 0),
-      systolic,
-      diastolic,
+      caloriesBurned: round2(caloriesBurned),
+      distanceWalked: round2(distanceWalked),
+      recentHeartRate: round2(recentHeartRate),
+      // pulseRate: round2(recentPulseRate || 0),
+      recentSpO2: round2(recentSpO2 || 0),
+      systolic: round2(systolic),
+      diastolic: round2(diastolic),
       activeMinutes,
       floorsClimbed,
-      sleepDuration: Math.floor(sleepDuration / 3600), // Convert to hours
-      bodyFatPercentage: Math.floor(bodyFatPercentage || 0),
-      bodyMassIndex: Math.floor(bodyMassIndex || 0),
-      waterIntake: Math.floor(waterIntake * 100) / 100,
-      activeEnergy: Math.floor(activeEnergy || 0),
+      sleepDuration: round2(sleepDuration / 3600), // in hours
+      bodyFatPercentage: round2(bodyFatPercentage || 0),
+      bodyMassIndex: round2(bodyMassIndex || 0),
+      waterIntake: round2(waterIntake),
+      activeEnergy: round2(activeEnergy),
       exerciseMinutes,
     };
   } catch (error) {
@@ -144,8 +160,9 @@ export const getPatientDetails = async (req, res) => {
     const healthInfo = (
       await pool.query("SELECT * FROM patient_info WHERE patient_id = $1", [req.patientId])
     ).rows[0] || {};
-
-    console.log("✅ Retrieved Health Info:", healthInfo);
+    
+    // Extract age, height, weight, and blood type
+    const { age, height, weight, bloodtype } = healthInfo;
 
     // Initialize Google Fit Data with default values
     let googleFitData = {
@@ -153,7 +170,7 @@ export const getPatientDetails = async (req, res) => {
       caloriesBurned: 0,
       distanceWalked: 0,
       recentHeartRate: "N/A",
-      pulseRate: "N/A",
+      sleepDuration: "N/A",
       recentSpO2: "N/A",
       systolic: "N/A",
       diastolic: "N/A",
@@ -168,18 +185,23 @@ export const getPatientDetails = async (req, res) => {
       console.error('❌ Error fetching Google Fit Data:', error.message);
     }
 
+    // console.log("GoogeFit", googleFitData);
+
     // Return final response
     return res.status(200).json({
       success: true,
       patient: {
         ...patientDetails,
-        healthInfo,
+        age,
+        height,
+        weight,
+        bloodtype,
         googleFitData: {
           stepsWalked: googleFitData.stepsWalked || 0,
           caloriesBurned: googleFitData.caloriesBurned || 0,
           distanceWalked: googleFitData.distanceWalked || 0,
           heartRate: googleFitData.recentHeartRate,
-          pulseRate: googleFitData.pulseRate,
+          sleepDuration: googleFitData.sleepDuration,
           spo2: googleFitData.recentSpO2,
           bloodPressure: {
             systolic: googleFitData.systolic,
@@ -192,6 +214,40 @@ export const getPatientDetails = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const getUserInfoDetails = async (req, res) => {
+  try {
+
+    // Fetch patient details
+    const { rows } = await pool.query("SELECT * FROM patients WHERE id = $1", [req.patientId]);
+    if (!rows.length) {
+      return res.status(404).json({ success: false, message: "Patient not found" });
+    }
+
+    const patient = rows[0];
+    const { ...patientDetails } = patient;
+
+    // Fetch health info
+    const healthInfo = (
+      await pool.query("SELECT * FROM patient_info WHERE patient_id = $1", [req.patientId])
+    ).rows[0] || {};
+    
+
+    // console.log("✅ Retrieved Health Info:", healthInfo);
+
+
+    // Return final response
+    return res.status(200).json({
+      success: true,
+      patient: {
+        ...patientDetails,
+        healthInfo,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+}
 
 
 export const updatePatientDetails = async (req, res) => {
@@ -228,34 +284,31 @@ export const updatePatientDetails = async (req, res) => {
       // Update existing health record
       await pool.query(
         `UPDATE patient_info
-        SET date_of_birth = $1, gender_identity = $2, height = $3, weight = $4, blood_type = $5,
-            smokes = $6, cigarettes_per_day = $7, alcohol = $8, drinks_per_week = $9, recreational_drugs = $10,
-            drug_details = $11, exercise_frequency = $12, diet_description = $13, sleep_hours = $14, stress_level = $15,
-            chronic_conditions = $16, medications = $17, allergies = $18, surgeries = $19, family_history = $20,
-            mental_health_conditions = $21, last_checkup = $22, vaccinations_up_to_date = $23, dental_checkups = $24,
-            sexual_performance_issues = $25, libido_concerns = $26, testicular_pain_lumps = $27, urination_issues = $28,
-            prostate_exam = $29, weight_changes = $30, hair_loss_concerns = $31, menstrual_start_age = $32,
-            menstrual_regular = $33, severe_cramps = $34, heavy_bleeding = $35, pregnancy_status = $36,
-            pregnancy_count = $37, pregnancy_complications = $38, menopause_symptoms = $39, menopause_start_age = $40,
-            breast_self_exam = $41, last_mammogram = $42, breast_changes = $43, last_pap_smear = $44,
-            gynecological_conditions = $45
-        WHERE patient_id = $46`,
+        SET age = $1, gender_identity = $2, height = $3, weight = $4, blood_type = $5,
+            smokes = $6, alcohol = $7, recreational_drugs = $8,
+            drug_details = $9, exercise_frequency = $10, diet_description = $11, sleep_hours = $12,
+            chronic_conditions = $13, medications = $14, allergies = $15, surgeries = $16, family_history = $17,
+            mental_health_conditions = $18, last_checkup = $19, vaccinations_up_to_date = $20, dental_checkups = $21,
+            sexual_performance_issues = $22, libido_concerns = $23, testicular_pain_lumps = $24, urination_issues = $25,
+            prostate_exam = $26, weight_changes = $27, hair_loss_concerns = $28, menstrual_start_age = $29,
+            menstrual_regular = $30, severe_cramps = $31, heavy_bleeding = $32, pregnancy_status = $33,
+            pregnancy_count = $34, pregnancy_complications = $35, menopause_symptoms = $36, menopause_start_age = $37,
+            breast_self_exam = $38, last_mammogram = $39, breast_changes = $40, last_pap_smear = $41,
+            gynecological_conditions = $42
+        WHERE patient_id = $43`,
         [
-          healthInfo.date_of_birth || healthResult.rows[0].date_of_birth,
+          healthInfo.age || healthResult.rows[0].age,
           healthInfo.gender_identity || healthResult.rows[0].gender_identity,
           healthInfo.height || healthResult.rows[0].height,
           healthInfo.weight || healthResult.rows[0].weight,
           healthInfo.blood_type || healthResult.rows[0].blood_type,
           healthInfo.smokes ?? healthResult.rows[0].smokes,
-          healthInfo.cigarettes_per_day ?? healthResult.rows[0].cigarettes_per_day,
           healthInfo.alcohol ?? healthResult.rows[0].alcohol,
-          healthInfo.drinks_per_week ?? healthResult.rows[0].drinks_per_week,
           healthInfo.recreational_drugs ?? healthResult.rows[0].recreational_drugs,
           healthInfo.drug_details ?? healthResult.rows[0].drug_details,
           healthInfo.exercise_frequency ?? healthResult.rows[0].exercise_frequency,
           healthInfo.diet_description ?? healthResult.rows[0].diet_description,
           healthInfo.sleep_hours ?? healthResult.rows[0].sleep_hours,
-          healthInfo.stress_level ?? healthResult.rows[0].stress_level,
           healthInfo.chronic_conditions ?? healthResult.rows[0].chronic_conditions,
           healthInfo.medications ?? healthResult.rows[0].medications,
           healthInfo.allergies ?? healthResult.rows[0].allergies,
@@ -292,9 +345,9 @@ export const updatePatientDetails = async (req, res) => {
     } else {
       await pool.query(
         `INSERT INTO patient_info (
-          patient_id, date_of_birth, gender_identity, height, weight, blood_type,
-          smokes, cigarettes_per_day, alcohol, drinks_per_week, recreational_drugs, drug_details, exercise_frequency,
-          diet_description, sleep_hours, stress_level, chronic_conditions, medications, allergies, surgeries,
+          patient_id, age, gender_identity, height, weight, blood_type,
+          smokes, alcohol, recreational_drugs, drug_details, exercise_frequency,
+          diet_description, sleep_hours, chronic_conditions, medications, allergies, surgeries,
           family_history, mental_health_conditions, last_checkup, vaccinations_up_to_date, dental_checkups,
           sexual_performance_issues, libido_concerns, testicular_pain_lumps, urination_issues, prostate_exam,
           weight_changes, hair_loss_concerns, menstrual_start_age, menstrual_regular, severe_cramps, heavy_bleeding,
@@ -303,14 +356,14 @@ export const updatePatientDetails = async (req, res) => {
         ) VALUES (
           $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21,
           $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36, $37, $38, $39, $40,
-          $41, $42, $43, $44, $45, $46
+          $41, $42, $43
         )`,
         [
           req.patientId, healthInfo.date_of_birth, healthInfo.gender_identity, healthInfo.height,
-          healthInfo.weight, healthInfo.blood_type, healthInfo.smokes, healthInfo.cigarettes_per_day,
-          healthInfo.alcohol, healthInfo.drinks_per_week, healthInfo.recreational_drugs,
+          healthInfo.weight, healthInfo.blood_type, healthInfo.smokes,
+          healthInfo.alcohol, healthInfo.recreational_drugs,
           healthInfo.drug_details, healthInfo.exercise_frequency, healthInfo.diet_description,
-          healthInfo.sleep_hours, healthInfo.stress_level, healthInfo.chronic_conditions,
+          healthInfo.sleep_hours, healthInfo.chronic_conditions,
           healthInfo.medications, healthInfo.allergies, healthInfo.surgeries, healthInfo.family_history,
           healthInfo.mental_health_conditions, healthInfo.last_checkup, healthInfo.vaccinations_up_to_date,
           healthInfo.dental_checkups, healthInfo.sexual_performance_issues, healthInfo.libido_concerns,

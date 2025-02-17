@@ -1,0 +1,113 @@
+.user-details-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    width: 100%;
+  }
+  
+  .user-details-form h2 {
+    grid-column: 1 / -1;
+    color: #2d3748;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 1.5rem 0 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #3a5a40;
+  }
+  
+  .user-details-form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .user-details-form label {
+    font-weight: 500;
+    color: #4a5568;
+    font-size: 0.95rem;
+  }
+  
+  .user-details-form input,
+  .user-details-form select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+  }
+  
+  .user-details-form input:focus,
+  .user-details-form select:focus {
+    border-color: #3a5a40;
+    box-shadow: 0 0 0 3px rgba(58, 90, 64, 0.2);
+    outline: none;
+  }
+  
+  .user-details-form button[type="submit"] {
+    grid-column: 1 / -1;
+    background: #3a5a40;
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+  }
+  
+  .user-details-form button[type="submit"]:hover {
+    background: #344e41;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(58, 90, 64, 0.2);
+  }
+  
+  .user-details-form button[type="submit"]:disabled {
+    background: #a8bdb1;
+    cursor: not-allowed;
+  }
+  
+  .user-details-form p {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+  
+  .user-details-form p.success {
+    background: #def7ec;
+    color: #046c4e;
+  }
+  
+  .user-details-form p.error {
+    background: #fde8e8;
+    color: #9b1c1c;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+  
+  @media (max-width: 768px) {
+    .user-details-form {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  
+    .user-details-form h2 {
+      font-size: 1.25rem;
+      margin: 1rem 0 0.75rem;
+    }
+  
+    .user-details-form input,
+    .user-details-form select {
+      padding: 0.7rem;
+    }
+  }

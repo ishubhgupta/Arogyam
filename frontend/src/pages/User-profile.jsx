@@ -100,9 +100,9 @@ const UserProfile = () => {
                 </h2>
               </div>
               <div className="metric-card">
-                <p>Pulse Rate</p>
+                <p>Sleep Duration</p>
                 <h2>
-                  {userData.googleFitData?.pulseRate || "-"} <small>BPM</small>
+                  {userData.googleFitData?.sleepDuration || "-"} <small>Hours</small>
                 </h2>
               </div>
               <div className="metric-card">

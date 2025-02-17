@@ -1,13 +1,52 @@
 .user-profile-container {
   display: flex;
   min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
 }
 
-/* Updated .user-main to scroll internally if content exceeds */
 .user-main {
   flex: 1;
-  padding: 20px;
-  background: #f8fafd;
-  overflow-y: auto;
-  max-height: 100vh;
+  padding: 2rem;
+  margin-left: 250px; /* Match VerticalNav width */
+  width: calc(100vw - 250px);
+}
+
+.user-header {
+  background: linear-gradient(135deg, #3a5a40 0%, #588157 100%);
+  padding: 2rem 3rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.user-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.user-header p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0.5rem 0 0;
+  font-size: 1.1rem;
+}
+
+.user-details {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .user-main {
+    margin-left: 0;
+    width: 100vw;
+    padding: 1rem;
+  }
+  
+  .user-header {
+    padding: 1.5rem;
+  }
 }
