@@ -16,7 +16,7 @@
 }
 
 .user-profile-container {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-wrap: nowrap;
@@ -30,6 +30,7 @@
   /* box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.05); */
   /* margin: clamp(1rem, 2vw, 1.25rem); */
   transition: all 0.3s ease;
+  margin-left: 250px;
 }
 
 .body-card {
