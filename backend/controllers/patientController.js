@@ -1,5 +1,6 @@
 import { google } from "googleapis";
 import pool from "../config/db.js";
+import cron from 'node-cron'
 
 const getGoogleFitData = async (googleFitToken, googleRefreshToken) => {
   try {
@@ -121,6 +122,100 @@ const getGoogleFitData = async (googleFitToken, googleRefreshToken) => {
   }
 };
 
+const updateGoogleFitHourlyData = async (req, res) => {
+  try {
+    const { rows } = await pool.query("SELECT * FROM patients WHERE id = $1", [req.patientId]);
+    if (!rows.length) {
+      return res.status(404).json({ success: false, message: "Patient not found" });
+    }
+    const now = new Date();
+    const currentHour = now.getHours();
+
+    // Fetch Google Fit data
+    const googleFitData = await getGoogleFitData(googleFitToken, googleRefreshToken);
+    if (!googleFitData) {
+      console.error("Error fetching Google Fit data");
+      return res.status(500).json({ success: false, message: "Failed to fetch Google Fit data" });
+    }
+
+    // Handle missing or null data by providing default values
+    const {
+      stepsWalked = 0,
+      caloriesBurned = 0,
+      distanceWalked = 0,
+      recentHeartRate = null,
+      recentSpO2 = null,
+      systolic = null,
+      diastolic = null,
+      activeMinutes = 0,
+      floorsClimbed = 0,
+      sleepDuration = null,
+      bodyFatPercentage = null,
+      bodyMassIndex = null,
+      waterIntake = null,
+      activeEnergy = 0,
+      exerciseMinutes = 0,
+    } = googleFitData;
+
+    // Update the corresponding hour in the database
+    await pool.query(
+      `INSERT INTO google_fit_hourly_data (
+        patient_id, hour, steps_walked, calories_burned, distance_walked, recent_heart_rate, recent_spo2,
+        systolic, diastolic, active_minutes, floors_climbed, sleep_duration, body_fat_percentage,
+        body_mass_index, water_intake, active_energy, exercise_minutes
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
+      ON CONFLICT (patient_id, hour) DO UPDATE SET
+        steps_walked = EXCLUDED.steps_walked,
+        calories_burned = EXCLUDED.calories_burned,
+        distance_walked = EXCLUDED.distance_walked,
+        recent_heart_rate = EXCLUDED.recent_heart_rate,
+        recent_spo2 = EXCLUDED.recent_spo2,
+        systolic = EXCLUDED.systolic,
+        diastolic = EXCLUDED.diastolic,
+        active_minutes = EXCLUDED.active_minutes,
+        floors_climbed = EXCLUDED.floors_climbed,
+        sleep_duration = EXCLUDED.sleep_duration,
+        body_fat_percentage = EXCLUDED.body_fat_percentage,
+        body_mass_index = EXCLUDED.body_mass_index,
+        water_intake = EXCLUDED.water_intake,
+        active_energy = EXCLUDED.active_energy,
+        exercise_minutes = EXCLUDED.exercise_minutes,
+        updated_at = CURRENT_TIMESTAMP`,
+      [
+        req.patientId,
+        currentHour,
+        stepsWalked,
+        caloriesBurned,
+        distanceWalked,
+        recentHeartRate,
+        recentSpO2,
+        systolic,
+        diastolic,
+        activeMinutes,
+        floorsClimbed,
+        sleepDuration,
+        bodyFatPercentage,
+        bodyMassIndex,
+        waterIntake,
+        activeEnergy,
+        exerciseMinutes,
+      ]
+    );
+
+    console.log(`Google Fit data updated for patient ${req.patientId} at hour ${currentHour}`);
+    res.status(200).json({ success: true, message: "Google Fit data updated" });
+  } catch (error) {
+    console.error("Error updating Google Fit hourly data:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+// Schedule the task to run every hour
+cron.schedule("0 * * * *", () => {
+  console.log("Running hourly Google Fit data update...");
+  updateGoogleFitHourlyData();
+});
+
 
 export const getGoogleFit = async (req, res) => {
   try {
@@ -162,7 +257,7 @@ export const getPatientDetails = async (req, res) => {
     ).rows[0] || {};
     
     // Extract age, height, weight, and blood type
-    const { age, height, weight, bloodtype } = healthInfo;
+    const { age, height, weight, blood_type } = healthInfo;
 
     // Initialize Google Fit Data with default values
     let googleFitData = {
@@ -195,7 +290,7 @@ export const getPatientDetails = async (req, res) => {
         age,
         height,
         weight,
-        bloodtype,
+        blood_type,
         googleFitData: {
           stepsWalked: googleFitData.stepsWalked || 0,
           caloriesBurned: googleFitData.caloriesBurned || 0,
@@ -359,21 +454,49 @@ export const updatePatientDetails = async (req, res) => {
           $41, $42, $43
         )`,
         [
-          req.patientId, healthInfo.date_of_birth, healthInfo.gender_identity, healthInfo.height,
-          healthInfo.weight, healthInfo.blood_type, healthInfo.smokes,
-          healthInfo.alcohol, healthInfo.recreational_drugs,
-          healthInfo.drug_details, healthInfo.exercise_frequency, healthInfo.diet_description,
-          healthInfo.sleep_hours, healthInfo.chronic_conditions,
-          healthInfo.medications, healthInfo.allergies, healthInfo.surgeries, healthInfo.family_history,
-          healthInfo.mental_health_conditions, healthInfo.last_checkup, healthInfo.vaccinations_up_to_date,
-          healthInfo.dental_checkups, healthInfo.sexual_performance_issues, healthInfo.libido_concerns,
-          healthInfo.testicular_pain_lumps, healthInfo.urination_issues, healthInfo.prostate_exam,
-          healthInfo.weight_changes, healthInfo.hair_loss_concerns, healthInfo.menstrual_start_age,
-          healthInfo.menstrual_regular, healthInfo.severe_cramps, healthInfo.heavy_bleeding,
-          healthInfo.pregnancy_status, healthInfo.pregnancy_count, healthInfo.pregnancy_complications,
-          healthInfo.menopause_symptoms, healthInfo.menopause_start_age, healthInfo.breast_self_exam,
-          healthInfo.last_mammogram, healthInfo.breast_changes, healthInfo.last_pap_smear,
-          healthInfo.gynecological_conditions
+          req.patientId,
+          healthInfo.age ? parseInt(healthInfo.age) || null : null,
+          healthInfo.gender_identity || null,
+          healthInfo.height ? parseFloat(healthInfo.height) || null : null,
+          healthInfo.weight ? parseFloat(healthInfo.weight) || null : null,
+          healthInfo.blood_type || null,
+          healthInfo.smokes === "" ? null : healthInfo.smokes, 
+          healthInfo.alcohol === "" ? null : healthInfo.alcohol, 
+          healthInfo.recreational_drugs === "" ? null : healthInfo.recreational_drugs, 
+          healthInfo.drug_details || null,
+          healthInfo.exercise_frequency || null,
+          healthInfo.diet_description || null,
+          healthInfo.sleep_hours ? parseInt(healthInfo.sleep_hours) || null : null,
+          healthInfo.chronic_conditions || null,
+          healthInfo.medications || null,
+          healthInfo.allergies || null,
+          healthInfo.surgeries || null,
+          healthInfo.family_history || null,
+          healthInfo.mental_health_conditions || null,
+          healthInfo.last_checkup || null,
+          healthInfo.vaccinations_up_to_date === "" ? null : healthInfo.vaccinations_up_to_date,  
+          healthInfo.dental_checkups === "" ? null : healthInfo.dental_checkups,  
+          healthInfo.sexual_performance_issues === "" ? null : healthInfo.sexual_performance_issues,  
+          healthInfo.libido_concerns === "" ? null : healthInfo.libido_concerns,  
+          healthInfo.testicular_pain_lumps === "" ? null : healthInfo.testicular_pain_lumps,  
+          healthInfo.urination_issues === "" ? null : healthInfo.urination_issues,  
+          healthInfo.prostate_exam === "" ? null : healthInfo.prostate_exam,  
+          healthInfo.weight_changes === "" ? null : healthInfo.weight_changes,  
+          healthInfo.hair_loss_concerns === "" ? null : healthInfo.hair_loss_concerns,  
+          healthInfo.menstrual_start_age ? parseInt(healthInfo.menstrual_start_age) || null : null,
+          healthInfo.menstrual_regular === "" ? null : healthInfo.menstrual_regular,  
+          healthInfo.severe_cramps === "" ? null : healthInfo.severe_cramps, 
+          healthInfo.heavy_bleeding === "" ? null : healthInfo.heavy_bleeding, 
+          healthInfo.pregnancy_status === "" ? null : healthInfo.pregnancy_status,
+          healthInfo.pregnancy_count ? parseInt(healthInfo.pregnancy_count) || null : null,
+          healthInfo.pregnancy_complications || null,
+          healthInfo.menopause_symptoms === "" ? null : healthInfo.menopause_symptoms, 
+          healthInfo.menopause_start_age ? parseInt(healthInfo.menopause_start_age) || null : null,
+          healthInfo.breast_self_exam === "" ? null : healthInfo.breast_self_exam, 
+          healthInfo.last_mammogram || null,
+          healthInfo.breast_changes || null,
+          healthInfo.last_pap_smear || null,
+          healthInfo.gynecological_conditions || null
         ]
       );
     }
