@@ -1,7 +1,7 @@
 import React from "react";
 import VerticalNav from "../components/VerticalNav.jsx";
 import UserDetailsForm from "../components/UserDetailsForm.jsx";
-import "./user-info.css";
+import "./user-info.module.css";
 
 const UserInfo = () => {
   return (

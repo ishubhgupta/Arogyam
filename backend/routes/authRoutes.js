@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, logout, signup, googleAuth, googleAuthCallback, verifyEmail, forgetPassword, resetPassword, resendVerificationToken, checkAuth, } from '../controllers/authController.js';
+import { login, logout, signup, googleAuth, googleAuthCallback, deleteData, deleteAccount, verifyEmail, forgetPassword, resetPassword, resendVerificationToken, checkAuth, } from '../controllers/authController.js';
 import { verifyToken } from "../middlewares/authentication.js";
 
 const router = express.Router();
@@ -13,6 +13,10 @@ router.get('/google', googleAuth);
 router.get('/google/callback', googleAuthCallback);
 
 router.post('/logout', logout);
+
+router.post('/delete-data', verifyToken, deleteData);
+
+router.post('/delete-account', verifyToken, deleteAccount);
 
 router.post('/verify-email', verifyEmail);
 

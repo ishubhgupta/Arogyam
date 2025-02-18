@@ -170,6 +170,47 @@ export const logout = async (req, res) => {
   res.clearCookie('token').status(200).json({ success: true, message: 'Logout Successful' });
 };
 
+export const deleteData = async (req, res) => { 
+  try { 
+    // Find patient by ID
+    const result = await pool.query('SELECT * FROM patients WHERE id = $1', [req.patientId]);
+    const patient = result.rows[0];
+
+    if (!patient) {
+      return res.status(400).json({ success: false, message: 'Patient not found' });
+    }
+
+    // Delete patient data from the database
+    await pool.query('DELETE FROM patient_info WHERE patient_id = $1', [req.patientId]);
+    await pool.query('DELETE FROM google_fit_hourly_data WHERE patient_id = $1', [req.patientId]);
+
+    return res.status(200).json({ success: true, message: 'Data deleted successfully' });
+  } catch (error) { 
+    return res.status(500).json({ success: false, message: error.message });
+  }
+}
+
+export const deleteAccount = async (req, res) => {
+  try {
+    // Find patient by ID
+    const result = await pool.query('SELECT * FROM patients WHERE id = $1', [req.patientId]);
+    const patient = result.rows[0];
+
+    if (!patient) {
+      return res.status(400).json({ success: false, message: 'Patient not found' });
+    }
+
+    // Delete patient from the database
+    await pool.query('DELETE FROM patients WHERE id = $1', [req.patientId]);
+    await pool.query('DELETE FROM patient_info WHERE patient_id = $1', [req.patientId]);
+    await pool.query('DELETE FROM google_fit_hourly_data WHERE patient_id = $1', [req.patientId]);
+
+    return res.status(200).json({ success: true, message: 'Account deleted successfully' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  } 
+}
+
 export const verifyEmail = async (req, res) => {
   const { otp } = req.body;
   try {
