@@ -10,7 +10,12 @@ import {googleAuth} from '../../api/auth'
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

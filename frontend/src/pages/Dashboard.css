@@ -95,6 +95,7 @@
   grid-row: 2;
   background-color: #f9c2bd; /* Light red */
   height: 18vh;
+  /* padding-top: rem; */
 }
 
 /* Google Fit Integration: cells 10,11,12 */
@@ -348,7 +349,7 @@
   grid-row: 2;
   background: linear-gradient(to right, #f9c2bd, #ffdad4); /* Warm pastel red gradient */
   border-radius: 16px;
-  padding: 0rem 1.5rem;
+  padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -387,7 +388,7 @@
 /* Disease Prediction Container */
 /* Disease Prediction Container */
 .disease {
-  grid-column: 4 / span 3;
+  grid-column: 3 / span 4;
   grid-row: 3;
   background-color: #FFC785;
   position: relative;
