@@ -76,7 +76,7 @@ const NaturalTherapy = () => {
   const navigate = useNavigate();
 
   const handleChatbotClick = () => {
-    navigate("/chatbot");
+    navigate("/remedies-chatbot");
   };
 
   const handleMenuState = (state) => {

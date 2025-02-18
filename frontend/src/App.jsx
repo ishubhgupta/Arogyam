@@ -15,6 +15,7 @@ import YogaSearch from "./pages/YogaSearch";
 import AromaTherapy from "./pages/AromaTherapy";
 import GoogleFit from "./pages/GoogleFit"; // new import
 import UserInfo from "./pages/user-info";
+import RemediesChatbot from "./components/RemediesChatbot";
 // import UserDetails from "./components/UserDetailsForm";
 
 const App = () => {
@@ -35,6 +36,7 @@ const App = () => {
         <Route path="/aroma-therapy" element={<AromaTherapy />} />
         <Route path="/google-fit" element={<GoogleFit />} /> {/* new route */}
         <Route path="/user-info" element={<UserInfo />} />
+        <Route path="/remedies-chatbot" element={<RemediesChatbot />} />
       </Routes>
     </Router>
   );
