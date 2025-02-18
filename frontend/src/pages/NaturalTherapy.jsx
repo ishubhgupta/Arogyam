@@ -15,17 +15,17 @@ import Ayurveda from "../public/images/dashboard/Ayurveda.jpg";
 const cardsData = [
   {
     id: 1,
-    image: Yoga,
-    description: "Path and Peace",
-    title: "Yoga and Meditation",
-    link: "/yoga-search", // Updated to proper route
-  },
-  {
-    id: 2,
     image: Aroma,
     description: "Aroma Therapy",
     title: "Natural Healing",
     link: "/aroma-therapy",
+  },
+  {
+    id: 2,
+    image: Yoga,
+    description: "Path and Peace",
+    title: "Yoga and Meditation",
+    link: "/yoga-search", // Updated to proper route
   },
   {
     id: 3,
