@@ -16,6 +16,8 @@ import AromaTherapy from "./pages/AromaTherapy";
 import GoogleFit from "./pages/GoogleFit"; // new import
 import UserInfo from "./pages/user-info";
 import RemediesChatbot from "./components/RemediesChatbot";
+import RoutineGenerator from './components/RoutineGenerator';
+
 // import UserDetails from "./components/UserDetailsForm";
 // import WeeklyRoutine from "./components/WeeklyRoutine";
 
@@ -38,6 +40,7 @@ const App = () => {
         <Route path="/google-fit" element={<GoogleFit />} /> {/* new route */}
         <Route path="/user-info" element={<UserInfo />} />
         <Route path="/remedies-chatbot" element={<RemediesChatbot />} />
+        <Route path="/routine-generator" element={<RoutineGenerator />} />
       </Routes>
     </Router>
   );

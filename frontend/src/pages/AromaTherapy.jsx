@@ -4,8 +4,10 @@ import "aos/dist/aos.css";
 import aromatherapyData from "../data/aromatherapy_data.json";
 import TherapyNavbar from "../components/TherapyNavbar";
 import "./AromaTherapy.css";
+import { useNavigate } from "react-router-dom";
 
 const AromaTherapy = () => {
+  const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [selectedUse, setSelectedUse] = useState("All");
 
@@ -56,6 +58,12 @@ const AromaTherapy = () => {
               className="search-input"
             />
           </div>
+          <button 
+              className="routine-btn"
+              onClick={() => navigate('/routine-generator')}
+            >
+              Generate Routine
+            </button>
 
           <div className="tags-container" data-aos="fade-up">
             {allRecommendedUses.map((use) => (
