@@ -23,7 +23,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding-top: 15rem;
-  margin-top: 170rem;
+  margin-top: 225rem;
   margin-bottom: 10rem;
 }
 
@@ -77,7 +77,7 @@ body {
 .buttonSecondary {
   background: linear-gradient(45deg, #2193b0, #6dd5ed);
   /* border: 2px solid #007bff; */
-  color: #4f6b89;
+  color: #ffffff;
   box-shadow: 0 4px 6px rgba(0, 123, 255, 0.2);
   padding: 1rem 2rem;
   border-radius: 30px;
@@ -1087,4 +1087,210 @@ body {
 
 .overlayButton:hover {
   transform: translateY(-2px);
+}
+
+.footer {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 5rem 0 2rem;
+  position: relative;
+  overflow: hidden;
+  margin-top: 6rem;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2193b0, #6dd5ed);
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  padding: 0 2rem;
+}
+
+.footerSection {
+  padding: 1rem;
+}
+
+.footerSection h4 {
+  color: #2c3e50;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.footerSection h4::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #2193b0, #6dd5ed);
+  border-radius: 2px;
+}
+
+.footerSection p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.footerSection ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footerSection ul li {
+  margin-bottom: 0.8rem;
+}
+
+.footerSection ul li a {
+  color: #666;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.footerSection ul li a:hover {
+  color: #2193b0;
+  transform: translateX(5px);
+}
+
+.socialLinks {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.socialLinks a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2193b0;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.socialLinks a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(33, 147, 176, 0.3);
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  color: white;
+}
+
+.newsletterForm {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.newsletterForm input {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.newsletterForm input:focus {
+  outline: none;
+  border-color: #2193b0;
+  box-shadow: 0 0 0 3px rgba(33, 147, 176, 0.1);
+}
+
+.newsletterForm button {
+  padding: 0.8rem 1.5rem;
+  background: linear-gradient(45deg, #2193b0, #6dd5ed);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.newsletterForm button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(33, 147, 176, 0.3);
+}
+
+.footerBottom {
+  max-width: 1200px;
+  margin: 4rem auto 0;
+  padding: 2rem;
+  border-top: 1px solid #e1e8ed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footerBottom p {
+  color: #666;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 2rem;
+}
+
+.footerLinks a {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footerLinks a:hover {
+  color: #2193b0;
+}
+
+@media (max-width: 768px) {
+  .footerContent {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footerLinks {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .newsletterForm {
+    flex-direction: column;
+  }
+
+  .newsletterForm button {
+    width: 100%;
+  }
+
+  .footerLinks {
+    flex-direction: column;
+    gap: 1rem;
+  }
 }

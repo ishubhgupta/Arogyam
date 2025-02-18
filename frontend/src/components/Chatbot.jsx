@@ -121,7 +121,7 @@ const SerenityChat = () => {
         <a href="/user-profile">
           <FontAwesomeIcon icon={faDisease} />
         </a>
-        <a href="#">🛋️</a>
+        {/* <a href="#">🛋️</a> */}
       </div>
       <div className={styles["main-content"]}>
         <div className={styles["chat-container"]} id="chat-container">

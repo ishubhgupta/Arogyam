@@ -4,6 +4,14 @@ import bodyPart from '../public/images/Human.json';
 import Lottie from 'lottie-react';
 import styles from './Home.module.css'; // Import CSS module
 import Navbar from '../components/Navbar.jsx';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { 
+  faFacebookF, 
+  faTwitter, 
+  faInstagram, 
+  faLinkedinIn 
+} from '@fortawesome/free-brands-svg-icons';
+
 
 const TypeWriter = () => {
   const points = [
@@ -101,11 +109,11 @@ const Home = () => {
           </div>
         </div>
         <div className={styles.lottieAnimation}>
-          <div className={styles.floatingBrain}></div>
+          {/* <div className={styles.floatingBrain}></div>
           <div className={styles.floatingHeart}></div>
           <div className={styles.floatingLungs1}></div>
           <div className={styles.floatingLungs2}></div>
-          <div className={styles.floatingKidney}></div>
+          <div className={styles.floatingKidney}></div> */}
           <Lottie animationData={bodyPart} />
         </div>
       </div>
@@ -297,6 +305,66 @@ const Home = () => {
     </div>
   </div>
 </div>
+<footer className={styles.footer}>
+  <div className={styles.footerContent}>
+    <div className={styles.footerSection}>
+      <h4>Arogyam</h4>
+      <p>Empowering health and wellness through holistic solutions and modern technology.</p>
+      <div className={styles.socialLinks}>
+  <a href="#" aria-label="Facebook">
+    <FontAwesomeIcon icon={faFacebookF} />
+  </a>
+  <a href="#" aria-label="Twitter">
+    <FontAwesomeIcon icon={faTwitter} />
+  </a>
+  <a href="#" aria-label="Instagram">
+    <FontAwesomeIcon icon={faInstagram} />
+  </a>
+  <a href="#" aria-label="LinkedIn">
+    <FontAwesomeIcon icon={faLinkedinIn} />
+  </a>
+</div>
+    </div>
+    
+    <div className={styles.footerSection}>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><Link to="/about">About Us</Link></li>
+        <li><Link to="/services">Services</Link></li>
+        <li><Link to="/blog">Blog</Link></li>
+        <li><Link to="/contact">Contact</Link></li>
+      </ul>
+    </div>
+    
+    <div className={styles.footerSection}>
+      <h4>Services</h4>
+      <ul>
+        <li><Link to="/natural-therapy">Natural Therapy</Link></li>
+        <li><Link to="/yoga">Yoga</Link></li>
+        <li><Link to="/meditation">Meditation</Link></li>
+        <li><Link to="/diet-plans">Diet Plans</Link></li>
+      </ul>
+    </div>
+    
+    <div className={styles.footerSection}>
+      <h4>Newsletter</h4>
+      <p>Subscribe to our newsletter for health tips and updates.</p>
+      <form className={styles.newsletterForm}>
+        <input type="email" placeholder="Enter your email" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+  
+  <div className={styles.footerBottom}>
+    <p>&copy; {new Date().getFullYear()} Arogyam. All rights reserved.</p>
+    <div className={styles.footerLinks}>
+      <Link to="/privacy">Privacy Policy</Link>
+      <Link to="/terms">Terms of Service</Link>
+      <Link to="/sitemap">Sitemap</Link>
+    </div>
+  </div>
+</footer>
     </>
   );
 };

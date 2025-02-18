@@ -56,7 +56,9 @@ const Dashboard = () => {
           <div className="card teal seasonal">
             <div className="seasonal-content">
               <div className="seasonal-text">
-                <h3>kuch daalna he idhar</h3>
+
+               <h3>GoogleFit Connect</h3>
+
               </div>
             </div>
           </div>
@@ -83,13 +85,15 @@ const Dashboard = () => {
             />
           </div>
 
-          <div
-            className="card pink home"
-            onClick={() => navigate("/google-fit")}
-            style={{ cursor: "pointer" }}
-          >
-            <h3>Google Fit Connect</h3>
-          </div>
+
+          {/* <div
+        className="card pink home"
+        onClick={() => navigate("/google-fit")}
+        style={{ cursor: "pointer" }}
+      >
+        <h3>Google Fit Connect</h3>
+      </div> */}
+
 
           <div className="card red disease">
             <div className="disease-text">

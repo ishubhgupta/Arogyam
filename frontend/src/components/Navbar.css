@@ -2,7 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0rem 4rem;
+  padding: 0.5rem 4rem; /* Reduced padding top/bottom */
+  height: 4.3rem; /* Set fixed height */
   background: linear-gradient(to right, #ffffff, #f8f9fa);
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -12,6 +13,7 @@
   z-index: 1000;
   transition: all 0.3s ease;
 }
+
 
 .navbar-left {
   font-size: 1.8rem;
@@ -155,10 +157,10 @@
   }
 }
 .navbar-logo {
-  height: 4.4rem;
+  height: 5rem; /* Reduced height */
   width: auto;
+  padding-top: 2rem;
   object-fit: contain;
-
 }
 
 .navbar-brand {
