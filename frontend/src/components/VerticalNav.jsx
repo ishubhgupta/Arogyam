@@ -8,7 +8,7 @@ const navItems = [
   { id: "dashboard", label: "Dashboard", icon: "icon-dashboard", url: "/dashboard" },
   { id: "rantbot", label: "RantBot", icon: "icon-chat", url: "/chatbot" },
   { id: "update", label: "User Info", icon: "icon-update", url: "/user-info" },
-  { id: "notification", label: "Notification", icon: "icon-notification", url: "/notification" },
+  // { id: "notification", label: "Notification", icon: "icon-notification", url: "/notification" },
   { id: "account", label: "Account", icon: "icon-account" },
 ];
 

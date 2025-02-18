@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown";
 import styles from "./Serenity.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouseUser, faUser, faStop, faLeaf, faDisease } from "@fortawesome/free-solid-svg-icons";
-
+import { useNavigate } from 'react-router-dom';
 const SerenityChat = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -12,7 +12,7 @@ const SerenityChat = () => {
   const [selectedBot, setSelectedBot] = useState("RantBot");
   const [showBotDropdown, setShowBotDropdown] = useState(false);
   const typingIntervalRef = useRef(null);
-
+  const navigate = useNavigate();
   // Ensure a unique thread_id persists across one session
   if (!sessionStorage.getItem("thread_id")) {
     sessionStorage.setItem("thread_id", self.crypto.randomUUID());
@@ -170,7 +170,7 @@ const SerenityChat = () => {
             >
               {selectedBot === "RantBot" && <FontAwesomeIcon icon={faUser} />}
               {selectedBot === "RemediesChatbot" && <FontAwesomeIcon icon={faLeaf} />}
-              {selectedBot === "DiseaseChatbot" && <FontAwesomeIcon icon={faDisease} />}
+              {/* {selectedBot === "DiseaseChatbot" && <FontAwesomeIcon icon={faDisease} />} */}
               <span className={styles.arrow}>{showBotDropdown ? "▲" : "▼"}</span>
             </div>
             {showBotDropdown && (
@@ -186,7 +186,11 @@ const SerenityChat = () => {
                 <div
                   className={styles["bot-dropdown-item"]}
                   title="RemediesChatbot"
-                  onClick={() => { setSelectedBot("RemediesChatbot"); setShowBotDropdown(false); }}
+                  onClick={() => {
+                    setSelectedBot("RemediesChatbot");
+                    setShowBotDropdown(false);
+                    navigate('/remedies-chatbot'); // Add this line to navigate
+                  }}
                 >
                   <FontAwesomeIcon icon={faLeaf} />
                   <span>RemediesChatbot</span>
@@ -196,8 +200,8 @@ const SerenityChat = () => {
                   title="DiseaseChatbot"
                   onClick={() => { setSelectedBot("DiseaseChatbot"); setShowBotDropdown(false); }}
                 >
-                  <FontAwesomeIcon icon={faDisease} />
-                  <span>DiseaseChatbot</span>
+                  {/* <FontAwesomeIcon icon={faDisease} /> */}
+                  {/* <span>DiseaseChatbot</span> */}
                 </div>
               </div>
             )}

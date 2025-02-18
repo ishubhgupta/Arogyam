@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aroma Therapy Routine Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            font-size: 28px;
+        }
+
+        .pain-points {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .pain-point {
+            margin-bottom: 0;
+            font-size: 18px;
+            position: relative;
+        }
+
+        .pain-point label {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            border: 2px solid #ff6f61;
+            border-radius: 30px;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin: 0;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .pain-point input[type="checkbox"] {
+            display: none;
+        }
+
+        .pain-point input[type="checkbox"]:checked + label {
+            background-color: #ff6f61;
+            color: white;
+        }
+
+        .checkmark {
+            margin-left: auto;
+            position: relative;
+            height: 20px;
+            width: 20px;
+            border: 2px solid currentColor;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .checkmark:after {
+            content: '✓';
+            position: absolute;
+            display: none;
+            color: white;
+            font-size: 14px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .pain-point input[type="checkbox"]:checked + label .checkmark:after {
+            display: block;
+        }
+
+        .schedule-container {
+            margin: 30px 0;
+        }
+
+        .schedule-container > label {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .schedule-options {
+            display: flex;
+            justify-content: center;
+        }
+
+        .schedule-container input[type="radio"] {
+            display: none;
+        }
+
+        .schedule-container input[type="radio"] + label {
+            display: flex;
+            align-items: center;
+            padding: 12px 30px;
+            border: 2px solid #ff6f61;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            margin: 0;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .schedule-container input[type="radio"]:checked + label {
+            background-color: #ff6f61;
+            color: white;
+        }
+
+        .radio-checkmark {
+            margin-left: 10px;
+            position: relative;
+            height: 20px;
+            width: 20px;
+            border: 2px solid currentColor;
+            border-radius: 50%;
+        }
+
+        .radio-checkmark:after {
+            content: '✓';
+            position: absolute;
+            display: none;
+            color: white;
+            font-size: 14px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .schedule-container input[type="radio"]:checked + label .radio-checkmark:after {
+            display: block;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .button {
+            background: linear-gradient(45deg, #ff6f61, #ffb88c);
+            padding: 12px 30px;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .button:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 30px;
+            color: #888;
+        }
+        /* Add these styles to your existing CSS */
+            .button.loading {
+                position: relative;
+                color: transparent;
+            }
+
+            .button.loading::after {
+                content: "";
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 20px;
+                height: 20px;
+                border: 2px solid #ffffff;
+                border-radius: 50%;
+                border-top-color: transparent;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                to {
+                    transform: translate(-50%, -50%) rotate(360deg);
+                }
+            }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Aroma Therapy Routine Generator</h2>
+        
+        <!-- Pain Points -->
+        <div class="pain-points">
+            <div class="pain-point"><input type="checkbox" id="stress"><label for="stress">Stress<span class="checkmark"></span></label></div>
+            <div class="pain-point"><input type="checkbox" id="anxiety"><label for="anxiety">Anxiety<span class="checkmark"></span></label></div>
+            <div class="pain-point"><input type="checkbox" id="insomnia"><label for="insomnia">Insomnia<span class="checkmark"></span></label></div>
+            <div class="pain-point"><input type="checkbox" id="muscle-pain"><label for="muscle-pain">Muscle Pain<span class="checkmark"></span></label></div>
+            <div class="pain-point"><input type="checkbox" id="headaches"><label for="headaches">Headaches<span class="checkmark"></span></label></div>
+            <div class="pain-point"><input type="checkbox" id="digestive-issues"><label for="digestive-issues">Digestive Issues<span class="checkmark"></span></label></div>
+            <div class="pain-point"><input type="checkbox" id="skin-issues"><label for="skin-issues">Skin Issues<span class="checkmark"></span></label></div>
+            <div class="pain-point"><input type="checkbox" id="respiratory"><label for="respiratory">Respiratory Issues<span class="checkmark"></span></label></div>
+            <div class="pain-point"><input type="checkbox" id="hormonal-imbalance"><label for="hormonal-imbalance">Hormonal Imbalance<span class="checkmark"></span></label></div>
+            <div class="pain-point"><input type="checkbox" id="mood-swings"><label for="mood-swings">Mood Swings<span class="checkmark"></span></label></div>
+        </div>
+
+        <!-- Schedule -->
+        <div class="schedule-container">
+            <label>Choose your schedule:</label><br>
+            <div class="schedule-options">
+                <input type="radio" id="daily" name="schedule" value="daily"><label for="daily">Daily<span class="radio-checkmark"></span></label>
+                <input type="radio" id="weekly" name="schedule" value="weekly"><label for="weekly">Weekly<span class="radio-checkmark"></span></label>
+                <input type="radio" id="monthly" name="schedule" value="monthly"><label for="monthly">Monthly<span class="radio-checkmark"></span></label>
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="button-container">
+            <button class="button" onclick="generateRoutine()" id="generateButton">
+                Generate My Routine
+            </button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Powered by Aroma Therapy App</p>
+    </div>
+
+    <!-- // Add this script before the closing </body> tag -->
+
+<script>
+    async function generateRoutine() {
+        let selectedPainPoints = [];
+        document.querySelectorAll('.pain-point input:checked').forEach((checkbox) => {
+            selectedPainPoints.push(checkbox.id);
+        });
+
+        let selectedSchedule = document.querySelector('input[name="schedule"]:checked')?.value;
+
+        if (selectedPainPoints.length === 0 || !selectedSchedule) {
+            alert('Please select at least one pain point and a schedule.');
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:8002/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: `Generate a weekly aroma therapy routine for the following conditions: ${selectedPainPoints.join(', ')}`
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            
+            // Create a modal or div to display the response
+            const responseDiv = document.createElement('div');
+            responseDiv.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                padding: 20px;
+                border-radius: 15px;
+                box-shadow: 0 0 20px rgba(0,0,0,0.2);
+                max-width: 80%;
+                max-height: 80vh;
+                overflow-y: auto;
+                z-index: 1000;
+            `;
+            
+            // Format the response text with line breaks
+            const formattedResponse = data.response.replace(/\n/g, '<br>');
+            responseDiv.innerHTML = `
+                <h3 style="color: #333; margin-bottom: 20px;">Your Weekly Routine</h3>
+                <div style="white-space: pre-line;">${formattedResponse}</div>
+                <button onclick="this.parentElement.remove()" 
+                        style="
+                            background: #ff6f61;
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 20px;
+                            margin-top: 20px;
+                            cursor: pointer;
+                        "
+                >Close</button>
+            `;
+            
+            document.body.appendChild(responseDiv);
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to generate routine. Please try again.');
+        }
+    }
+</script>
+
+</body>
+</html>

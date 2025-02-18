@@ -17,6 +17,7 @@ import GoogleFit from "./pages/GoogleFit"; // new import
 import UserInfo from "./pages/user-info";
 import RemediesChatbot from "./components/RemediesChatbot";
 // import UserDetails from "./components/UserDetailsForm";
+// import WeeklyRoutine from "./components/WeeklyRoutine";
 
 const App = () => {
   return (
